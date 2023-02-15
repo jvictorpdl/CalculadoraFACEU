@@ -1,4 +1,4 @@
-import "./Buttom.css";
+//import "./Buttom.css";
 import { ButtonPrimary } from "./styles";
 
 function Button(props) {
