@@ -1,12 +1,6 @@
 import React from "react";
 
-export default function (Header) {
-  return <h1>CAbeçalho</h1>;
+export default function Header () {
+  return <h1>DepUFERSA</h1>;
 }
 
-/*import { Head } from "./styles";
-function Header() {
-  return <Head>logo</Head>;
-}
-export default Header;
-*/

@@ -1,11 +1,13 @@
 //import "./Buttom.css";
-import { ButtonPrimary } from "./styles";
+import { ButtonPrimary, ButtonSecondary } from "./styles";
 
 function Button(props) {
-  const calcular = () => {
-    props.calcular(true);
-  };
-  return <ButtonPrimary onClick={calcular}>Calcular</ButtonPrimary>;
+  
+  if (props.color === 'primary') {
+    return <ButtonPrimary color='primary'>{props.text}</ButtonPrimary>;
+  } else {
+    return <ButtonSecondary color='secondary'>{props.text}</ButtonSecondary>;
+  }
 }
 
 export default Button;

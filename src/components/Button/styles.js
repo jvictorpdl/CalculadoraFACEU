@@ -2,11 +2,27 @@ import styled from "styled-components";
 
 export const ButtonPrimary = styled.button`
   width: 200px;
-  height: 30px;
+  font-size: 20px;
+  padding: 5px 15px;
   border-radius: 8px;
-  background: #4a95ff;
+  background: #1A237A;
   border: 2px solid #333;
   color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+`;
+
+export const ButtonSecondary = styled.button`
+  width: 200px;
+  font-size: 20px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  background: #fff;
+  border: 2px solid #333;
+  color: black;
   cursor: pointer;
   text-align: center;
   line-height: 30px;

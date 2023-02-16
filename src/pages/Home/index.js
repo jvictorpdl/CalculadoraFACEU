@@ -1,48 +1,93 @@
 import { useState } from "react";
 import PageTemplate from "../PageTemplate";
-import { Container, Title, Card, TitleCard, FormGrid, Item } from "./styles";
-import Button from "../../components/Button";
+import { Container, ButtonsSteps, Progress } from "./styles";
+import Button from '../../components/Button'
+import Step1 from './step1';
+import Step2 from './step2';
+import Step3 from './step3';
+import Step4 from './step4';
+import Step5 from './step5';
+import Step6 from './step6';
+import Step7 from './step7';
+import Step8 from './step8';
+import Step9 from './step9';
+import Result from "../Result";
 
 function Home() {
-  const [calculated, setCalculated] = useState(false);
+  const [step, setStep] = useState(1)
+  const [progressWidth, setProgressWidth] = useState(8);
+  
+  const prev = () => {
+    setProgressWidth(progressWidth - 9)
+    setStep(step - 1)
+  }
+
+  const next = () => {
+    setProgressWidth(progressWidth + 9)
+    setStep(step +1)
+  }
+
+  const resetStep = () => {
+    setProgressWidth(8)
+    setStep(1)
+  }
 
   return (
     <PageTemplate>
-      <Title>Title</Title>
       <Container>
-        <Title>Titulo do card</Title>
-        <Card>
-          <div>
-            <TitleCard>rio</TitleCard>
-            <FormGrid>
-              <Item>
-                text
-                <input />
-              </Item>
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-            </FormGrid>
-          </div>
-          <div>
-            <TitleCard>rio</TitleCard>
-            <FormGrid>
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-              <input />
-            </FormGrid>
-          </div>
-        </Card>
-        {calculated && <Card>resultados</Card>}
+        <Progress width={`${progressWidth}%`} />
+        {step === 1 &&
+          <Step1 />
+        }
+        {step === 2 &&
+          <Step2 />
+        }
+        {step === 3 &&
+          <Step3 />
+        }
+        {step === 4 &&
+          <Step4 />
+        }
+        {step === 5 &&
+          <Step5 />
+        }
+        {step === 6 &&
+          <Step6 />
+        }
+        {step === 7 &&
+          <Step7 />
+        }
+        {step === 8 &&
+          <Step8 />
+        }
+        {step === 9 &&
+          <Step9 />
+        }
+        {step === 10 &&
+          <Result />
+        }
+        <ButtonsSteps>
+          {step > 1 && step < 10 &&
+            <div onClick={() => prev()}>
+              <Button text='Voltar'/>
+            </div>
+          }
+          {step < 9 &&
+            <div onClick={() => next()}>
+              <Button color='primary' text='Próximo'/>
+            </div>
+          }
+          {step === 9 &&
+            <div onClick={() => next()}>
+              <Button color='primary' text='Finalizar'/>
+            </div>
+          }
+          {step === 10 &&
+            <div onClick={() => resetStep()}>
+              <Button text='Calcular novamente'/>
+            </div>
+          }
+        </ButtonsSteps>
       </Container>
     </PageTemplate>
   );
