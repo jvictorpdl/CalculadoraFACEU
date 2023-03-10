@@ -1,26 +1,21 @@
 import { CardInput, CardHelp, Content } from "../styleSteps";
+import Form from "../../../components/Form";
+import ItemForm from "../../../components/ItemForm";
+import { Subtitle } from "../../../components/Subtitle/styles";
+
 export default function Step2() {
   return (
     <Content>
       <CardInput>
-        <div className="Container">
-          <h5>k1(20ºC)</h5>
-          <input />
-          <h5>θ</h5>
-          <input />
-          <h5>T</h5>
-          <input />
-          <br />
-        </div>
+        <Form>
+          <ItemForm title="k1(20ºC)" />
+          <ItemForm title="θ" />
+          <ItemForm title="T" />
+        </Form>
 
-        <h3 className="text1">Ou</h3>
+        <Subtitle>Ou</Subtitle>
 
-        <div>
-          <h5>
-            K1<sub>t</sub>
-          </h5>
-          <input />
-        </div>
+        <ItemForm title="k1" sub="T" />
       </CardInput>
       <CardHelp>ajuda 2</CardHelp>
     </Content>

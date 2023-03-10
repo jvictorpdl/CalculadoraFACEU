@@ -1,11 +1,14 @@
 import { Input } from "../Input";
-import { Container } from "./styles"
+import { Container } from "./styles";
 
-export default function ItemForm (props){
-    return(
-        <Container>
-            <label>{props.title}</label>
-            <Input />
-        </Container>
-    )
+export default function ItemForm(props) {
+  return (
+    <Container>
+      <label>
+        {props.title}
+        {props.sub && <sub>{props.sub}</sub>}
+      </label>
+      {(props.disabled && <p>{props.value}</p>) || <Input />}
+    </Container>
+  );
 }

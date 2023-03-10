@@ -1,22 +1,16 @@
 import { CardInput, CardHelp, Content } from "../styleSteps";
-import {Input} from "../../../components/Input"
+import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 export default function Step0() {
   return (
     <Content>
       <CardInput>
-        <div className="Container">
+        <Form>
           <ItemForm title="Qr" />
-
-          <h5>ODr</h5>
-          <Input />
-
-          <h5>DBOr</h5>
-          <Input />
-
-          <h5>ODmin</h5>
-          <Input />
-        </div>
+          <ItemForm title="ODr" />
+          <ItemForm title="DBOr" />
+          <ItemForm title="ODmin" />
+        </Form>
       </CardInput>
       <CardHelp>ajuda 1</CardHelp>
     </Content>
