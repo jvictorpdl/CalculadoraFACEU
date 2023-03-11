@@ -1,6 +1,8 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
+import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
+
 export default function Step9() {
   return (
     <Content>
@@ -12,13 +14,12 @@ export default function Step9() {
           <ItemForm title="H" />
 
           <select name="select">
-            <option value="Equacao1">Valor 1</option>
+            <option value="Equacao1">Equacao1</option>
             <option value="Equacao2">Valor 2</option>
             <option value="Equacao3">Valor 3</option>
           </select>
         </Form>
-
-        <h3 className="text1">Ou</h3>
+        <Subtitle>Ou</Subtitle>
         <ItemForm title="K2" sub="T" />
       </CardInput>
       <CardHelp>ajuda 3</CardHelp>

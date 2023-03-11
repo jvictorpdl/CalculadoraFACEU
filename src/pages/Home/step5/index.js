@@ -1,25 +1,22 @@
+import Form from "../../../components/Form";
+import ItemForm from "../../../components/ItemForm";
 import { CardInput, CardHelp, Content } from "../styleSteps";
+import { Subtitle } from "../../../components/Subtitle/styles";
+
 export default function Step5() {
   return (
     <Content>
       <CardInput>
-        <div className="Container">
-          <h5>T</h5>
-          <input />
+      <Form>
+        <ItemForm title="T" />
+          <ItemForm title="H" />
+        </Form>
 
-          <h5>H</h5>
-          <input />
-          <br />
-        </div>
+        <Subtitle>Ou</Subtitle>
 
-        <h3 className="text1">Ou</h3>
-
-        <div>
-          <h5>Cs</h5>
-          <input />
-        </div>
+        <ItemForm title="Cs" />
       </CardInput>
-      <CardHelp>ajuda 5</CardHelp>
+{/*esta pagina nao possui o card help*/}
     </Content>
   );
 }

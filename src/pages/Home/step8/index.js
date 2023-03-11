@@ -1,13 +1,15 @@
-import { CardInput,CardHelp, Content } from "../styleSteps"
-export default function Step8() {
+import Form from "../../../components/Form";
+import ItemForm from "../../../components/ItemForm";
+import { CardInput, CardHelp, Content } from "../styleSteps";
+import { Subtitle } from "../../../components/Subtitle/styles";
+
+export default function Step7() {
   return (
     <Content>
       <CardInput>
-        passo 8
+        variaveis rio
       </CardInput>
-      <CardHelp>
-        ajuda 8
-      </CardHelp>
+      <CardHelp>variaveis esgoto</CardHelp>
     </Content>
-  )
+  );
 }

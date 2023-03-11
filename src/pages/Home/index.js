@@ -10,7 +10,6 @@ import Step5 from './step5';
 import Step6 from './step6';
 import Step7 from './step7';
 import Step8 from './step8';
-import Step9 from './step9';
 import Result from "../Result";
 
 function Home() {
@@ -61,28 +60,28 @@ function Home() {
           <Step8 />
         }
         {step === 9 &&
-          <Step9 />
-        }
-        {step === 10 &&
           <Result />
         }
+ {/* }       {step === 10 &&
+          <Result />
+        }*/}
         <ButtonsSteps>
-          {step > 1 && step < 10 &&
+          {step > 1 && step < 9 &&
             <div onClick={() => prev()}>
               <Button text='Voltar'/>
             </div>
           }
-          {step < 9 &&
+          {step < 8 &&
             <div onClick={() => next()}>
               <Button color='primary' text='Próximo'/>
             </div>
           }
-          {step === 9 &&
+          {step === 8 &&
             <div onClick={() => next()}>
               <Button color='primary' text='Finalizar'/>
             </div>
           }
-          {step === 10 &&
+          {step === 9 &&
             <div onClick={() => resetStep()}>
               <Button text='Calcular novamente'/>
             </div>
