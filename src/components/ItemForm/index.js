@@ -8,7 +8,7 @@ export default function ItemForm(props) {
         {props.title}
         {props.sub && <sub>{props.sub}</sub>}
       </label>
-      {(props.disabled && <p>{props.value}</p>) || <Input />}
+      <Input disabled={props.disabled} placeholder={props.unity} />
     </Container>
   );
 }

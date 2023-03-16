@@ -5,7 +5,7 @@ export const ContainerTwo = styled.form`
   display: grid;
   background-color: green;
   display: flex;
-  justify-content: center;
+  justify-content: left;
 
   //grid-template-columns: 1fr 1fr;
 `;
