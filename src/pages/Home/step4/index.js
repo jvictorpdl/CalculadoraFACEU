@@ -8,7 +8,7 @@ export default function Step4() {
     <Content>
       <CardInput>
         <FormTwo>
-          <ItemForm title="d" />
+          <ItemForm title="d" unity="mg/L" />
           <ItemForm title="v" />
         </FormTwo>
 

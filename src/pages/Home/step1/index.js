@@ -8,9 +8,9 @@ export default function Step0() {
       <CardInput>
         <Form>
           <ItemForm title="Qr" unity="m³/s" />
-          <ItemForm title="ODr" />
-          <ItemForm title="DBOr" />
-          <ItemForm title="ODmin" />
+          <ItemForm title="ODr" unity="mg/L" />
+          <ItemForm title="DBOr" unity="mg/L" />
+          <ItemForm title="ODmin" unity="mg/L" />
         </Form>
       </CardInput>
       <CardHelp>ajuda 1</CardHelp>

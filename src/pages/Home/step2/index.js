@@ -8,9 +8,9 @@ export default function Step2() {
     <Content>
       <CardInput>
         <Form>
-          <ItemForm title="k1(20ºC)" />
-          <ItemForm title="θ" />
-          <ItemForm title="T" />
+          <ItemForm title="k1(20ºC)" unity="1/d" />
+          <ItemForm title="θ" unity="M/A" />
+          <ItemForm title="T" unity="ºC" />
         </Form>
 
         <Subtitle>Ou</Subtitle>

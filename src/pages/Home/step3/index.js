@@ -1,35 +1,44 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
+import ItemSelect from "../../../components/ItemSelect";
+import { Select } from "../../../components/Select";
 import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import { Container } from "./styles";
+
+const options = [
+  { value: "", label: "Selecione" },
+  { value: "1", label: "O'Connor Dobbins" },
+  { value: "2", label: "Churchill et al" },
+  { value: "3", label: "Owens et al" },
+];
 
 export default function Step9() {
   return (
     <Content>
       <CardInput>
         <Form>
-          <ItemForm title="V" />
-          <ItemForm title="θ" />
+          <ItemForm title="V" unity="m/s" />
+          <ItemForm title="θ" unity="M/A" />
           <ItemForm title="T" value="valor" disabled={true} />
-        </Form>
-        <Form>
-          <ItemForm title="H" />
-          <ItemSelect title="H" />
-
+          <ItemForm title="H" unity="m" />
+          {/* <ItemSelect></ItemSelect> */}
           <Container>
-            <label>Equação</label>
-            <select name="Equacao">
+            {/* <label>Equação</label> */}
+
+            <ItemSelect options={options} />
+            {/* <ItemSelect title="Equação">
               <option value="">Selecione</option>
-              <option value="Equacao1">O'Connor Dobbins</option>
-              <option value="Equacao2">Churchill et al</option>
-              <option value="Equacao3">Owens et al</option>
-            </select>
+              <option value="1">O'Connor Dobbins</option>
+              <option value="2">Churchill et al</option>
+              <option value="3">Owens et al</option>
+            </ItemSelect> */}
           </Container>
         </Form>
+        <Form></Form>
 
         <Subtitle>Ou</Subtitle>
-        <ItemForm title="K2" sub="T" />
+        <ItemForm title="K2" sub="T" unity="1/d" />
       </CardInput>
       <CardHelp>ajuda 3</CardHelp>
     </Content>
