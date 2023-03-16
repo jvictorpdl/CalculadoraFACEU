@@ -17,17 +17,3 @@ const ItemSelect = ({ options }) => {
 };
 
 export default ItemSelect;
-
-// export default function ItemSelect(props) {
-//   return (
-//     <Container>
-//       <label>
-//         {props.title}
-//         {props.sub && <sub>{props.sub}</sub>}
-//       </label>
-//       <Select>
-//         <option></option>
-//       </Select>
-//     </Container>
-//   );
-// }

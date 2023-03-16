@@ -4,7 +4,6 @@ import ItemSelect from "../../../components/ItemSelect";
 import { Select } from "../../../components/Select";
 import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
-import { Container } from "./styles";
 
 const options = [
   { value: "", label: "Selecione" },
@@ -22,18 +21,7 @@ export default function Step9() {
           <ItemForm title="θ" unity="M/A" />
           <ItemForm title="T" value="valor" disabled={true} />
           <ItemForm title="H" unity="m" />
-          {/* <ItemSelect></ItemSelect> */}
-          <Container>
-            {/* <label>Equação</label> */}
-
-            <ItemSelect options={options} />
-            {/* <ItemSelect title="Equação">
-              <option value="">Selecione</option>
-              <option value="1">O'Connor Dobbins</option>
-              <option value="2">Churchill et al</option>
-              <option value="3">Owens et al</option>
-            </ItemSelect> */}
-          </Container>
+          <ItemSelect options={options} required />
         </Form>
         <Form></Form>
 

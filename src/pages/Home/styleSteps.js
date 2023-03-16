@@ -16,7 +16,7 @@ export const Content = styled.div`
 `;
 
 export const CardInput = styled.section`
-  height: 200px;
+  /* height: 300px; */
   max-width: 380px;
   background: #fff;
   border-bottom: 2px solid #171717;
