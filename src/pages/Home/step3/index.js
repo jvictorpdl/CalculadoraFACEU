@@ -12,21 +12,53 @@ const options = [
   { value: "3", label: "Owens et al" },
 ];
 
-export default function Step9() {
+export default function Step9(props) {
   return (
     <Content>
       <CardInput>
         <Form>
-          <ItemForm title="V" unity="m/s" />
-          <ItemForm title="θ" unity="M/A" />
-          <ItemForm title="T" value="valor" disabled={true} />
-          <ItemForm title="H" unity="m" />
+          <ItemForm
+            title="V"
+            unity="m/s"
+            locale="volume"
+            setData={props.setData}
+            data={props.data}
+          />
+          <ItemForm
+            title="θ"
+            unity="M/A"
+            locale="tetak2"
+            setData={props.setData}
+            data={props.data}
+          />
+          <ItemForm
+            title="T"
+            value="valor"
+            disabled={true}
+            locale="temperatura"
+            setData={props.setData}
+            data={props.data}
+          />
+          <ItemForm
+            title="H"
+            unity="m"
+            locale="h"
+            setData={props.setData}
+            data={props.data}
+          />
           <ItemSelect options={options} required />
         </Form>
         <Form></Form>
 
         <Subtitle>Ou</Subtitle>
-        <ItemForm title="K2" sub="T" unity="1/d" />
+        <ItemForm
+          title="K2"
+          sub="T"
+          unity="1/d"
+          locale="k120c"
+          setData={props.setData}
+          data={props.data}
+        />
       </CardInput>
       <CardHelp>ajuda 3</CardHelp>
     </Content>

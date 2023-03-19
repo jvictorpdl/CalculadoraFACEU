@@ -23,7 +23,7 @@ function Home() {
     tetak1: "",
     temperatura: "",
     k1t: "",
-    V: "",
+    volume: "",
     tetak2: "",
     h: "",
     formula: "",
