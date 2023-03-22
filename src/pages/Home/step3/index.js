@@ -46,16 +46,43 @@ export default function Step9(props) {
             setData={props.setData}
             data={props.data}
           />
-          <ItemSelect options={options} required />
+          {/*<ItemSelect options={options} required />*/}
         </Form>
-        <Form></Form>
 
         <Subtitle>Ou</Subtitle>
+
+        <Form>
+          <ItemForm
+            title="K2 (20ºC)"
+            unity="1/d"
+            locale="k220c"
+            setData={props.setData}
+            data={props.data}
+          />
+          <ItemForm
+            title="θ"
+            unity="M/A"
+            locale="tetak2"
+            setData={props.setData}
+            data={props.data}
+          />
+          <ItemForm
+            title="T"
+            value="valor"
+            disabled={true}
+            locale="temperatura"
+            setData={props.setData}
+            data={props.data}
+          />
+        </Form>
+
+        <Subtitle>Ou</Subtitle>
+
         <ItemForm
           title="K2"
           sub="T"
           unity="1/d"
-          locale="k120c"
+          locale="k2t"
           setData={props.setData}
           data={props.data}
         />
