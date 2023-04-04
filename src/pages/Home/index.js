@@ -33,11 +33,22 @@ function Home() {
     velocidade: "",
     tempo: "",
     cs: "",
+    cslinha: "",
     qe: "",
     ode: "",
     dboe: "",
     dboefl: "",
     e: "",
+    //saída
+    co: "",
+    do: "",
+    dbo5: "",
+    kt: "",
+    tc: "",
+    distanciac: "",
+    deficitc: "",
+    odc: "",
+    ct: "",
   });
   const [progressWidth, setProgressWidth] = useState(8);
   const resultado = calc.Calculadora(data);

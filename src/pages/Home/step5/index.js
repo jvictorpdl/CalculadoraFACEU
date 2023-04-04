@@ -28,7 +28,7 @@ export default function Step5(props) {
         <Subtitle>Ou</Subtitle>
 
         <ItemForm
-          title="Cs"
+          title="Cs'"
           unity="mg/L"
           locale="cs"
           setData={props.setData}
