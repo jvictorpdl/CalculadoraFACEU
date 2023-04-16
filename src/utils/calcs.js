@@ -1,5 +1,14 @@
 import React from "react";
 
+export const Calculadorak1t = (props) => {
+  console.log("teste", props);
+  if (props.k120c) {
+    props.k1t = props.k120c * Math.pow(props.tetak1, props.temperatura - 20);
+
+    return props.k1t;
+  }
+};
+
 export const Calculadora = (props) => {
   console.log("teste", props);
   if (props.k120c) {
