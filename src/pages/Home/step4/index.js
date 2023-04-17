@@ -10,7 +10,7 @@ export default function Step4(props) {
         <FormTwo>
           <ItemForm
             title="d"
-            unity="mg/L"
+            unity="m"
             locale="distancia"
             setData={props.setData}
             data={props.data}

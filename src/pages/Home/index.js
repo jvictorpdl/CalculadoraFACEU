@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Container, ButtonsSteps, Progress } from "./styles";
-import * as calc from "../../utils/calcs";
 import PageTemplate from "../PageTemplate";
 import Button from "../../components/Button";
 import Step1 from "./step1";
@@ -16,29 +15,29 @@ import Result from "../Result";
 function Home() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState({
-    qr: "",
-    odr: "",
-    dbor: "",
-    odmin: "",
-    k120c: "",
-    tetak1: "",
-    temperatura: "",
-    k1t: "",
-    volume: "",
-    tetak2: "",
-    h: "", //altitude
+    qr: "0.651",
+    odr: "0.9",
+    dbor: "2",
+    odmin: "5",
+    k120c: "0.38",
+    tetak1: "1.047",
+    temperatura: "23",
+    k1t: "0.44",
+    volume: "0.35",
+    tetak2: "1.024",
+    h: "1000", //altitude
     k220c: "",
-    k2t: "",
-    distancia: "",
-    velocidade: "",
-    tempo: "",
-    cs: "",
+    k2t: "3.31",
+    distancia: "50000",
+    velocidade: "0.35",
+    tempo: "1.65",
+    cs: "7.8",
     cslinha: "",
-    qe: "",
-    ode: "",
-    dboe: "",
+    qe: "0.114",
+    ode: "0",
+    dboe: "341",
     dboefl: "",
-    e: "",
+    e: "30",
     //saída
     co: "",
     do: "",
@@ -51,7 +50,7 @@ function Home() {
     ct: "",
   });
   const [progressWidth, setProgressWidth] = useState(8);
-  const resultado = calc.Calculadora(data);
+  
 
   const prev = () => {
     setProgressWidth(progressWidth - 9);
@@ -80,10 +79,8 @@ function Home() {
         {step === 6 && <Step6 />}
         {step === 7 && <Step7 />}
         {step === 8 && <Step8 />}
-        {step === 9 && <Result />}
-        {/* }       {step === 10 &&
-          <Result />
-        }*/}
+        {step === 9 && <Result data={data} />}
+        
         <ButtonsSteps>
           {step > 1 && step < 9 && (
             <div onClick={() => prev()}>
