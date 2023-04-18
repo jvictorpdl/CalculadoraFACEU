@@ -48,17 +48,20 @@ export const Calculadora = (props) => {
     odc: 0,
     ct: 0,
   }
-  console.log("teste", entrada);
   if (entrada.k120c) {
     entrada.k1t = entrada.k120c * Number(Math.pow(entrada.tetak1, entrada.temperatura - 20).toFixed(2));
     console.log("if k120c // k120c: ", entrada.k120c, "* tetak1: ", entrada.tetak1, "^ temperatura: ", entrada.temperatura,"-20", "potencia: ", Number(Math.pow(entrada.tetak1, entrada.temperatura - 20).toFixed(2)));
+    console.log("k1t: ", entrada.k1t);
     //  k120x:  0.38 * tetak1:  1.047 ^ temperatura:  23 -20 potencia:  1.1477308229999998
-    // k120c: 0.38 // tetak1: 1.047 // temperatura: 23 // 
+    // exemplo do pdf: k120c: 0.38 // tetak1: 1.047 // temperatura: 23 // 
   }
 
   if (entrada.k2t) {
   } else if (entrada.k220c) {
     entrada.k2t = entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
+    console.log("k2t: ", entrada.k2t);
+    console.log("k2t = k220c: ",entrada.k220c, "* tetak1 ^ temperatura - 20: ", Math.pow(entrada.tetak2, entrada.temperatura - 20));  
+    
   } else if (entrada.volume) {
     if (
       entrada.h <= 4 &&
@@ -99,7 +102,7 @@ export const Calculadora = (props) => {
       4.1022 * Math.pow(10, -1) * entrada.temperatura +
       7.991 * Math.pow(10, -3) * Math.pow(entrada.temperatura, 2) -
       7.7774 * Math.pow(10, -5) * Math.pow(entrada.temperatura, 3);
-    entrada.cslinha = entrada.cs * (1 - entrada.h / 9450);
+    entrada.cslinha = entrada.cs * (1 - (entrada.h / 9450));
   }
 
   if (entrada.dboefl) {
@@ -111,13 +114,14 @@ export const Calculadora = (props) => {
 
   entrada.co =
     (entrada.qr * entrada.odr + entrada.qe * entrada.ode) / (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
+    console.log("co: ", entrada.co);
 
-  entrada.do = entrada.csLinha - entrada.co;
+  entrada.do = entrada.cslinha - entrada.co;
 
   {
     //Concentração de DBO ultima mistura (Lo)
     entrada.dbo5 =
-      (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) / entrada.qr + entrada.qe; //  tem mais de um lançamento de esgoto
+      (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) / (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
    
       entrada.kt = 1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))) );
 
@@ -145,24 +149,19 @@ export const Calculadora = (props) => {
   {
     //ODC
     entrada.deficitc =
-      (entrada.k1t / entrada.k2t) *
-      entrada.lo *
-      Math.pow(entrada.e, entrada.k1t * entrada.tc);
-
-    entrada.odc = entrada.csLinha - entrada.dc; //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
+      (entrada.k1t / entrada.k2t) * entrada.lo * Math.pow(2.7182818285, (- entrada.k1t * entrada.tc));
+    console.log("calculo odc: ", entrada.cslinha, "-", entrada.deficitc);
+    entrada.odc = entrada.cslinha - entrada.deficitc; //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
   }
-  console.log("antes", entrada);
 
         entrada.ct =
-    entrada.csLinha -
-    ((entrada.k1t * entrada.lo) / entrada.k2t - entrada.k1t) *
-      ((Math.pow(2.72, -entrada.k1t * entrada.tempo) -
-        Math.pow(2.72, -entrada.k2t * entrada.tempo) +
-        (entrada.csLinha - entrada.co) * 2.72) ^
-        (-entrada.k2t * entrada.tempo));
+    entrada.cslinha -
+    (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
+      (Math.pow(2.7182818285, -entrada.k1t * entrada.tempo) -
+        Math.pow(2.7182818285, -entrada.k2t * entrada.tempo)) +
+        (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * entrada.tempo));
 
-        console.log("saida", entrada);
-
+console.log("fim: ",entrada)
 };
 /*
 Saída

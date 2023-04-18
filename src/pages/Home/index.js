@@ -16,7 +16,7 @@ function Home() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState({
     qr: "0.651",
-    odr: "0.9",
+    odr: "7",
     dbor: "2",
     odmin: "5",
     k120c: "0.38",
@@ -26,8 +26,8 @@ function Home() {
     volume: "0.35",
     tetak2: "1.024",
     h: "1000", //altitude
-    k220c: "",
-    k2t: "3.31",
+    k220c: "3.08",
+    k2t: "", //3.31
     distancia: "50000",
     velocidade: "0.35",
     tempo: "1.65",
