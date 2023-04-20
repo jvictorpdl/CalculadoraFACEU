@@ -30,6 +30,7 @@ function Home() {
     k2t: "", //3.31
     distancia: "50000",
     velocidade: "0.35",
+    particoes: "5",
     tempo: "1.65",
     cs: "7.8",
     cslinha: "",

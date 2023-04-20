@@ -29,6 +29,7 @@ export const Calculadora = (props) => {
     k2t: Number(props.k2t),
     distancia: Number(props.distancia) ,
     velocidade: Number(props.velocidade) ,
+    particoes: Number(props.particoes) ,
     tempo: Number(props.tempo) ,
     cs: Number(props.cs) ,
     cslinha: Number(props.cslinha) ,
@@ -154,14 +155,43 @@ export const Calculadora = (props) => {
     entrada.odc = entrada.cslinha - entrada.deficitc; //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
   }
 
-        entrada.ct =
-    entrada.cslinha -
-    (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
-      (Math.pow(2.7182818285, -entrada.k1t * entrada.tempo) -
-        Math.pow(2.7182818285, -entrada.k2t * entrada.tempo)) +
-        (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * entrada.tempo));
+    //     entrada.ct =
+    // entrada.cslinha -
+    // (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
+    //   (Math.pow(2.7182818285, -entrada.k1t * entrada.tempo) -
+    //     Math.pow(2.7182818285, -entrada.k2t * entrada.tempo)) +
+    //     (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * entrada.tempo));
 
-console.log("fim: ",entrada)
+      console.log("ct antes do for: ", entrada.ct);
+        for (let i = 0; i <= entrada.particoes; i++) {
+          
+        let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
+
+          if(tempop === 0){
+            entrada.ct = entrada.co; 
+            console.log("ct caso tempop=0: ", entrada.ct);
+          }else{
+                entrada.ct =
+                    entrada.cslinha -
+                    (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
+                      (Math.pow(2.7182818285, -entrada.k1t * tempop) -
+                        Math.pow(2.7182818285, -entrada.k2t * tempop)) +
+                        (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * tempop));
+                        console.log("C0: ", entrada.co);
+                        console.log("Cslinha: ", entrada.cslinha);
+                    console.log("----------------------------");
+                    console.log("ct outros casos: ", entrada.ct, "tempop: ", tempop, "i: ", i);
+          }
+          if (entrada.ct < entrada.odmin){
+            //fazer uma funçao para fazer outra simulação onde o usuario terá que inserir as variaveis novamente
+            //entrada.e (eficiencia) que terá de ser calculada mais uma vez a DBOefl do esgoto (calculo no deposito)
+            // o k1 devera ser inserido mais uma vez, tendo que mostrar uma tela para isso mostrando a tabela mais uma vez
+            // após a inserção das duas variaveis, calcular tudo novamente
+            
+          }
+       }
+
+console.log("fim: ",entrada);
 };
 /*
 Saída

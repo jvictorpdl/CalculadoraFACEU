@@ -1,5 +1,5 @@
 import * as calc from "../../utils/calcs";
-
+import Linechart from "../../components/Linechart";
 
 export default function Result (props) {
   const resultado = calc.Calculadora(props.data);
@@ -7,7 +7,8 @@ export default function Result (props) {
   console.log(props.data);
   console.log(resultado);
   return(
-    <h1>Resultados</h1>
+   
+    <Linechart />
     
   )
 }
