@@ -1,20 +1,26 @@
 import React from "react"
 import Chart from "react-apexcharts"
 
-function Linechart()
+
+function Linechart(props)
 {
+  console.log("props: ",props);
     return(<React.Fragment>
         <div className="container-fluid mt-3 mb-3">
             {/* <h2>Perfil de OD</h2> */}
             
     <Chart type = 'line'
-    width = {1349}
+    width = {1100}
     height = {550}
     
     series = {[
       {
         name:"ODmin",
-        data:[5,5,5,5,5]
+        data: props.odminVet
+      },
+      {
+        name: "OD",
+        data: props.ctVet
       }
     ]}
     options = {{
@@ -27,16 +33,33 @@ function Linechart()
               return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
             }
           },
-          markers: {
-            size: 0,
-            hover: {
-              sizeOffset: 6
-            }
-          },
+          tooltip: {
+            y: [
+              {
+                title: {
+                  formatter: function (val) {
+                    return val + " mg/L"
+                  }
+                }
+              },
+              {
+                title: {
+                  formatter: function (val) {
+                    return val + " mg/L"
+                  }
+                }}
+              ]
+              },
+          // markers: {
+          //   // size: 0,
+          //   hover: {
+          //     sizeOffset: 6
+          //   }
+          // },
 
       xaxis:{
         title: {text: "Distância"},
-        categories:['1', '2', '3', '4', '5']
+        categories: props.particoesVet
     },
     yaxis:{
           title:{ text: "OD"}

@@ -11,6 +11,13 @@ import { useState} from "react";
 //   }
 // };
 
+const addVariable = (value, ctVet, setCtVet) => {
+  console.log("entrando na funçao ------------------------------", value, ctVet);
+  ctVet.push(value)
+  setCtVet([...ctVet]);
+
+}
+
 export const Calculadora = (props) => {
   console.log("props", props);
   const entrada = {
@@ -48,7 +55,16 @@ export const Calculadora = (props) => {
     deficitc: 0,
     odc: 0,
     ct: 0,
+
   }
+    const particoesVet = []
+    const ctVet = [];
+    const odminVet = []
+    
+  
+  
+
+
   if (entrada.k120c) {
     entrada.k1t = entrada.k120c * Number(Math.pow(entrada.tetak1, entrada.temperatura - 20).toFixed(2));
     console.log("if k120c // k120c: ", entrada.k120c, "* tetak1: ", entrada.tetak1, "^ temperatura: ", entrada.temperatura,"-20", "potencia: ", Number(Math.pow(entrada.tetak1, entrada.temperatura - 20).toFixed(2)));
@@ -162,36 +178,51 @@ export const Calculadora = (props) => {
     //     Math.pow(2.7182818285, -entrada.k2t * entrada.tempo)) +
     //     (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * entrada.tempo));
 
+
+  
+
       console.log("ct antes do for: ", entrada.ct);
         for (let i = 0; i <= entrada.particoes; i++) {
+          particoesVet.push(i);
+          odminVet.push(entrada.odmin)
           
-        let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
-
+          let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
+          
           if(tempop === 0){
             entrada.ct = entrada.co; 
             console.log("ct caso tempop=0: ", entrada.ct);
           }else{
-                entrada.ct =
-                    entrada.cslinha -
-                    (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
-                      (Math.pow(2.7182818285, -entrada.k1t * tempop) -
-                        Math.pow(2.7182818285, -entrada.k2t * tempop)) +
-                        (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * tempop));
-                        console.log("C0: ", entrada.co);
-                        console.log("Cslinha: ", entrada.cslinha);
-                    console.log("----------------------------");
-                    console.log("ct outros casos: ", entrada.ct, "tempop: ", tempop, "i: ", i);
-          }
-          if (entrada.ct < entrada.odmin){
+            entrada.ct =
+              entrada.cslinha -
+              (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
+                (Math.pow(2.7182818285, -entrada.k1t * tempop) -
+                  Math.pow(2.7182818285, -entrada.k2t * tempop)) +
+                  (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * tempop));
+
+                  console.log("C0: ", entrada.co);
+                  console.log("Cslinha: ", entrada.cslinha);
+                  // addVariable(entrada.ct, ctVet, setCtVet);
+                  
+                  console.log("----------------------------");
+                  console.log("ct outros casos: ", entrada.ct, "tempop: ", tempop, "i: ", i);
+                }
+                ctVet.push(entrada.ct);
+            if (entrada.ct < entrada.odmin){
             //fazer uma funçao para fazer outra simulação onde o usuario terá que inserir as variaveis novamente
             //entrada.e (eficiencia) que terá de ser calculada mais uma vez a DBOefl do esgoto (calculo no deposito)
             // o k1 devera ser inserido mais uma vez, tendo que mostrar uma tela para isso mostrando a tabela mais uma vez
             // após a inserção das duas variaveis, calcular tudo novamente
             
           }
-       }
+          // ctvet[i] = entrada.ct
 
-console.log("fim: ",entrada);
+       }
+const resultado = {
+  ctVet, odminVet, particoesVet
+
+}
+console.log("fim: ",ctVet);
+return resultado
 };
 /*
 Saída

@@ -49,7 +49,12 @@ function Home() {
     deficitc: "",
     odc: "",
     ct: "",
+
+    ctvet: []
+    
   });
+  // ctvet[]: React.useState([]),
+  // useState: ({ctvet[]}),
   const [progressWidth, setProgressWidth] = useState(8);
   
 
