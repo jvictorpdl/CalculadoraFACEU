@@ -10,6 +10,7 @@ import Step5 from "./step5";
 import Step6 from "./step6";
 import Step7 from "./step7";
 import Step8 from "./step8";
+import Step10 from "./step10";
 import Result from "../Result";
 
 function Home() {
@@ -62,7 +63,6 @@ function Home() {
     setProgressWidth(progressWidth - 9);
     setStep(step - 1);
   };
-
   const next = () => {
     setProgressWidth(progressWidth + 9);
     setStep(step + 1);
@@ -86,6 +86,7 @@ function Home() {
         {step === 7 && <Step7 />}
         {step === 8 && <Step8 />}
         {step === 9 && <Result data={data} />}
+        {step === 10 && <Step10 />}
         
         <ButtonsSteps>
           {step > 1 && step < 9 && (
@@ -106,6 +107,16 @@ function Home() {
           {step === 9 && (
             <div onClick={() => resetStep()}>
               <Button text="Calcular novamente" />
+            </div>
+          )}
+          {step === 9 && (
+            <div onClick={() => next()}>
+              <Button text="Simular novamente" />
+            </div>
+          )}
+          {step === 10 && (
+            <div onClick={() => prev()}>
+              <Button text="Simular" />
             </div>
           )}
         </ButtonsSteps>
