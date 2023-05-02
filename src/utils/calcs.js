@@ -1,23 +1,3 @@
-import React from "react";
-import { useState} from "react";
-
-// export const Calculadorak1t = (props) => {
-//   console.log("teste", props);
-  
-//   if (entrada.k120c) {
-//     entrada.k1t = entrada.k120c * Math.pow(entrada.tetak1, entrada.temperatura - 20);
-
-//     return entrada.k1t;
-//   }
-// };
-
-const addVariable = (value, ctVet, setCtVet) => {
-  console.log("entrando na funçao ------------------------------", value, ctVet);
-  ctVet.push(value)
-  setCtVet([...ctVet]);
-
-}
-
 export const Calculadora = (props) => {
   console.log("props", props);
   const entrada = {
@@ -134,7 +114,7 @@ export const Calculadora = (props) => {
       7.7774 * Math.pow(10, -5) * Math.pow(entrada.temperatura, 3);
     entrada.cslinha = entrada.cs * (1 - (entrada.h / 9450));
     entrada.cslinha.toFixed(2);
-    entrada.cs = Number(entrada.cs).toFixed
+    entrada.cs = Number(entrada.cs).toFixed(2)
 
   }
 
@@ -209,7 +189,7 @@ export const Calculadora = (props) => {
     //     Math.pow(2.7182818285, -entrada.k2t * entrada.tempo)) +
     //     (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * entrada.tempo));
 
-
+entrada.odmin = Number(entrada.odmin).toFixed(2);
   
 
       console.log("ct antes do for: ", entrada.ct);
@@ -221,8 +201,8 @@ export const Calculadora = (props) => {
           
           if(tempop === 0){
             entrada.ct = entrada.co; 
+            entrada.ct = Number(entrada.ct).toFixed(2);
             console.log("ct caso tempop=0: ", entrada.ct);
-            entrada.ct.toFixed(2);
 
           }else{
             entrada.ct =
@@ -232,7 +212,7 @@ export const Calculadora = (props) => {
                   Math.pow(2.7182818285, -entrada.k2t * tempop)) +
                   (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * tempop));
 
-            entrada.ct.toFixed(2);
+              entrada.ct = Number(entrada.ct).toFixed(2);
 
                   console.log("C0: ", entrada.co);
                   console.log("Cslinha: ", entrada.cslinha);
@@ -242,22 +222,21 @@ export const Calculadora = (props) => {
                   console.log("ct outros casos: ", entrada.ct, "tempop: ", tempop, "i: ", i);
                 }
                 ctVet.push(entrada.ct);
-            if (entrada.ct < entrada.odmin){
-            //fazer uma funçao para fazer outra simulação onde o usuario terá que inserir as variaveis novamente
-            //entrada.e (eficiencia) que terá de ser calculada mais uma vez a DBOefl do esgoto (calculo no deposito)
-            // o k1 devera ser inserido mais uma vez, tendo que mostrar uma tela para isso mostrando a tabela mais uma vez
-            // após a inserção das duas variaveis, calcular tudo novamente
-            
-          }
+              // if (entrada.ct < entrada.odmin){
+              //fazer uma funçao para fazer outra simulação onde o usuario terá que inserir as variaveis novamente
+              //entrada.e (eficiencia) que terá de ser calculada mais uma vez a DBOefl do esgoto (calculo no deposito)
+              // o k1 devera ser inserido mais uma vez, tendo que mostrar uma tela para isso mostrando a tabela mais uma vez
+              // após a inserção das duas variaveis, calcular tudo novamente
+              // }
          
 
        }
-const resultado = {
-  ctVet, odminVet, particoesVet
+      const resultado = {
+      ctVet, odminVet, particoesVet
 
-}
-console.log("fim: ",ctVet);
-return resultado
+      }
+  console.log("fim: ",ctVet);
+  return resultado
 };
 /*
 Saída

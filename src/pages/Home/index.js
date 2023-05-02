@@ -111,12 +111,12 @@ function Home() {
           )}
           {step === 9 && (
             <div onClick={() => next()}>
-              <Button text="Simular novamente" />
+              <Button color="primary" text="Simular novamente" />
             </div>
           )}
           {step === 10 && (
             <div onClick={() => prev()}>
-              <Button text="Simular" />
+              <Button color="primary" text="Simular" />
             </div>
           )}
         </ButtonsSteps>
