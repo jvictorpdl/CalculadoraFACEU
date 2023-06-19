@@ -39,7 +39,7 @@ function Home() {
     ode: "0",
     dboe: "341",
     dboefl: "",
-    e: "30",
+    e: "",
     //saída
     co: "",
     do: "",
@@ -78,15 +78,15 @@ function Home() {
       <Container>
         <Progress width={`${progressWidth}%`} />
         {step === 1 && <Step1 data={data} setData={setData} />}
-        {step === 2 && <Step2 />}
-        {step === 3 && <Step3 />}
-        {step === 4 && <Step4 />}
-        {step === 5 && <Step5 />}
-        {step === 6 && <Step6 />}
-        {step === 7 && <Step7 />}
-        {step === 8 && <Step8 />}
+        {step === 2 && <Step2 data={data} setData={setData} />}
+        {step === 3 && <Step3 data={data} setData={setData} />}
+        {step === 4 && <Step4 data={data} setData={setData} />}
+        {step === 5 && <Step5 data={data} setData={setData} />}
+        {step === 6 && <Step6 data={data} setData={setData} />}
+        {step === 7 && <Step7 data={data} setData={setData} />}
+        {step === 8 && <Step8 data={data} setData={setData} />}
         {step === 9 && <Result data={data} />}
-        {step === 10 && <Step10 />}
+        {step === 10 && <Step10 data={data} setData={setData} />}
         
         <ButtonsSteps>
           {step > 1 && step < 9 && (

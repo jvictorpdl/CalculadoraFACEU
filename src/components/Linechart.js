@@ -25,7 +25,7 @@ function Linechart(props)
     ]}
     options = {{
         title: {
-            text: 'Perfil de OD',
+            text: 'Perfil de OD (mg/L)',
             // align: 'left'
           },
           legend: {
@@ -58,8 +58,8 @@ function Linechart(props)
           // },
 
       xaxis:{
-        title: {text: "Distância"},
-        categories: props.particoesVet
+        title: {text: 'Distância (Km)'},
+        categories: props.kmvet
     },
     yaxis:{
           title:{ text: "OD"}

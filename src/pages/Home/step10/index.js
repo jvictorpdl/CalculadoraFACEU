@@ -8,7 +8,7 @@ export default function Step10(props) {
   return (
     <Content>
       <CardInput>
-        <Form>
+        <FormTwo>
           <ItemForm
             title="E"
             unity="%"
@@ -17,13 +17,13 @@ export default function Step10(props) {
             data={props.data}
           />
           <ItemForm
-            title="k1"
+            title="k1(20ºC)"
             unity="1/d"
             locale="k120c"
             setData={props.setData}
             data={props.data}
           />
-        </Form>
+        </FormTwo>
       </CardInput>
 
       <CardHelp>ajuda simulação</CardHelp>
