@@ -1,8 +1,21 @@
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
+import Modal from "../../../components/Modal";
+import { useState } from "react";
 
 export default function Step0(props) {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+
+
+  function closeModal() {
+    setIsOpen(false);
+  }
   return (
     <Content>
       <CardInput>
@@ -41,7 +54,34 @@ export default function Step0(props) {
           {props.data.odmin}
         </Form>
       </CardInput>
-      <CardHelp>ajuda 1</CardHelp>
+      <CardHelp>
+        <button onClick={openModal}> botao</button>
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no Rio">
+          <p>
+            Não sendo possível coletar amostras, pode-se estimar a
+            concentração de OD em função do grau de poluição do curso
+            d’água:</p>
+          <br />
+          <li>
+            Curso d’água com poucos indicios de poluição
+          </li>
+          <li>
+            ODr pode ser de 80 a 90% do valor de saturação de oxigênio;
+          </li>
+          <li>
+            Curso d’água com poucos indicios de poluição
+          </li>
+          <br />
+          <h5>Fonte: Von Sperling (2014)</h5>
+        </Modal>
+
+        {/* <button onClick={openModal}> botao</button>
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="segundo modal">
+          as8d4a8s4d8a4s8d4a8s4d8a4sd84as48
+        </Modal> */}
+
+
+        ajuda 1</CardHelp>
     </Content>
   );
 }

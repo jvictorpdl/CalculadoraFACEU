@@ -2,8 +2,23 @@ import { CardInput, CardHelp, Content } from "../styleSteps";
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import { Subtitle } from "../../../components/Subtitle/styles";
+import Modal from "../../../components/Modal";
+import { useState } from "react";
+import { useTable } from "react-table";
+
 
 export default function Step2(props) {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+
+
+  function closeModal() {
+    setIsOpen(false);
+  }
   return (
     <Content>
       <CardInput>
@@ -41,7 +56,13 @@ export default function Step2(props) {
           data={props.data}
         />
       </CardInput>
-      <CardHelp>ajuda 2</CardHelp>
+      <CardHelp>
+        <button onClick={openModal}> botao</button>
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no esgoto">
+
+          <h5>Fonte: Von Sperling (2014)</h5>
+        </Modal>
+        ajuda 2</CardHelp>
     </Content>
   );
 }
