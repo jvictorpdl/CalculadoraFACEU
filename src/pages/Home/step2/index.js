@@ -123,7 +123,7 @@ export default function Step2(props) {
         />
       </CardInput>
       <CardHelp>
-        <HelpModal title="Auxílio em K1" handle={openModal} />
+        <HelpModal title="Clique para auxílio em K1" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em K1">
           <div>
 
@@ -135,8 +135,8 @@ export default function Step2(props) {
           </div>
 
         </Modal>
-        <HelpModal title="Auxílio em θ" handle={openModal2} />
 
+        <HelpModal title="Clique para auxílio em θ" handle={openModal2} />
         <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em θ">
           <p>
             Valor usual de θ é de 1,047 (acréscimo de 4,7% em k₁ para cada aumento de 1 °C na temperatura da água).

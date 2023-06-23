@@ -20,6 +20,8 @@ const options = [
 export default function Step9(props) {
 
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen2, setIsOpen2] = useState(false);
+
   const table = {
     header: [
       {
@@ -118,10 +120,15 @@ export default function Step9(props) {
     setIsOpen(true);
   }
 
-
-
   function closeModal() {
     setIsOpen(false);
+  }
+  function openModal2() {
+    setIsOpen2(true);
+  }
+
+  function closeModal2() {
+    setIsOpen2(false);
   }
   return (
     <Content>
@@ -203,7 +210,14 @@ export default function Step9(props) {
           <p>Valores típicos de k₂ (base e, 20°C)</p>
           <Table table={table} />
           <h5>Fonte: Von Sperling (2014)</h5>
+        </Modal>
 
+        <HelpModal title="Clique para auxílio em θ" handle={openModal2} />
+        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em θ">
+          <p>
+            Valor usual de θ é de 1,047 (acréscimo de 4,7% em k₁ para cada aumento de 1 °C na temperatura da água).
+          </p>
+          <h5>Fonte: Von Sperling (2014)</h5>
         </Modal>
         ajuda 3</CardHelp>
     </Content>

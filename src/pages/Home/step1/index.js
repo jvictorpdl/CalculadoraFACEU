@@ -4,10 +4,122 @@ import ItemForm from "../../../components/ItemForm";
 import Modal from "../../../components/Modal";
 import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
+import Table from "../../../components/Table";
 
 export default function Step0(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
+  const [modalIsOpen3, setIsOpen3] = useState(false);
+  const tableDBOr = {
+    header: [
+      {
+        content: "Condição do rio"
+      },
+      {
+        content: 'DBO5 do rio (mg/L)',
+
+      }
+    ],
+    lines: [
+      [
+        {
+          content: 'Bastante limpo'
+        },
+        {
+          content: '1'
+        },
+      ],
+      [
+        {
+          content: 'Limpo'
+        },
+        {
+          content: '2'
+        },
+      ],
+      [
+        {
+          content: 'Razoalmente limpo'
+        },
+        {
+          content: '3'
+        },
+      ],
+      [
+        {
+          content: 'Duvidoso'
+        },
+        {
+          content: '5'
+        },
+      ],
+      [
+        {
+          content: 'Ruim'
+        },
+        {
+          content: '>10'
+        },
+
+      ],
+
+    ]
+  }
+  const tableOdmin = {
+    header: [
+      {
+        content: "Classe"
+      },
+      {
+        content: 'OD mínimo (mg/L)',
+
+      }
+    ],
+    lines: [
+      [
+        {
+          content: 'Especial'
+        },
+        {
+          content: 'Não são permitidos lançamentos, mesmo tratados.'
+        },
+      ],
+      [
+        {
+          content: '1'
+        },
+        {
+          content: '6,0'
+        },
+      ],
+      [
+        {
+          content: '2'
+        },
+        {
+          content: '5,0'
+        },
+      ],
+      [
+        {
+          content: '3'
+        },
+        {
+          content: '4,0'
+        },
+      ],
+      [
+        {
+          content: '4'
+        },
+        {
+          content: '2,0'
+        },
+
+      ],
+
+    ]
+  }
 
   function openModal() {
     setIsOpen(true);
@@ -22,6 +134,13 @@ export default function Step0(props) {
 
   function closeModal2() {
     setIsOpen2(false);
+  }
+  function openModal3() {
+    setIsOpen3(true);
+  }
+
+  function closeModal3() {
+    setIsOpen3(false);
   }
   return (
     <Content>
@@ -63,7 +182,7 @@ export default function Step0(props) {
       </CardInput>
       <CardHelp>
 
-        <HelpModal title="Clique aqui para auxilio em ODr" handle={openModal} />
+        <HelpModal title="Clique aqui para auxílio em ODr" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no Rio">
           <p>
             Não sendo possível coletar amostras, pode-se estimar a
@@ -82,11 +201,24 @@ export default function Step0(props) {
           <br />
           <h5>Fonte: Von Sperling (2014)</h5>
         </Modal>
+        <HelpModal title="Clique aqui para auxílio em DBOr" handle={openModal2} />
+        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em DBOr">
+          <h3>Caso nao possua, sugere-se o quadro abaixo.</h3>
+          <br />
+          <Table table={tableDBOr} />
+          <h5>Fonte: Von Sperling (2014)</h5>
 
-        {/* <button onClick={openModal}> botao</button>
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="segundo modal">
-          as8d4a8s4d8a4s8d4a8s4d8a4sd84as48
-        </Modal> */}
+        </Modal>
+        <HelpModal title="Clique aqui para auxílio em ODmin" handle={openModal3} />
+        <Modal modalIsOpen={modalIsOpen3} closeModal={closeModal3} title="Auxílio em ODmin">
+          <h3>Caso nao possua, sugere-se o quadro abaixo.</h3>
+          <br />
+          <Table table={tableOdmin} />
+          <h5>Fonte: Von Sperling (2014)</h5>
+
+        </Modal>
+
+
 
 
         ajuda 1</CardHelp>

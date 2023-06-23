@@ -8,7 +8,7 @@ export const Content = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  background: tomato;
+  /* background: tomato; */
   gap: 16px;
   padding: 16px;
   @media (min-width: 400px) {
