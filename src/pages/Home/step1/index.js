@@ -10,6 +10,8 @@ export default function Step0(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const [modalIsOpen3, setIsOpen3] = useState(false);
+
+  //tabelas
   const tableDBOr = {
     header: [
       {
@@ -121,6 +123,8 @@ export default function Step0(props) {
     ]
   }
 
+
+  //funções open Modal
   function openModal() {
     setIsOpen(true);
   }
@@ -142,6 +146,8 @@ export default function Step0(props) {
   function closeModal3() {
     setIsOpen3(false);
   }
+
+
   return (
     <Content>
       <CardInput>
@@ -174,10 +180,10 @@ export default function Step0(props) {
             setData={props.setData}
             data={props.data}
           />
-          {props.data.qr}
+          {/* {props.data.qr}
           {props.data.odr}
           {props.data.dbor}
-          {props.data.odmin}
+          {props.data.odmin} */}
         </Form>
       </CardInput>
       <CardHelp>

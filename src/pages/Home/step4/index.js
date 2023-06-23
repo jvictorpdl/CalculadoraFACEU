@@ -34,7 +34,6 @@ export default function Step4(props) {
           data={props.data}
         />
       </CardInput>
-      <CardHelp>ajuda 4</CardHelp>
     </Content>
   );
 }
