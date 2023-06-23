@@ -1,7 +1,5 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
-import ItemSelect from "../../../components/ItemSelect";
-import { Select } from "../../../components/Select";
 import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import { useState } from "react";
@@ -9,12 +7,13 @@ import Table from "../../../components/Table";
 import Modal from "../../../components/Modal";
 import HelpModal from "../../../components/HelpModal";
 
-const options = [
-  { value: "", label: "Selecione" },
-  { value: "1", label: "O'Connor Dobbins" },
-  { value: "2", label: "Churchill et al" },
-  { value: "3", label: "Owens et al" },
-];
+//iria ser usado para um Select
+// const options = [
+//   { value: "", label: "Selecione" },
+//   { value: "1", label: "O'Connor Dobbins" },
+//   { value: "2", label: "Churchill et al" },
+//   { value: "3", label: "Owens et al" },
+// ];
 
 
 export default function Step9(props) {

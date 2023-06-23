@@ -1,6 +1,6 @@
 import FormTwo from "../../../components/FormTwo";
 import ItemForm from "../../../components/ItemForm";
-import { CardInput, CardHelp, Content } from "../styleSteps";
+import { CardInput, Content } from "../styleSteps";
 import { Subtitle } from "../../../components/Subtitle/styles";
 
 export default function Step4(props) {
