@@ -4,6 +4,10 @@ import ItemSelect from "../../../components/ItemSelect";
 import { Select } from "../../../components/Select";
 import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
+import { useState } from "react";
+import Table from "../../../components/Table";
+import Modal from "../../../components/Modal";
+import HelpModal from "../../../components/HelpModal";
 
 const options = [
   { value: "", label: "Selecione" },
@@ -12,7 +16,113 @@ const options = [
   { value: "3", label: "Owens et al" },
 ];
 
+
 export default function Step9(props) {
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const table = {
+    header: [
+      {
+        rowspan: 2,
+        content: "Corpo d'água"
+      },
+      {
+        colspan: 2,
+        content: 'k',
+        sub: 2,
+        mid: '(dia',
+        up: '-1',
+        final: ')'
+      }
+    ],
+    lines: [
+      [
+        {
+          content: 'Profundo'
+        },
+        {
+          content: 'Raso'
+        },
+      ],
+      [
+        {
+          content: 'Pequenas lagoas'
+        },
+        {
+          content: '0,12'
+        },
+        {
+          content: '0,23'
+        },
+      ],
+      [
+        {
+          content: 'Rios vagarosos, grandes lagos'
+        },
+        {
+          content: '0,23'
+        },
+        {
+          content: '0,37'
+        }
+      ],
+      [
+        {
+          content: 'Grandes rios com baixa velocidade'
+        },
+        {
+          content: '0,37'
+        },
+        {
+          content: '0,46'
+        }
+      ],
+      [
+        {
+          content: 'Grandes rios com velocidade normal'
+        },
+        {
+          content: '0,46'
+        },
+        {
+          content: '0,69'
+        }
+      ],
+      [
+        {
+          content: 'Rios rápidos'
+        },
+        {
+          content: '0,69'
+        },
+        {
+          content: '1,15'
+        }
+      ],
+      [
+        {
+          content: 'Corredeiras e quedas d’água'
+        },
+        {
+          content: '> 1,15'
+        },
+        {
+          content: '1,61'
+        }
+      ],
+
+    ]
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+
+
+  function closeModal() {
+    setIsOpen(false);
+  }
   return (
     <Content>
       <CardInput>
@@ -87,7 +197,15 @@ export default function Step9(props) {
           data={props.data}
         />
       </CardInput>
-      <CardHelp>ajuda 3</CardHelp>
+      <CardHelp>
+        <HelpModal title="Clique aqui para auxilio em K2" handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ">
+          <p>Valores típicos de k₂ (base e, 20°C)</p>
+          <Table table={table} />
+          <h5>Fonte: Von Sperling (2014)</h5>
+
+        </Modal>
+        ajuda 3</CardHelp>
     </Content>
   );
 }

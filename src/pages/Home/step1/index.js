@@ -3,18 +3,25 @@ import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import Modal from "../../../components/Modal";
 import { useState } from "react";
+import HelpModal from "../../../components/HelpModal";
 
 export default function Step0(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen2, setIsOpen2] = useState(false);
 
   function openModal() {
     setIsOpen(true);
   }
 
-
-
   function closeModal() {
     setIsOpen(false);
+  }
+  function openModal2() {
+    setIsOpen2(true);
+  }
+
+  function closeModal2() {
+    setIsOpen2(false);
   }
   return (
     <Content>
@@ -55,7 +62,8 @@ export default function Step0(props) {
         </Form>
       </CardInput>
       <CardHelp>
-        <button onClick={openModal}> botao</button>
+
+        <HelpModal title="Clique aqui para auxilio em ODr" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no Rio">
           <p>
             Não sendo possível coletar amostras, pode-se estimar a
