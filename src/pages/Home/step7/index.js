@@ -60,7 +60,7 @@ export default function Step7(props) {
           <h5>Fonte: Von Sperling (2014)</h5>
 
         </Modal>
-        ajuda 2</CardHelp>
+        ajuda 7</CardHelp>
     </Content>
   );
 }
