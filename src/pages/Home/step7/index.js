@@ -50,8 +50,8 @@ export default function Step7(props) {
         />
       </CardInput>
       <CardHelp>
-        <HelpModal title="Clique para auxílio em θ" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ">
+        <HelpModal title="Clique para auxílio em DBOe" handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em DBOe">
           <h3>Caso nao possua o valor, sugere-se: </h3>
           <br />
 

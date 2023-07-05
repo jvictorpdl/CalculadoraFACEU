@@ -205,7 +205,7 @@ export default function Step9(props) {
       </CardInput>
       <CardHelp>
         <HelpModal title="Clique aqui para auxilio em K2" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ">
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em K2">
           <p>Valores típicos de k₂ (base e, 20°C)</p>
           <Table table={table} />
           <h5>Fonte: Von Sperling (2014)</h5>

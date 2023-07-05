@@ -7,8 +7,14 @@ export const Container = styled.section`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  /* background-color: #F4F7FE; */
 `;
+
+export const TitlePage = styled.div`
+  width: 100%;
+  padding-left: 135px;
+  margin-bottom: 10px;
+  text-align: start;
+`
 
 export const TitleCard = styled.h2`
   font-size: 15px;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, ButtonsSteps, Progress } from "./styles";
+import { Container, ButtonsSteps, Progress, TitlePage } from "./styles";
 import PageTemplate from "../PageTemplate";
 import Button from "../../components/Button";
 import Step1 from "./step1";
@@ -20,7 +20,7 @@ function Home() {
     odr: "7",
     dbor: "2",
     odmin: "5",
-    k120c: "0.38",
+    k120c: "",
     tetak1: "1.047",
     temperatura: "23",
     k1t: "0.44",
@@ -33,8 +33,8 @@ function Home() {
     velocidade: "0.35",
     particoes: "5",
     tempo: "1.65",
-    cs: "7.8",
-    cslinha: "",
+    cs: "",
+    cslinha: "7.8",
     qe: "0.114",
     ode: "0",
     dboe: "341",
@@ -52,12 +52,12 @@ function Home() {
     ct: "",
 
     ctvet: []
-    
+
   });
   // ctvet[]: React.useState([]),
   // useState: ({ctvet[]}),
   const [progressWidth, setProgressWidth] = useState(8);
-  
+
 
   const prev = () => {
     setProgressWidth(progressWidth - 9);
@@ -76,6 +76,9 @@ function Home() {
   return (
     <PageTemplate>
       <Container>
+        <TitlePage>
+          <h1>DepUFERSAaaaaa</h1>
+        </TitlePage>
         <Progress width={`${progressWidth}%`} />
         {step === 1 && <Step1 data={data} setData={setData} />}
         {step === 2 && <Step2 data={data} setData={setData} />}
@@ -87,7 +90,7 @@ function Home() {
         {step === 8 && <Step8 data={data} setData={setData} />}
         {step === 9 && <Result data={data} />}
         {step === 10 && <Step10 data={data} setData={setData} />}
-        
+
         <ButtonsSteps>
           {step > 1 && step < 9 && (
             <div onClick={() => prev()}>

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Header () {
-  return <h1>DepUFERSA</h1>;
+export default function Header() {
+  return <h1></h1>;
 }
 
