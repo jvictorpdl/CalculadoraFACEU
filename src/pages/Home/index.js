@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, ButtonsSteps, Progress, TitlePage } from "./styles";
+import { Container, ButtonsSteps, ButtonsStepOne, Progress, TitlePage } from "./styles";
 import PageTemplate from "../PageTemplate";
 import Button from "../../components/Button";
 import Step1 from "./step1";
@@ -26,7 +26,7 @@ function Home() {
     k1t: "0.44",
     volume: "0.35",
     tetak2: "1.024",
-    h: "1000", //altitude
+    h: "0.80", //altitude
     k220c: "3.08",
     k2t: "", //3.31
     distancia: "50000",
@@ -77,7 +77,7 @@ function Home() {
     <PageTemplate>
       <Container>
         <TitlePage>
-          <h1>DepUFERSAaaaaa</h1>
+          <h1>DepUFERSA</h1>
         </TitlePage>
         <Progress width={`${progressWidth}%`} />
         {step === 1 && <Step1 data={data} setData={setData} />}
@@ -91,13 +91,20 @@ function Home() {
         {step === 9 && <Result data={data} />}
         {step === 10 && <Step10 data={data} setData={setData} />}
 
+        <ButtonsStepOne>
+        {step == 1 && (
+            <div onClick={() => next()}>
+              <Button color= "primary" text="Próximo" />
+            </div>
+          )}
+        </ButtonsStepOne>
         <ButtonsSteps>
           {step > 1 && step < 9 && (
             <div onClick={() => prev()}>
               <Button text="Voltar" />
             </div>
           )}
-          {step < 8 && (
+          {step < 8 && step > 1 &&(
             <div onClick={() => next()}>
               <Button color="primary" text="Próximo" />
             </div>

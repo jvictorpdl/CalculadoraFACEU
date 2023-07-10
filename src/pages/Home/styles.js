@@ -35,3 +35,10 @@ export const ButtonsSteps = styled.div`
   display: flex;
   column-gap: 20px;
 `
+export const ButtonsStepOne = styled.div`
+  width: 100vw;
+  margin-top: 10px;
+  padding-left: 66.5%;
+  display: flex;
+  column-gap: 22px;
+`

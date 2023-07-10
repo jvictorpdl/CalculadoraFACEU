@@ -15,9 +15,7 @@ import HelpModal from "../../../components/HelpModal";
 //   { value: "3", label: "Owens et al" },
 // ];
 
-
 export default function Step9(props) {
-
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
 
@@ -25,95 +23,94 @@ export default function Step9(props) {
     header: [
       {
         rowspan: 2,
-        content: "Corpo d'água"
+        content: "Corpo d'água",
       },
       {
         colspan: 2,
-        content: 'k',
+        content: "k",
         sub: 2,
-        mid: '(dia',
-        up: '-1',
-        final: ')'
-      }
+        mid: "(dia",
+        up: "-1",
+        final: ")",
+      },
     ],
     lines: [
       [
         {
-          content: 'Profundo'
+          content: "Profundo",
         },
         {
-          content: 'Raso'
-        },
-      ],
-      [
-        {
-          content: 'Pequenas lagoas'
-        },
-        {
-          content: '0,12'
-        },
-        {
-          content: '0,23'
+          content: "Raso",
         },
       ],
       [
         {
-          content: 'Rios vagarosos, grandes lagos'
+          content: "Pequenas lagoas",
         },
         {
-          content: '0,23'
+          content: "0,12",
         },
         {
-          content: '0,37'
-        }
+          content: "0,23",
+        },
       ],
       [
         {
-          content: 'Grandes rios com baixa velocidade'
+          content: "Rios vagarosos, grandes lagos",
         },
         {
-          content: '0,37'
+          content: "0,23",
         },
         {
-          content: '0,46'
-        }
+          content: "0,37",
+        },
       ],
       [
         {
-          content: 'Grandes rios com velocidade normal'
+          content: "Grandes rios com baixa velocidade",
         },
         {
-          content: '0,46'
+          content: "0,37",
         },
         {
-          content: '0,69'
-        }
+          content: "0,46",
+        },
       ],
       [
         {
-          content: 'Rios rápidos'
+          content: "Grandes rios com velocidade normal",
         },
         {
-          content: '0,69'
+          content: "0,46",
         },
         {
-          content: '1,15'
-        }
+          content: "0,69",
+        },
       ],
       [
         {
-          content: 'Corredeiras e quedas d’água'
+          content: "Rios rápidos",
         },
         {
-          content: '> 1,15'
+          content: "0,69",
         },
         {
-          content: '1,61'
-        }
+          content: "1,15",
+        },
       ],
-
-    ]
-  }
+      [
+        {
+          content: "Corredeiras e quedas d’água",
+        },
+        {
+          content: "> 1,15",
+        },
+        {
+          content: "1,61",
+        },
+      ],
+    ],
+  };
 
   function openModal() {
     setIsOpen(true);
@@ -134,7 +131,7 @@ export default function Step9(props) {
       <CardInput>
         <Form>
           <ItemForm
-            title="V"
+            title="v"
             unity="m/s"
             locale="volume"
             setData={props.setData}
@@ -150,6 +147,7 @@ export default function Step9(props) {
           <ItemForm
             title="T"
             value="valor"
+            unity={props.data.temperatura + " °C"}
             disabled={true}
             locale="temperatura"
             setData={props.setData}
@@ -182,10 +180,12 @@ export default function Step9(props) {
             setData={props.setData}
             data={props.data}
           />
+
           <ItemForm
             title="T"
             value="valor"
             disabled={true}
+            unity={props.data.temperatura + " °C"}
             locale="temperatura"
             setData={props.setData}
             data={props.data}
@@ -205,20 +205,29 @@ export default function Step9(props) {
       </CardInput>
       <CardHelp>
         <HelpModal title="Clique aqui para auxilio em K2" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em K2">
+        <Modal
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          title="Auxílio em K2"
+        >
           <p>Valores típicos de k₂ (base e, 20°C)</p>
           <Table table={table} />
           <h5>Fonte: Von Sperling (2014)</h5>
         </Modal>
-
         <HelpModal title="Clique para auxílio em θ" handle={openModal2} />
-        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em θ">
+        <Modal
+          modalIsOpen={modalIsOpen2}
+          closeModal={closeModal2}
+          title="Auxílio em θ"
+        >
           <p>
-            Valor usual de θ é de 1,047 (acréscimo de 4,7% em k₁ para cada aumento de 1 °C na temperatura da água).
+            Valor usual de θ é de 1,047 (acréscimo de 4,7% em k₁ para cada
+            aumento de 1 °C na temperatura da água).
           </p>
           <h5>Fonte: Von Sperling (2014)</h5>
         </Modal>
-        ajuda 3</CardHelp>
+        ajuda 3
+      </CardHelp>
     </Content>
   );
 }

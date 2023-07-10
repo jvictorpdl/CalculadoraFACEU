@@ -1,5 +1,3 @@
-
-
 export const Calculadora = (props) => {
   console.log("props", props);
   const entrada = {
@@ -37,36 +35,31 @@ export const Calculadora = (props) => {
     deficitc: 0,
     odc: 0,
     ct: 0,
-
-  }
-  const particoesVet = []
+  };
+  const particoesVet = [];
   const ctVet = [];
   const odminVet = [];
   const kmvet = [];
 
-
-
-
-
-
   if (entrada.k120c) {
     // console.log("k120c: ----------- ", entrada.k120c);
-    entrada.k1t = entrada.k120c * Math.pow(entrada.tetak1, entrada.temperatura - 20);
+    entrada.k1t =
+      entrada.k120c * Math.pow(entrada.tetak1, entrada.temperatura - 20);
     // entrada.k1t = Number(entrada.k1t).toFixed(2)
 
     // console.log("if k120c // k120c: ", entrada.k120c, "* tetak1: ", entrada.tetak1, "^ temperatura: ", entrada.temperatura,"-20", "potencia: ", Number(Math.pow(entrada.tetak1, entrada.temperatura - 20).toFixed(2)));
     // console.log("k1t: ", entrada.k1t);
     //  k120x:  0.38 * tetak1:  1.047 ^ temperatura:  23 -20 potencia:  1.1477308229999998
-    // exemplo do pdf: k120c: 0.38 // tetak1: 1.047 // temperatura: 23 // 
+    // exemplo do pdf: k120c: 0.38 // tetak1: 1.047 // temperatura: 23 //
   }
 
   if (entrada.k2t) {
   } else if (entrada.k220c) {
-    entrada.k2t = entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
+    entrada.k2t =
+      entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
 
     // console.log("k2t: ", entrada.k2t);
-    // console.log("k2t = k220c: ",entrada.k220c, "* tetak1 ^ temperatura - 20: ", Math.pow(entrada.tetak2, entrada.temperatura - 20));  
-
+    // console.log("k2t = k220c: ",entrada.k220c, "* tetak1 ^ temperatura - 20: ", Math.pow(entrada.tetak2, entrada.temperatura - 20));
   } else if (entrada.volume) {
     if (
       entrada.h <= 4 &&
@@ -75,8 +68,8 @@ export const Calculadora = (props) => {
       entrada.volume < 0.8
     ) {
       //formula O'Connor e Dobbins
-      entrada.k2t = 3.73 * Math.pow(entrada.tetak2, 0.5) * Math.pow(entrada.h, -1.5);
-
+      entrada.k2t =
+        3.73 * Math.pow(entrada.tetak2, 0.5) * Math.pow(entrada.h, -1.5);
     } else if (
       entrada.h <= 4 &&
       entrada.h >= 0.6 &&
@@ -84,7 +77,8 @@ export const Calculadora = (props) => {
       entrada.volume < 1.5
     ) {
       //formula Churchill et al
-      entrada.k2t = 5 * Math.pow(entrada.volume, 0.97) * Math.pow(entrada.h, 1.67);
+      entrada.k2t =
+        5 * Math.pow(entrada.volume, 0.97) * Math.pow(entrada.h, 1.67);
     } else if (
       entrada.h >= 0.1 &&
       entrada.h <= 0.6 &&
@@ -92,11 +86,11 @@ export const Calculadora = (props) => {
       entrada.volume < 1.5
     ) {
       //formula Owens et al
-      entrada.k2t = 5.3 * Math.pow(entrada.volume, 0.67) * Math.pow(entrada.h, -1.85);
+      entrada.k2t =
+        5.3 * Math.pow(entrada.volume, 0.67) * Math.pow(entrada.h, -1.85);
     }
   }
   // entrada.k2t = Number(entrada.k2t).toFixed(2)
-
 
   if (entrada.t) {
   } else {
@@ -110,10 +104,9 @@ export const Calculadora = (props) => {
       4.1022 * Math.pow(10, -1) * entrada.temperatura +
       7.991 * Math.pow(10, -3) * Math.pow(entrada.temperatura, 2) -
       7.7774 * Math.pow(10, -5) * Math.pow(entrada.temperatura, 3);
-    entrada.cslinha = entrada.cs * (1 - (entrada.h / 9450));
+    entrada.cslinha = entrada.cs * (1 - entrada.h / 9450);
   }
   // entrada.cslinha = Number(entrada.cslinha).toFixed(2)
-
 
   if (entrada.e) {
     entrada.dboefl = (1 - entrada.e / 100) * entrada.dboe;
@@ -124,7 +117,8 @@ export const Calculadora = (props) => {
   //DADOS DE SAÍDA
 
   entrada.co =
-    (entrada.qr * entrada.odr + entrada.qe * entrada.ode) / (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
+    (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
+    (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
   // console.log("co: ", entrada.co);
 
   // entrada.co = Number(entrada.co).toFixed(2)
@@ -132,14 +126,15 @@ export const Calculadora = (props) => {
   entrada.do = entrada.cslinha - entrada.co;
   // entrada.do = Number(entrada.do).toFixed(2)
 
-
   {
     //Concentração de DBO ultima mistura (Lo)
     if (entrada.dboefl) {
       entrada.dbo5 =
-        (entrada.qr * entrada.dbor + entrada.qe * entrada.dboefl) / (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
+        (entrada.qr * entrada.dbor + entrada.qe * entrada.dboefl) /
+        (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
       // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%% dbo5", entrada.dbo5 );
-      entrada.kt = 1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
+      entrada.kt =
+        1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
       // entrada.kt = Number(entrada.kt).toFixed(2)
 
       // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!k1t: ", entrada.k1t, "k120c", entrada.k120c, "&&&&&&&&&&&&&&&&&&&& kt: ", entrada.kt);
@@ -148,27 +143,34 @@ export const Calculadora = (props) => {
 
       entrada.lo = entrada.dbo5 * entrada.kt;
 
-      console.log("dbo5\tkt______________________________\n", entrada.dbo5, "\t", entrada.kt);
+      console.log(
+        "dbo5\tkt______________________________\n",
+        entrada.dbo5,
+        "\t",
+        entrada.kt
+      );
       console.log("L0______________________________", entrada.lo);
       // entrada.lo = Number(entrada.lo).toFixed(2)
-
-
     } else {
       entrada.dbo5 =
-        (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) / (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
+        (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) /
+        (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
       // entrada.dbo5 = Number(entrada.dbo5).toFixed(2)
 
-      entrada.kt = 1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
+      entrada.kt =
+        1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
       // entrada.kt = Number(entrada.kt).toFixed(2)
 
-
       entrada.lo = entrada.dbo5 * entrada.kt;
-      console.log("dbo5\tkt______________________________2\n", entrada.dbo5, "\t", entrada.kt);
+      console.log(
+        "dbo5\tkt______________________________2\n",
+        entrada.dbo5,
+        "\t",
+        entrada.kt
+      );
       console.log("L0______________________________2", entrada.lo);
 
       // entrada.lo = Number(entrada.lo).toFixed(2)
-
-
     }
   }
 
@@ -183,7 +185,9 @@ export const Calculadora = (props) => {
     (1 / (entrada.k2t - entrada.k1t)) *
     Math.log(
       (entrada.k2t / entrada.k1t) *
-      (1 - ((entrada.do * (entrada.k2t - entrada.k1t)) / entrada.lo) * entrada.k1t)
+        (1 -
+          ((entrada.do * (entrada.k2t - entrada.k1t)) / entrada.lo) *
+            entrada.k1t)
     );
   // entrada.tc = Number(entrada.tc).toFixed(2)
 
@@ -194,11 +198,13 @@ export const Calculadora = (props) => {
   entrada.dc = entrada.tc * entrada.velocidade * 86400;
   // entrada.dc = Number(entrada.dc).toFixed(2)
 
-
   {
     //ODC
+    //deficitc = defice crítico
     entrada.deficitc =
-      (entrada.k1t / entrada.k2t) * entrada.lo * Math.pow(2.7182818285, (- entrada.k1t * entrada.tc));
+      (entrada.k1t / entrada.k2t) *
+      entrada.lo *
+      Math.pow(2.7182818285, -entrada.k1t * entrada.tc);
     // entrada.deficitc = Number(entrada.deficitc).toFixed(2)
 
     // console.log("k1t:", entrada.k1t, "/ k2t: ", entrada.k2t, "* lo: ", entrada.lo, "* 2.7182^(k1t * tc)", Math.pow(2.7182818285, (- entrada.k1t * entrada.tc))  );
@@ -207,7 +213,6 @@ export const Calculadora = (props) => {
 
     entrada.odc = entrada.cslinha - entrada.deficitc; //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
     // entrada.odc = Number(entrada.odc).toFixed(2)
-
   }
 
   //     entrada.ct =
@@ -217,31 +222,30 @@ export const Calculadora = (props) => {
   //     Math.pow(2.7182818285, -entrada.k2t * entrada.tempo)) +
   //     (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * entrada.tempo));
 
-
-
   // console.log("ct antes do for: ", entrada.ct);
   for (let i = 0; i <= entrada.particoes; i++) {
     particoesVet.push(i);
-    odminVet.push(entrada.odmin)
+    odminVet.push(entrada.odmin);
 
-    let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
+    let tempop =
+      ((entrada.distancia / entrada.particoes) * i) /
+      (entrada.velocidade * 86400);
     if (tempop === 0) {
       console.log("tempo1 tempo1 tempo1 tempo1 tempo1", tempop);
       entrada.ct = entrada.co;
       // entrada.ct = Number(entrada.ct).toFixed(1)
 
-
       // console.log("ct caso tempop=0: ", entrada.ct);
     } else {
       console.log("tempo tempo tempo tempo:", i, tempop);
-
+      //=$N$4-((($N$2*$B$14)/($N$3-$N$2))*(EXP(-$N$2*B25)-EXP(-$N$3*B25))+($N$4-$B$8)*EXP(-$N$3*B25))
       entrada.ct =
         entrada.cslinha -
-        (entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t) *
-        (Math.pow(2.7182818285, -entrada.k1t * tempop) -
-          Math.pow(2.7182818285, -entrada.k2t * tempop)) +
-        (entrada.cslinha - entrada.co) * Math.pow(2.7182818285, (-entrada.k2t * tempop));
-
+        (((entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t)) *
+          (Math.pow(2.7182818285, -entrada.k1t * tempop) -
+            Math.pow(2.7182818285, -entrada.k2t * tempop)) +
+          (entrada.cslinha - entrada.co) *
+            Math.pow(2.7182818285, -entrada.k2t * tempop));
 
       console.log("tempo dois: ", tempop);
       console.log("cslinha: ", entrada.cslinha);
@@ -254,16 +258,13 @@ export const Calculadora = (props) => {
       // console.log("C0: ", entrada.co);
       // console.log("Cslinha: ", entrada.cslinha);
 
-
       // console.log("----------------------------");
       // console.log("ct outros casos: ", entrada.ct, "tempop: ", tempop, "i: ", i);
-
     }
 
     let aux = entrada.distancia / entrada.particoes;
     kmvet.push((aux * i) / 1000);
     ctVet.push(entrada.ct);
-
 
     // console.log("isto é o vetor distancia *****************************", kmvet);
     // if (entrada.ct < entrada.odmin){
@@ -274,15 +275,16 @@ export const Calculadora = (props) => {
 
     // }
     // ctvet[i] = entrada.ct
-
   }
   const resultado = {
-    ctVet, odminVet, particoesVet, kmvet
-
-  }
+    ctVet,
+    odminVet,
+    particoesVet,
+    kmvet,
+  };
   console.log("fim: ", ctVet);
   console.log("VARIAVEIS AO FIM!!!!!!!!", entrada);
-  return resultado
+  return resultado;
 };
 /*
 Saída
