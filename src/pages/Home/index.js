@@ -10,7 +10,9 @@ import Step5 from "./step5";
 import Step6 from "./step6";
 import Step7 from "./step7";
 import Step8 from "./step8";
+import Step9 from "./step9";
 import Step10 from "./step10";
+import Step11 from "./step11";
 import Result from "../Result";
 
 function Home() {
@@ -50,7 +52,8 @@ function Home() {
     odc: "",
     ct: "",
 
-    ctvet: []
+    ctvet: [],
+    lancamentos: [],
 
   });
   // ctvet[]: React.useState([]),
@@ -87,43 +90,44 @@ function Home() {
         {step === 6 && <Step6 data={data} setData={setData} />}
         {step === 7 && <Step7 data={data} setData={setData} />}
         {step === 8 && <Step8 data={data} setData={setData} />}
-        {step === 9 && <Result data={data} />}
-        {step === 10 && <Step10 data={data} setData={setData} />}
+        {step === 9 && <Step9 data={data} setData={setData} />}
+        {step === 10 && <Result data={data} />}
+        {step === 11 && <Step11 data={data} setData={setData} />}
 
         <ButtonsStepOne>
-        {step == 1 && (
-            <div onClick={() => next()}>
-              <Button color= "primary" text="Próximo" />
-            </div>
-          )}
-        </ButtonsStepOne>
-        <ButtonsSteps>
-          {step > 1 && step < 9 && (
-            <div onClick={() => prev()}>
-              <Button text="Voltar" />
-            </div>
-          )}
-          {step < 8 && step > 1 &&(
+          {step == 1 && (
             <div onClick={() => next()}>
               <Button color="primary" text="Próximo" />
             </div>
           )}
-          {step === 8 && (
+        </ButtonsStepOne>
+        <ButtonsSteps>
+          {step > 1 && step < 10 && (
+            <div onClick={() => prev()}>
+              <Button text="Voltar" />
+            </div>
+          )}
+          {step < 9 && step > 1 && (
+            <div onClick={() => next()}>
+              <Button color="primary" text="Próximo" />
+            </div>
+          )}
+          {step === 9 && (
             <div onClick={() => next()}>
               <Button color="primary" text="Finalizar" />
             </div>
           )}
-          {step === 9 && (
+          {step === 10 && (
             <div onClick={() => resetStep()}>
               <Button text="Calcular novamente" />
             </div>
           )}
-          {step === 9 && (
+          {step === 10 && (
             <div onClick={() => next()}>
               <Button color="primary" text="Simular novamente" />
             </div>
           )}
-          {step === 10 && (
+          {step === 11 && (
             <div onClick={() => prev()}>
               <Button color="primary" text="Simular" />
             </div>

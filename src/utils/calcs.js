@@ -1,5 +1,4 @@
 export const Calculadora = (props) => {
-  console.log("props", props);
   const entrada = {
     qr: Number(props.qr),
     odr: Number(props.odr),
@@ -34,11 +33,13 @@ export const Calculadora = (props) => {
     deficitc: 0,
     odc: 0,
     ct: 0,
+    lancamentos: props.lancamentos,
   };
   const particoesVet = [];
   const ctVet = [];
   const odminVet = [];
   const kmvet = [];
+  console.log("props", entrada);
 
   if (entrada.k120c) {
     // console.log("k120c: ----------- ", entrada.k120c);
@@ -114,11 +115,26 @@ export const Calculadora = (props) => {
   // entrada.dboefl = Number(entrada.dboefl).toFixed(2)
 
   //DADOS DE SAÍDA
+  //adicionar comentario
+  if (entrada.lancamentos.length) {
+    let qeXode = 0, qe_qe = 0;
 
-  entrada.co =
-    (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
-    (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
-  // console.log("co: ", entrada.co);
+    entrada.lancamentos.map(lancamento => {
+      qeXode += lancamento.qe * lancamento.ode;
+      qe_qe += lancamento.qe;
+
+    })
+
+    entrada.co =
+      (entrada.qr * entrada.odr + entrada.qe * entrada.ode + qeXode) /
+      (entrada.qr + entrada.qe + qe_qe);
+  } else {
+    entrada.co =
+      (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
+      (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
+    // console.log("co: ", entrada.co);
+
+  }
 
   // entrada.co = Number(entrada.co).toFixed(2)
 
@@ -184,9 +200,9 @@ export const Calculadora = (props) => {
     (1 / (entrada.k2t - entrada.k1t)) *
     Math.log(
       (entrada.k2t / entrada.k1t) *
-        (1 -
-          ((entrada.do * (entrada.k2t - entrada.k1t)) / entrada.lo) *
-            entrada.k1t)
+      (1 -
+        ((entrada.do * (entrada.k2t - entrada.k1t)) / entrada.lo) *
+        entrada.k1t)
     );
   // entrada.tc = Number(entrada.tc).toFixed(2)
 
@@ -244,7 +260,7 @@ export const Calculadora = (props) => {
           (Math.pow(2.7182818285, -entrada.k1t * tempop) -
             Math.pow(2.7182818285, -entrada.k2t * tempop)) +
           (entrada.cslinha - entrada.co) *
-            Math.pow(2.7182818285, -entrada.k2t * tempop));
+          Math.pow(2.7182818285, -entrada.k2t * tempop));
 
       console.log("tempo dois: ", tempop);
       console.log("cslinha: ", entrada.cslinha);

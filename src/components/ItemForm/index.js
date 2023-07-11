@@ -18,8 +18,10 @@ export default function ItemForm(props) {
       <Input
         disabled={props.disabled}
         placeholder={props.unity}
-        onChange={(evento) =>
-          updateData({ [`${locale}`]: evento.target.value })
+        value={props.value ? props.value : props.data[props.locale]}
+        onChange={props.handle ?
+          (evento => props.handle(evento.target.value)) :
+          ((evento) => updateData({ [`${locale}`]: evento.target.value }))
         }
       />
     </Container>
