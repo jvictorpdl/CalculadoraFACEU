@@ -117,6 +117,8 @@ export default function Step2(props) {
         <ItemForm
           title="k1"
           sub="T"
+          unity= "1/d"
+
           locale="k1t"
           setData={props.setData}
           data={props.data}

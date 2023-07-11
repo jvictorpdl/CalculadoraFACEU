@@ -24,11 +24,10 @@ function Home() {
     tetak1: "1.047",
     temperatura: "23",
     k1t: "0.44",
-    volume: "0.35",
     tetak2: "1.024",
-    h: "0.80", //altitude
+    h: "0.80", //profundidade
     k220c: "3.08",
-    k2t: "", //3.31
+    k2t: "3.31", //3.31
     distancia: "50000",
     velocidade: "0.35",
     particoes: "5",

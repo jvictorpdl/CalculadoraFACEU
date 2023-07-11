@@ -9,7 +9,6 @@ export const Calculadora = (props) => {
     tetak1: Number(props.tetak1),
     temperatura: Number(props.temperatura),
     k1t: Number(props.k1t),
-    volume: Number(props.volume),
     tetak2: Number(props.tetak2),
     h: Number(props.h), //altitude
     k220c: Number(props.k220c),
@@ -25,7 +24,7 @@ export const Calculadora = (props) => {
     dboe: Number(props.dboe),
     dboefl: Number(props.dboefl),
     e: Number(props.e),
-    //saída
+    //saída//
     co: 0,
     do: 0,
     dbo5: 0,
@@ -60,12 +59,12 @@ export const Calculadora = (props) => {
 
     // console.log("k2t: ", entrada.k2t);
     // console.log("k2t = k220c: ",entrada.k220c, "* tetak1 ^ temperatura - 20: ", Math.pow(entrada.tetak2, entrada.temperatura - 20));
-  } else if (entrada.volume) {
+  } else if (entrada.velocidade) {
     if (
       entrada.h <= 4 &&
       entrada.h >= 0.6 &&
-      0.05 <= entrada.volume &&
-      entrada.volume < 0.8
+      0.05 <= entrada.velocidade &&
+      entrada.velocidade < 0.8
     ) {
       //formula O'Connor e Dobbins
       entrada.k2t =
@@ -73,21 +72,21 @@ export const Calculadora = (props) => {
     } else if (
       entrada.h <= 4 &&
       entrada.h >= 0.6 &&
-      0.8 <= entrada.volume &&
-      entrada.volume < 1.5
+      0.8 <= entrada.velocidade &&
+      entrada.velocidade < 1.5
     ) {
       //formula Churchill et al
       entrada.k2t =
-        5 * Math.pow(entrada.volume, 0.97) * Math.pow(entrada.h, 1.67);
+        5 * Math.pow(entrada.velocidade, 0.97) * Math.pow(entrada.h, 1.67);
     } else if (
       entrada.h >= 0.1 &&
       entrada.h <= 0.6 &&
-      0.5 <= entrada.volume &&
-      entrada.volume < 1.5
+      0.5 <= entrada.velocidade &&
+      entrada.velocidade < 1.5
     ) {
       //formula Owens et al
       entrada.k2t =
-        5.3 * Math.pow(entrada.volume, 0.67) * Math.pow(entrada.h, -1.85);
+        5.3 * Math.pow(entrada.velocidade, 0.67) * Math.pow(entrada.h, -1.85);
     }
   }
   // entrada.k2t = Number(entrada.k2t).toFixed(2)
