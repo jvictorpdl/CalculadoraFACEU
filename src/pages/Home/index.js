@@ -11,9 +11,8 @@ import Step6 from "./step6";
 import Step7 from "./step7";
 import Step8 from "./step8";
 import Step9 from "./step9";
-import Step10 from "./step10";
-import Step11 from "./step11";
 import Result from "../Result";
+import Step11 from "./step10";
 
 function Home() {
   const [step, setStep] = useState(1);
@@ -24,7 +23,7 @@ function Home() {
     odmin: "5",
     k120c: "",
     tetak1: "1.047",
-    temperatura: "23",
+    temperatura: "23", 
     k1t: "0.44",
     tetak2: "1.024",
     h: "0.80", //profundidade
