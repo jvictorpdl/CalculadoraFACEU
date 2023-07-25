@@ -1,5 +1,6 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
+import Title from "../../../components/Title";
 import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import { useState } from "react";
@@ -15,7 +16,7 @@ import HelpModal from "../../../components/HelpModal";
 //   { value: "3", label: "Owens et al" },
 // ];
 
-export default function Step9(props) {
+export default function Step3(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
 
@@ -129,7 +130,10 @@ export default function Step9(props) {
   return (
     <Content>
       <CardInput>
+      <Title title="Dados morfométricos e ambientais"/>
+
         <Form>
+
           <ItemForm
             title="v"
             unity="m/s"
@@ -204,11 +208,11 @@ export default function Step9(props) {
         />
       </CardInput>
       <CardHelp>
-        <HelpModal title="Clique aqui para auxilio em K2" handle={openModal} />
+        <HelpModal title="Clique aqui para auxílio em K2" handle={openModal} />
         <Modal
           modalIsOpen={modalIsOpen}
           closeModal={closeModal}
-          title="Auxílio em K2"
+          title="Auxílio no coeficiente de reaeração (k2)"
         >
           <p>Valores típicos de k₂ (base e, 20°C)</p>
           <Table table={table} />

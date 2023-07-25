@@ -2,7 +2,7 @@ import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import { CardInput, CardHelp, Content } from "../styleSteps";
 
-export default function Step7(props) {
+export default function Step8(props) {
   console.log(props.data);
   function calculalancamentos() {
 

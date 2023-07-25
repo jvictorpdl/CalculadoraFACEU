@@ -1,6 +1,7 @@
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
+import Title from "../../../components/Title"
 import { Subtitle } from "../../../components/Subtitle/styles";
 import Modal from "../../../components/Modal";
 import React from "react";
@@ -20,8 +21,10 @@ export default function Step2(props) {
       {
         content: 'k',
         sub: 1,
-        mid: 'd',
+        mid: '(d',
         up: '-1',
+        final: ')',
+
       }
     ],
     lines: [
@@ -88,6 +91,7 @@ export default function Step2(props) {
   return (
     <Content>
       <CardInput>
+      <Title title="Dados morfométricos e ambientais"/>
         <Form>
           <ItemForm
             title="k1(20ºC)"
@@ -125,8 +129,10 @@ export default function Step2(props) {
         />
       </CardInput>
       <CardHelp>
+      <Title title="Informações Auxiliares"/>
+          <br/>
         <HelpModal title="Clique para auxílio em K1" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em K1">
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (k1)">
           <div>
 
             <p>Valores típicos de k1 (base e, 20°C)</p>

@@ -51,7 +51,7 @@ export default function Step7(props) {
       </CardInput>
       <CardHelp>
         <HelpModal title="Clique para auxílio em DBOe" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em DBOe">
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição da demando bioquímica do esgoto (DBOe)">
           <h3>Caso nao possua o valor, sugere-se: </h3>
           <br />
 

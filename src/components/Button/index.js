@@ -3,10 +3,10 @@ import { ButtonPrimary, ButtonSecondary } from "./styles";
 
 function Button(props) {
   
-  if (props.color === 'primary') {
-    return <ButtonPrimary color='primary'>{props.text}</ButtonPrimary>;
+  if (props.color === 'primary')  {
+    return <ButtonPrimary onClick={() => props.handle()} color='primary'>{props.text}</ButtonPrimary>;
   } else {
-    return <ButtonSecondary color='secondary'>{props.text}</ButtonSecondary>;
+    return <ButtonSecondary onClick={() => props.handle()} color='secondary'>{props.text}</ButtonSecondary>;
   }
 }
 

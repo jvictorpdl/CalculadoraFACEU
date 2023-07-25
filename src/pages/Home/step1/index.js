@@ -1,12 +1,13 @@
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import Form from "../../../components/Form";
+import Title from "../../../components/Title"
 import ItemForm from "../../../components/ItemForm";
 import Modal from "../../../components/Modal";
 import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
 import Table from "../../../components/Table";
 
-export default function Step0(props) {
+export default function Step1(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const [modalIsOpen3, setIsOpen3] = useState(false);
@@ -151,6 +152,7 @@ export default function Step0(props) {
   return (
     <Content>
       <CardInput>
+        <Title title="Dados do Rio"/>
         <Form>
           <ItemForm
             title="Qr"
@@ -187,7 +189,8 @@ export default function Step0(props) {
         </Form>
       </CardInput>
       <CardHelp>
-
+        <Title title="Informações Auxiliares"/>
+          <br/>
         <HelpModal title="Clique aqui para auxílio em ODr" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no Rio">
           <p>
@@ -196,19 +199,17 @@ export default function Step0(props) {
             d’água:</p>
           <br />
           <li>
-            Curso d’água com poucos indicios de poluição
+            Curso d’água com poucos indicios de poluição: <br />
+            ODr pode ser de 80 a 90% do valor de saturação de oxigênio do rio;
           </li>
-          <li>
-            ODr pode ser de 80 a 90% do valor de saturação de oxigênio;
-          </li>
-          <li>
-            Curso d’água com poucos indicios de poluição
-          </li>
+          <li>Curso d'água bem poluído: <br />
+          Incluir os principais focos poluidores (ODr será bem inferior ao teor de saturação).</li>
+          
           <br />
           <h5>Fonte: Von Sperling (2014)</h5>
         </Modal>
         <HelpModal title="Clique aqui para auxílio em DBOr" handle={openModal2} />
-        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em DBOr">
+        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio na definição da Demanda Bioquímica de Oxigênio (DBO5)">
           <h3>Caso nao possua, sugere-se o quadro abaixo.</h3>
           <br />
           <Table table={tableDBOr} />
@@ -216,8 +217,8 @@ export default function Step0(props) {
 
         </Modal>
         <HelpModal title="Clique aqui para auxílio em ODmin" handle={openModal3} />
-        <Modal modalIsOpen={modalIsOpen3} closeModal={closeModal3} title="Auxílio em ODmin">
-          <h3>Caso nao possua, sugere-se o quadro abaixo.</h3>
+        <Modal modalIsOpen={modalIsOpen3} closeModal={closeModal3} title="Auxílio na definição do oxigênio dissolvido mínimo (ODmín)">
+          <h3>Caso não possua, sugere-se o quadro abaixo.</h3>
           <br />
           <Table table={tableOdmin} />
           <h5>Fonte: Von Sperling (2014)</h5>

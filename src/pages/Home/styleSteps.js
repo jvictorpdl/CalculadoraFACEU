@@ -33,6 +33,27 @@ export const CardInput = styled.section`
     /* margin: auto 2.5% auto auto; */
   }
 `;
+export const CardBoard = styled.section`
+display: inline-flex;
+height: 450px;
+width: 800px;
+padding: 12px 14.998px 504.473px 11.998px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 9.527px;
+flex-shrink: 0;
+box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.15);
+border-bottom: 2px solid #171717;
+border-radius: 4px;
+background: #FFF;
+padding: 32px;
+
+  
+
+
+`;
 export const CardHelp = styled.section`
   width: 100%;
   height: 200px;

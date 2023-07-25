@@ -1,13 +1,32 @@
 import FormTwo from "../../../components/FormTwo";
+import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
-import { CardInput, Content } from "../styleSteps";
+import Title from "../../../components/Title";
+import { CardInput, Content, CardHelp } from "../styleSteps";
+import Modal from "../../../components/Modal";
+import HelpModal from "../../../components/HelpModal";
+
+import { useState } from "react";
 import { Subtitle } from "../../../components/Subtitle/styles";
 
 export default function Step4(props) {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+
   return (
     <Content>
       <CardInput>
-        <FormTwo>
+        <Title title="Dados morfométricos e ambientais" />
+
+        <Form>
+
           <ItemForm
             title="d"
             unity="m"
@@ -22,18 +41,29 @@ export default function Step4(props) {
             setData={props.setData}
             data={props.data}
           />
-        </FormTwo>
+          <ItemForm
+            title="Partições"
+            unity="Quantidade"
+            locale="particoes"
+            setData={props.setData}
+            data={props.data}
+          />
 
-        <Subtitle>Ou</Subtitle>
+        </Form>
 
-        <ItemForm
-          title="t"
-          unity="d"
-          locale="tempo"
-          setData={props.setData}
-          data={props.data}
-        />
+
+
+
       </CardInput>
+      <CardHelp>
+        <Title title="Informações Auxiliares" />
+        <HelpModal title="Clique aqui para auxílio em p" handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Quantidade de partições do rio ">
+          <p>Variável criada apenas para o usuario definir em quantas partições deve ser repartido o curso d'água.</p>
+        
+        </Modal>
+
+      </CardHelp>
     </Content>
   );
 }
