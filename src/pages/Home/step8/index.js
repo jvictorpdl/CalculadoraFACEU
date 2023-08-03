@@ -13,7 +13,7 @@ export default function Step8(props) {
         <Form>
           <ItemForm
             title="Qr"
-            value="valor"
+            // value="valor"
             unity={props.data.qr + " m³/s"}
             disabled={true}
             locale="qr"
@@ -22,7 +22,7 @@ export default function Step8(props) {
           />
           <ItemForm
             title="ODr"
-            value="valor"
+            // value="valor"
             unity={props.data.odr + " mg/L"}
             disabled={true}
             locale="odr"
@@ -31,7 +31,7 @@ export default function Step8(props) {
           />
           <ItemForm
             title="DBOr"
-            value="valor"
+            // value="valor"
             unity={props.data.dbor + " mg/L"}
             disabled={true}
             locale="dbor"
@@ -40,7 +40,7 @@ export default function Step8(props) {
           />
           <ItemForm
             title="ODmin"
-            value="valor"
+            // value="valor"
             unity={props.data.odmin + " mg/L"}
             disabled={true}
             locale="odmin"

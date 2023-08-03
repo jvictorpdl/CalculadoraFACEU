@@ -160,6 +160,7 @@ export default function Step1(props) {
             locale="qr"
             setData={props.setData}
             data={props.data}
+            tooltip="testetestetesteh"
           />
           <ItemForm
             title="ODr"
@@ -167,6 +168,8 @@ export default function Step1(props) {
             locale="odr"
             setData={props.setData}
             data={props.data}
+            tooltip="teste"
+
           />
           <ItemForm
             title="DBOr"
@@ -174,6 +177,8 @@ export default function Step1(props) {
             locale="dbor"
             setData={props.setData}
             data={props.data}
+            tooltip="testeteste"
+
           />
           <ItemForm
             title="ODmin"
@@ -192,7 +197,7 @@ export default function Step1(props) {
         <Title title="Informações Auxiliares"/>
           <br/>
         <HelpModal title="Clique aqui para auxílio em ODr" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no Rio">
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no Rio" ariaHideApp={false}>
           <p>
             Não sendo possível coletar amostras, pode-se estimar a
             concentração de OD em função do grau de poluição do curso

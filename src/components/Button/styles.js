@@ -27,6 +27,13 @@ export const ButtonSecondary = styled.button`
   text-align: center;
   line-height: 30px;
 `;
+export const ButtonTertiary = styled.button`
+  width: 200px;
+  font-size: 20px;
+  padding: 5px 15px;
+  background-color: transparent;
+  border: 0px;
+`;
 
 /*export const ButtonPrimary = styled.button`
   .Button {

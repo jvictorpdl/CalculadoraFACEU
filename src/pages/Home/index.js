@@ -97,7 +97,11 @@ function Home() {
 
 
         <ButtonsSteps>
-          {/**botoes para voltar ao menu inicial do step 0 */}
+
+          {(step === 1 || step === 0 || step === 10) && (
+            <Button color="tertiary"  />
+            )}
+            {/**botoes para voltar ao menu inicial do step 0 */}
           {(step === 2 || step === 6) && (
             <Button text="Voltar" handle={() => { setStep(0); setRestartStep(true) }} />
           )}
@@ -131,9 +135,7 @@ function Home() {
             </div>
           )}
           {step === 6 && (
-            <div onClick={() => next()}>
-              <Button color="primary" text="Próximo" />
-            </div>
+              <Button color="primary" text="Próximo" handle={() => next()} /> //lembrar de colocar o handle em todos os botoes
           )}
           {step === 8 && (
             <div onClick={() => next()}>

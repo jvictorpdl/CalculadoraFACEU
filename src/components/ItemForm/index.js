@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "../Input";
-import { Container } from "./styles";
+import { Container, Label } from "./styles";
 
 export default function ItemForm(props) {
   const [locale, setLocale] = useState(props.locale);
@@ -11,10 +11,13 @@ export default function ItemForm(props) {
 
   return (
     <Container>
-      <label>
+      <Label>
+        <span className="tooltiptext">
+          {props.tooltip}
+        </span>
         {props.title}
         {props.sub && <sub>{props.sub}</sub>}
-      </label>
+      </Label>
       <Input
         disabled={props.disabled}
         placeholder={props.unity}
