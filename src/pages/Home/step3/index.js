@@ -140,22 +140,29 @@ export default function Step3(props) {
             locale="volume"
             setData={props.setData}
             data={props.data}
+            tooltip="Velocidade"
+
+
           />
           <ItemForm
-            title="θ"
+            title="θ para K2"
             unity="M/A"
             locale="tetak2"
             setData={props.setData}
             data={props.data}
+            tooltip="Coeficiente de temperatura"
+
+
           />
           <ItemForm
             title="T"
-            value="valor"
             unity={props.data.temperatura + " °C"}
-            disabled={true}
             locale="temperatura"
             setData={props.setData}
             data={props.data}
+            tooltip="Temperatura do líquido"
+
+
           />
           <ItemForm
             title="H"
@@ -163,6 +170,8 @@ export default function Step3(props) {
             locale="h"
             setData={props.setData}
             data={props.data}
+            tooltip="Profundidade"
+
           />
           {/*<ItemSelect options={options} required />*/}
         </Form>
@@ -176,13 +185,17 @@ export default function Step3(props) {
             locale="k220c"
             setData={props.setData}
             data={props.data}
+            tooltip="Coeficiente de reaeração(20ºC)"
+
           />
           <ItemForm
-            title="θ"
+            title="θ para K2"
             unity="M/A"
             locale="tetak2"
             setData={props.setData}
             data={props.data}
+            tooltip="Coeficiente de temperatura"
+
           />
 
           <ItemForm
@@ -193,6 +206,8 @@ export default function Step3(props) {
             locale="temperatura"
             setData={props.setData}
             data={props.data}
+            tooltip="Temperatura do líquido"
+
           />
         </Form>
 
@@ -205,6 +220,8 @@ export default function Step3(props) {
           locale="k2t"
           setData={props.setData}
           data={props.data}
+          tooltip="Coeficiente de reaeração a temperatura"
+
         />
       </CardInput>
       <CardHelp>

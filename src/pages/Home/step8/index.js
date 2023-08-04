@@ -13,7 +13,6 @@ export default function Step8(props) {
         <Form>
           <ItemForm
             title="Qr"
-            // value="valor"
             unity={props.data.qr + " m³/s"}
             disabled={true}
             locale="qr"

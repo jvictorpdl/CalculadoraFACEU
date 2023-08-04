@@ -99,13 +99,17 @@ export default function Step2(props) {
             locale="k120c"
             setData={props.setData}
             data={props.data}
+            tooltip="Coeficiente de desoxigenação(20ºC)"
+
           />
           <ItemForm
-            title="θ"
+            title="θ para k1"
             unity="M/A"
             locale="tetak1"
             setData={props.setData}
             data={props.data}
+            tooltip="Coeficiente de temperatura"
+
           />
           <ItemForm
             title="T"
@@ -113,6 +117,8 @@ export default function Step2(props) {
             locale="temperatura"
             setData={props.setData}
             data={props.data}
+            tooltip="Temperatura do líquido"
+
           />
         </Form>
 
@@ -122,10 +128,12 @@ export default function Step2(props) {
           title="k1"
           sub="T"
           unity= "1/d"
-
           locale="k1t"
           setData={props.setData}
           data={props.data}
+          tooltip="Coeficiente de desoxigenação a uma temperatura(T)"
+
+
         />
       </CardInput>
       <CardHelp>

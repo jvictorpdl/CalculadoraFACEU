@@ -5,6 +5,7 @@ import { Subtitle } from "../../../components/Subtitle/styles";
 import Modal from "../../../components/Modal";
 import HelpModal from "../../../components/HelpModal";
 import { useState } from "react";
+import Title from "../../../components/Title";
 
 export default function Step7(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -22,6 +23,8 @@ export default function Step7(props) {
   return (
     <Content>
       <CardInput>
+      <Title title="Dados do Esgoto"/>
+
         <FormTwo>
           <ItemForm
             title="E"
@@ -29,6 +32,7 @@ export default function Step7(props) {
             locale="e"
             setData={props.setData}
             data={props.data}
+            tooltip="Eficiência do tratamento na remoção de DBO"
           />
           <ItemForm
             title="DBOe"
@@ -36,6 +40,9 @@ export default function Step7(props) {
             locale="dboe"
             setData={props.setData}
             data={props.data}
+            tooltip="Demanda bioquímica de oxigênio"
+
+
           />
         </FormTwo>
 
@@ -47,6 +54,8 @@ export default function Step7(props) {
           locale="dboefl"
           setData={props.setData}
           data={props.data}
+          tooltip="DBO do efluente tratado"
+
         />
       </CardInput>
       <CardHelp>

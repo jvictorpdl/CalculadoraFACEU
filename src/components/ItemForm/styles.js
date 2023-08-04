@@ -13,8 +13,9 @@ export const Container = styled.div`
   }
 `;
 export const Label = styled.label`
-position: relative;
+    position: relative;
     display: inline-block;
+    
 .tooltiptext {
   visibility: hidden;
   width: auto;
@@ -27,7 +28,7 @@ position: relative;
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  /* margin-left: 40%; */
+  margin-left: 40%;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -37,7 +38,7 @@ position: relative;
   position: absolute;
   top: 100%;
   left: 50%;
-  /* margin-left: 10%; */
+  margin-left: 10%;
   border-width: 5px;
   border-style: solid;
   border-color: #1A237A transparent transparent transparent;

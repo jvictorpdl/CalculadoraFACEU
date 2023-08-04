@@ -18,13 +18,16 @@ export default function Step5(props) {
             locale="temperatura"
             setData={props.setData}
             data={props.data}
+            tooltip="Temperatura"
+
           />
           <ItemForm
-            title="H"
+            title="h"
             unity="m"
             locale="h"
             setData={props.setData}
             data={props.data}
+            tooltip="Altitude"
           />
         </FormTwo>
 
@@ -36,6 +39,7 @@ export default function Step5(props) {
           locale="cs"
           setData={props.setData}
           data={props.data}
+          tooltip="Concentração de saturação na altitude(h)"
         />
       </CardInput>
       {/*esta pagina nao possui o card help*/}

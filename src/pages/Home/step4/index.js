@@ -33,6 +33,8 @@ export default function Step4(props) {
             locale="distancia"
             setData={props.setData}
             data={props.data}
+            tooltip="Distância"
+
           />
           <ItemForm
             title="v"
@@ -40,13 +42,17 @@ export default function Step4(props) {
             locale="velocidade"
             setData={props.setData}
             data={props.data}
+            tooltip="Velocidade"
+
           />
           <ItemForm
-            title="Partições"
+            title="Nº trechos"
             unity="Quantidade"
             locale="particoes"
             setData={props.setData}
             data={props.data}
+            tooltip="Quantidade de segmentos"
+
           />
 
         </Form>
@@ -57,9 +63,9 @@ export default function Step4(props) {
       </CardInput>
       <CardHelp>
         <Title title="Informações Auxiliares" />
-        <HelpModal title="Clique aqui para auxílio em p" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Quantidade de partições do rio ">
-          <p>Variável criada apenas para o usuario definir em quantas partições deve ser repartido o curso d'água.</p>
+        <HelpModal title="Clique aqui para auxílio em Nº de trechos" handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Número de trechos no rio">
+          <p>Número de trechos ao longo da distância para o cálculo do oxigênio dissolvido.</p>
         
         </Modal>
 

@@ -4,6 +4,7 @@ import { CardInput, CardHelp, Content } from "../styleSteps";
 import Modal from "../../../components/Modal";
 import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
+import Title from "../../../components/Title";
 
 export default function Step6(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -20,6 +21,8 @@ export default function Step6(props) {
   return (
     <Content>
       <CardInput>
+      <Title title="Dados do Esgoto"/>
+
         <FormTwo>
           <ItemForm
             title="Qe"
@@ -27,6 +30,8 @@ export default function Step6(props) {
             locale="qe"
             setData={props.setData}
             data={props.data}
+            tooltip="Vazão"
+
           />
           <ItemForm
             title="ODe"
@@ -34,6 +39,8 @@ export default function Step6(props) {
             locale="ode"
             setData={props.setData}
             data={props.data}
+            tooltip="Oxigênio dissolvido"
+
           />
         </FormTwo>
       </CardInput>
