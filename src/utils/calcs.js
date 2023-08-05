@@ -35,6 +35,28 @@ export const Calculadora = (props) => {
     ct: 0,
     lancamentos: props.lancamentos,
   };
+  //tratamento para caso o usuario digite com virgula
+  props.qr = props.qr.replace(',', '.')
+  props.odr = props.qr.replace(',', '.')
+  props.dbor = props.qr.replace(',', '.')
+  props.odmin = props.qr.replace(',', '.')
+  props.k120c = props.qr.replace(',', '.')
+  props.tetak1 = props.qr.replace(',', '.')
+  props.temperatura = props.qr.replace(',', '.')
+  props.k1t = props.qr.replace(',', '.')
+  props.tetak2 = props.qr.replace(',', '.')
+  props.distancia = props.qr.replace(',', '.')
+  props.velocidade = props.qr.replace(',', '.')
+  props.particoes = props.qr.replace(',', '.')
+  props.tempo = props.qr.replace(',', '.')
+  props.cs = props.qr.replace(',', '.')
+  props.cslinha = props.qr.replace(',', '.')
+  props.qe = props.qr.replace(',', '.')
+  props.ode = props.qr.replace(',', '.')
+  props.dboe = props.qr.replace(',', '.')
+  props.dboefl = props.qr.replace(',', '.')
+  props.e = props.qr.replace(',', '.')
+
   const particoesVet = [];
   const ctVet = [];
   const odminVet = [];
@@ -158,13 +180,13 @@ export const Calculadora = (props) => {
 
       entrada.lo = entrada.dbo5 * entrada.kt;
 
-      console.log(
-        "dbo5\tkt______________________________\n",
-        entrada.dbo5,
-        "\t",
-        entrada.kt
-      );
-      console.log("L0______________________________", entrada.lo);
+      // console.log(
+      //   "dbo5\tkt______________________________\n",
+      //   entrada.dbo5,
+      //   "\t",
+      //   entrada.kt
+      // );
+      // console.log("L0______________________________", entrada.lo);
       // entrada.lo = Number(entrada.lo).toFixed(2)
     } else {
       entrada.dbo5 =
@@ -177,13 +199,13 @@ export const Calculadora = (props) => {
       // entrada.kt = Number(entrada.kt).toFixed(2)
 
       entrada.lo = entrada.dbo5 * entrada.kt;
-      console.log(
-        "dbo5\tkt______________________________2\n",
-        entrada.dbo5,
-        "\t",
-        entrada.kt
-      );
-      console.log("L0______________________________2", entrada.lo);
+      // console.log(
+      //   "dbo5\tkt______________________________2\n",
+      //   entrada.dbo5,
+      //   "\t",
+      //   entrada.kt
+      // );
+      // console.log("L0______________________________2", entrada.lo);
 
       // entrada.lo = Number(entrada.lo).toFixed(2)
     }
@@ -246,13 +268,13 @@ export const Calculadora = (props) => {
       ((entrada.distancia / entrada.particoes) * i) /
       (entrada.velocidade * 86400);
     if (tempop === 0) {
-      console.log("tempo1 tempo1 tempo1 tempo1 tempo1", tempop);
+      // console.log("tempo1 tempo1 tempo1 tempo1 tempo1", tempop);
       entrada.ct = entrada.co;
       // entrada.ct = Number(entrada.ct).toFixed(1)
 
       // console.log("ct caso tempop=0: ", entrada.ct);
     } else {
-      console.log("tempo tempo tempo tempo:", i, tempop);
+      // console.log("tempo tempo tempo tempo:", i, tempop);
       //=$N$4-((($N$2*$B$14)/($N$3-$N$2))*(EXP(-$N$2*B25)-EXP(-$N$3*B25))+($N$4-$B$8)*EXP(-$N$3*B25))
       entrada.ct =
         entrada.cslinha -
@@ -262,12 +284,12 @@ export const Calculadora = (props) => {
           (entrada.cslinha - entrada.co) *
           Math.pow(2.7182818285, -entrada.k2t * tempop));
 
-      console.log("tempo dois: ", tempop);
-      console.log("cslinha: ", entrada.cslinha);
-      console.log("k1t: ", entrada.k1t);
-      console.log("k2t: ", entrada.k2t);
-      console.log("co: ", entrada.co);
-      console.log("l0: ", entrada.lo);
+      // console.log("tempo dois: ", tempop);
+      // console.log("cslinha: ", entrada.cslinha);
+      // console.log("k1t: ", entrada.k1t);
+      // console.log("k2t: ", entrada.k2t);
+      // console.log("co: ", entrada.co);
+      // console.log("l0: ", entrada.lo);
 
       // entrada.ct = Number(entrada.ct).toFixed(1)
       // console.log("C0: ", entrada.co);
@@ -301,102 +323,3 @@ export const Calculadora = (props) => {
   console.log("VARIAVEIS AO FIM!!!!!!!!", entrada);
   return resultado;
 };
-/*
-Saída
-
-
-
-Concentração de oxigênio da mistura: /////////
-Co (mg/L)     Co=(Qr*ODr + Qe*ODe)/(Qr+Qe) FAZER UMA ALTERAÇÃO PARA ADICIONAR MAIS VAZÕES DE DIFERENTES ESFOTOS
-
-
-Déficit de oxigênio://////////
-Do (mg/L)     Do = csLinha - Co
-
-
-Concentração de DBO ultima mistura (Lo){
-
-Constante de transformação DBO5->DBO ultima
-
-DBO5 = (Qr * DBOr +Qe * DBOe)/Qr+Qe -------------------------------------(CASO TENHA MAIS UM LANÇAMENTO, ACRESCENTAR NA MÉDIA PONDERADA)
-
-KT = 1/(1-e^-5*k1t)
-
-L0 = DBO5o*Kt}
-}
-
-
-
-Tempo crítico (tc)
-tc (d) = (1/(k2t-k1t))*ln{(k2t/k1t)*[1-(D0*(K2t-k1t))/L0*k1]}
-
-
-Distancia crítica (dc)
-dc (km) =  tc * v * 86400   //v(velocidade)
-
-Concentração crítica de oxigênio dissolvido (ODc){
-
-Deficit crítico (Dc)
-Dc (mg/L)= (k1t/k2t)*L0*e^-(k1t*tc)
-
-ODc (mg/L) = csLinha-Dc //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
-//caso >=0, prosseguir
-}
-
-Ct = csLinha - ((k1t*L0)/k2t - k1t) * (e^(-k1t*tempo) - e^(-k2t*t) + (csLinha-co)*e^(-k2t*tempo)
-// ADICIONAR UMA TELA ONDE SE PEDE A EXXTENSAO TOTAL DO PERCURSO, E EM QUANTAS SECÇÕES ELE SERÁ REPARTIDO
-
-
-
-
-
-console.log(entrada);
-// outros cálculos aqui...
-//k2 (1/d)      k2 = 3,73((v^0,5)/H^1,5) // H(m) profundidade do curso d'agua // v(m/s) velocidade do curso d'água
-/*formula O'Connor e Dobbins:   3.73*(v^0.5)*(H^-1,5)  // USADA CASO  0.6m <= H < 4m  && 0.05m/s <= v < 0.8 m/s
-formula Churchill et al: 5*(v^0.97)*(H*1.67)    // usada caso 0.6m <= H < 4m && 0.8m/s <= v < 1.5m/s
-formula Owens et al: 5.3*(v^0.67)*(H^-1.85)   // usada caso 0.1m <= H <0.6m && 0.05m/s <= v < 1.5 m/s
-//{ qr, odr, k120c, k1t, tetak1, temperatura }*/
-
-//k1t = k120c * (tetak1^(temperatura-20))
-
-//k2 = 3.73 * (((v ^ 0.5) / h) ^ 1.5); //(O'Connor e Dobbins)
-//k2 = 5*(v^0.97)*(H*1.67); //(Churchill et al)
-//k2 = (5.3*(v^0.67)*(h^-1.85)); //(Owens et al)
-
-/* 
-Qr (m³/s)     (usuario tem de ter)
-
-ODr (mg/L)    ("tabela")
-
-DBOR (mg/L) (tabela)
-
-k1 (1/d)      k1 = k1(20ºC), θ , T(temperatura ºC)
-
-
-
-
-para corrigir a temperatura k2r = k2(20ºC)*θ^(T-20)
-
-
-t (d)         t = d/(v*86400) // d(m) = distancia de percuso // v(m/s) = velocidade do curso d'agua
-
-Cs (mg/L)      // T(ºC) // Altitude (m)
-
-ODmin(mg/L)    (tabela)
-
-------------------------
-
-Qe (m³/s)     (o usuario tem de ter)
-
-ODe (mg/L)    (tabela)
-
-DBOe (mg/L)   DBOefl = DBOe*(1-(E/100))
-
---------------------------
-
-
-
-
-
-*/
