@@ -35,27 +35,30 @@ export const Calculadora = (props) => {
     ct: 0,
     lancamentos: props.lancamentos,
   };
-  //tratamento para caso o usuario digite com virgula
+
+  //convertendo todas as entradas para a aplicação entender mesmo quando o usuario digitar utilizando virgulas
   props.qr = props.qr.replace(',', '.')
-  props.odr = props.qr.replace(',', '.')
-  props.dbor = props.qr.replace(',', '.')
-  props.odmin = props.qr.replace(',', '.')
-  props.k120c = props.qr.replace(',', '.')
-  props.tetak1 = props.qr.replace(',', '.')
-  props.temperatura = props.qr.replace(',', '.')
-  props.k1t = props.qr.replace(',', '.')
-  props.tetak2 = props.qr.replace(',', '.')
-  props.distancia = props.qr.replace(',', '.')
-  props.velocidade = props.qr.replace(',', '.')
-  props.particoes = props.qr.replace(',', '.')
-  props.tempo = props.qr.replace(',', '.')
-  props.cs = props.qr.replace(',', '.')
-  props.cslinha = props.qr.replace(',', '.')
-  props.qe = props.qr.replace(',', '.')
-  props.ode = props.qr.replace(',', '.')
-  props.dboe = props.qr.replace(',', '.')
-  props.dboefl = props.qr.replace(',', '.')
-  props.e = props.qr.replace(',', '.')
+  props.odr = props.odr.replace(',', '.')
+  props.dbor = props.dbor.replace(',', '.')
+  props.odmin = props.odmin.replace(',', '.')
+  props.k120c = props.k120c.replace(',', '.')
+  props.tetak1 = props.tetak1.replace(',', '.')
+  props.temperatura = props.temperatura.replace(',', '.')
+  props.k1t = props.k1t.replace(',', '.')
+  props.tetak2 = props.tetak2.replace(',', '.')
+  props.distancia = props.distancia.replace(',', '.')
+  props.velocidade = props.velocidade.replace(',', '.')
+  props.particoes = props.particoes.replace(',', '.')
+  props.tempo = props.tempo.replace(',', '.')
+  props.cs = props.cs.replace(',', '.')
+  props.cslinha = props.cslinha.replace(',', '.')
+  props.qe = props.qe.replace(',', '.')
+  props.ode = props.ode.replace(',', '.')
+  props.dboe = props.dboe.replace(',', '.')
+  props.dboefl = props.dboefl.replace(',', '.')
+  props.e = props.e.replace(',', '.')
+
+
 
   const particoesVet = [];
   const ctVet = [];
@@ -187,6 +190,8 @@ export const Calculadora = (props) => {
       //   entrada.kt
       // );
       // console.log("L0______________________________", entrada.lo);
+
+
       // entrada.lo = Number(entrada.lo).toFixed(2)
     } else {
       entrada.dbo5 =
@@ -301,7 +306,7 @@ export const Calculadora = (props) => {
 
     let aux = entrada.distancia / entrada.particoes;
     kmvet.push((aux * i) / 1000);
-    ctVet.push(entrada.ct);
+    ctVet.push(entrada.ct.toFixed(2));
 
     // console.log("isto é o vetor distancia *****************************", kmvet);
     // if (entrada.ct < entrada.odmin){
@@ -319,7 +324,7 @@ export const Calculadora = (props) => {
     particoesVet,
     kmvet,
   };
-  console.log("fim: ", ctVet);
-  console.log("VARIAVEIS AO FIM!!!!!!!!", entrada);
+  // console.log("fim: ", ctVet);
+  // console.log("VARIAVEIS AO FIM!!!!!!!!", entrada);
   return resultado;
 };

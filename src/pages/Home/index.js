@@ -107,14 +107,10 @@ function Home() {
           )}
           {/**botoes para retornar um step */}
           {(step > 2 && step < 6)&& (
-            <div onClick={() => prev()}>
-              <Button text="Voltar" />
-            </div>
+              <Button text="Voltar" handle={() => prev()} />
           )}
           {step === 7 && (
-            <div onClick={() => prev()}>
-              <Button text="Voltar" />
-            </div>
+              <Button text="Voltar" handle={() => prev()} />
           )}
           {/* botões para retornar ao step 0 ao concluir a inserção de dados */}
           {(step === 1 || step === 5 || step === 7) && (
@@ -130,17 +126,13 @@ function Home() {
           )}
           {/**botoes para avançar um step */}
           {(step < 5 && step > 1) && (
-            <div onClick={() => next()}>
-              <Button color="primary" text="Próximo" />
-            </div>
+              <Button color="primary" text="Próximo" handle={() => next()}/>
           )}
           {step === 6 && (
               <Button color="primary" text="Próximo" handle={() => next()} /> //lembrar de colocar o handle em todos os botoes
           )}
           {step === 8 && (
-            <div onClick={() => next()}>
-              <Button color="primary" text="Calcular" />
-            </div>
+              <Button color="primary" text="Calcular" handle={() => next()} />
           )}
 
 
@@ -155,16 +147,12 @@ function Home() {
             <Button text="Calcular novamente" handle={() => { setStep(0); setRestartStep(true) }} />
           )}
           {step === 9 && (
-            <div onClick={() => next()}>
-              <Button color="primary" text="Simular novamente" />
-            </div>
+              <Button color="primary" text="Simular novamente" handle={() => next()}/>
           )}
 
           {/*botao no step 10 (step utilizado caso o usuario queira uma nova simulação) */}
           {step === 10 && (
-            <div onClick={() => prev()}>
-              <Button color="primary" text="Simular" />
-            </div>
+              <Button color="primary" text="Simular" handle={() => prev()}/>
           )}
 
         </ButtonsSteps>
