@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
 import Box from "../../../components/Box";
-import { Container } from "./styles";
+import { Container, ContainerTwo } from "./styles";
 
 export default function Step0(props) {
   // const [goToRiver, setGoToRiver] = useState(false);
@@ -28,7 +28,9 @@ export default function Step0(props) {
 
         <img src={Rio} />
 
-          <Box boxname="Dados do Rio" setStep={props.setStep} numberStep={1} />
+          <ContainerTwo>
+           <Box boxname="Dados do Rio" setStep={props.setStep} numberStep={1} />
+          </ContainerTwo>
 
         {/* {/* <Button color="primary" text="Inserir dados 2" handle = { ( ) => { props.setStep(2); props.setRestartStep(true) }}/> */}
         {/* <Button color="primary" text="Inserir dados 3" handle = { ( ) => { props.setStep(6); props.setRestartStep(true) }}/>  */}

@@ -20,7 +20,7 @@ export const ButtonSecondary = styled.button`
   padding: 5px 15px;
   border-radius: 8px;
   font-weight: bold;
-  background: #fff;
+  background: transparent;
   border: 2px solid #333;
   color: black;
   cursor: pointer;

@@ -19,7 +19,8 @@ export const CardInput = styled.section`
   /* height: 300px; */
   max-width: 380px;
   background: #fff;
-  border-bottom: 2px solid #171717;
+  /* border-top: 2px solid #18259F; */
+  border-bottom: 2px solid #18259F;
   box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   display: flex;
@@ -27,6 +28,10 @@ export const CardInput = styled.section`
   align-items: center;
   justify-content: center;
   padding: 32px;
+
+  border-radius: 4px;
+background: #FFF;
+box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.15);
 
   @media (min-width: 400px) {
     //width: 380px;
@@ -57,14 +62,17 @@ padding: 32px;
 export const CardHelp = styled.section`
   width: 100%;
   height: 200px;
-  background: #fff;
-  border-bottom: 2px solid #171717;
-  box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.15);
+  background: transparent;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  border-radius: 4px;
+  border-top: 2px solid #18259F;
+  border-bottom: 2px solid #18259F;
+  /* box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.15); */
 
   @media (min-width: 400px) {
     width: 380px;

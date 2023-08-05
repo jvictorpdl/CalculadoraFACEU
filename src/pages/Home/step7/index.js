@@ -59,6 +59,8 @@ export default function Step7(props) {
         />
       </CardInput>
       <CardHelp>
+        <Title title="Informações Auxiliares"/>
+
         <HelpModal title="Clique para auxílio em DBOe" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição da demando bioquímica do esgoto (DBOe)">
           <h3>Caso nao possua o valor, sugere-se: </h3>
@@ -69,7 +71,8 @@ export default function Step7(props) {
           <h5>Fonte: Von Sperling (2014)</h5>
 
         </Modal>
-        ajuda 7</CardHelp>
+        ajuda 7
+        </CardHelp>
     </Content>
   );
 }

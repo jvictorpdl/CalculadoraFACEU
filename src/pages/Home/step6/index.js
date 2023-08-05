@@ -46,6 +46,8 @@ export default function Step6(props) {
       </CardInput>
 
       <CardHelp>
+      <Title title="Informações Auxiliares"/>
+
         <HelpModal title="Clique aqui para auxílio em ODe " handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no esgoto">
           <h3>Não sendo possível coletar amostras, sugere-se para esgoto doméstico:</h3>

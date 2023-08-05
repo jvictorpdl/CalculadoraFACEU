@@ -225,6 +225,8 @@ export default function Step3(props) {
         />
       </CardInput>
       <CardHelp>
+      <Title title="Informações Auxiliares"/>
+
         <HelpModal title="Clique aqui para auxílio em K2" handle={openModal} />
         <Modal
           modalIsOpen={modalIsOpen}

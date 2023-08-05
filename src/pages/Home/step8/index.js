@@ -1,6 +1,7 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import { CardInput, CardHelp, Content } from "../styleSteps";
+import Title from "../../../components/Title";
 
 export default function Step8(props) {
   console.log(props.data);
@@ -10,6 +11,8 @@ export default function Step8(props) {
   return (
     <Content>
       <CardInput>
+      <Title title="Dados do rio"/>
+
         <Form>
           <ItemForm
             title="Qr"
@@ -91,7 +94,9 @@ export default function Step8(props) {
         </Form>
 
       </CardInput>
-      <CardInput>variaveis esgoto
+      <CardInput>
+      <Title title="Dados do esgoto"/>
+
         <Form>
           <ItemForm
             title="Qe"
