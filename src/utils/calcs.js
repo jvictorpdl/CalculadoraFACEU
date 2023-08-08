@@ -1,6 +1,7 @@
 export const Calculadora = (props) => {
+  console.log(props);
   const entrada = {
-    qr: Number(props.qr),
+    qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
     odr: Number(props.odr),
     dbor: Number(props.dbor),
     odmin: Number(props.odmin),
@@ -35,29 +36,8 @@ export const Calculadora = (props) => {
     ct: 0,
     lancamentos: props.lancamentos,
   };
-
-  //convertendo todas as entradas para a aplicação entender mesmo quando o usuario digitar utilizando virgulas
-  props.qr = props.qr.replace(',', '.')
-  props.odr = props.odr.replace(',', '.')
-  props.dbor = props.dbor.replace(',', '.')
-  props.odmin = props.odmin.replace(',', '.')
-  props.k120c = props.k120c.replace(',', '.')
-  props.tetak1 = props.tetak1.replace(',', '.')
-  props.temperatura = props.temperatura.replace(',', '.')
-  props.k1t = props.k1t.replace(',', '.')
-  props.tetak2 = props.tetak2.replace(',', '.')
-  props.distancia = props.distancia.replace(',', '.')
-  props.velocidade = props.velocidade.replace(',', '.')
-  props.particoes = props.particoes.replace(',', '.')
-  props.tempo = props.tempo.replace(',', '.')
-  props.cs = props.cs.replace(',', '.')
-  props.cslinha = props.cslinha.replace(',', '.')
-  props.qe = props.qe.replace(',', '.')
-  props.ode = props.ode.replace(',', '.')
-  props.dboe = props.dboe.replace(',', '.')
-  props.dboefl = props.dboefl.replace(',', '.')
-  props.e = props.e.replace(',', '.')
-
+  console.log(entrada);
+ 
 
 
   const particoesVet = [];

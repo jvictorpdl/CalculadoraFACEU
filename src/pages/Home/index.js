@@ -19,25 +19,25 @@ function Home() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr: "0.651",
+    qr: "0,651",
     odr: "7",
     dbor: "2",
     odmin: "5",
     k120c: "",
-    tetak1: "1.047",
+    tetak1: "1,047",
     temperatura: "23",
-    k1t: "0.44",
-    tetak2: "1.024",
-    h: "0.80", //profundidade
-    k220c: "3.08",
-    k2t: "3.31", //3.31
+    k1t: "0,44",
+    tetak2: "1,024",
+    h: "0,80", //profundidade
+    k220c: "3,08",
+    k2t: "3,31", //3.31
     distancia: "50000",
-    velocidade: "0.35",
+    velocidade: "0,35",
     particoes: "5",
-    tempo: "1.65",
+    tempo: "1,65",
     cs: "",
-    cslinha: "7.8",
-    qe: "0.114",
+    cslinha: "7,8",
+    qe: "0,114",
     ode: "0",
     dboe: "341",
     dboefl: "",

@@ -36,7 +36,7 @@ export default function Step5(props) {
         <ItemForm
           title="Cs'"
           unity="mg/L"
-          locale="cs"
+          locale="cslinha"
           setData={props.setData}
           data={props.data}
           tooltip="Concentração de saturação na altitude(h)"
