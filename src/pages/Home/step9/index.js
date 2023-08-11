@@ -9,7 +9,7 @@ export default function Step10(props) {
   return (
     <Content>
       <CardInput>
-      <Title title="Alternativas de tratamento do esgoto"/>
+        <Title title="Alternativas de tratamento do esgoto" />
 
         <FormTwo>
           <ItemForm
@@ -27,6 +27,24 @@ export default function Step10(props) {
             setData={props.setData}
             data={props.data}
             tooltip="Coeficiente de desoxigenação(20ºC)"
+
+          />
+          <ItemForm
+            title="θ para K1"
+            unity="ad."
+            locale="tetak1"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Coeficiente de temperatura"
+
+          />
+          <ItemForm
+            title="T"
+            unity="ºC"
+            locale="temperatura"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Temperatura do líquido"
 
           />
         </FormTwo>

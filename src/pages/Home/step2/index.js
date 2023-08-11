@@ -19,9 +19,8 @@ export default function Step2(props) {
         content: "Origem"
       },
       {
-        content: 'k',
-        sub: 1,
-        mid: '(d',
+        content: 'K1 ',
+        mid: '(dia',
         up: '-1',
         final: ')',
 
@@ -94,8 +93,8 @@ export default function Step2(props) {
       <Title title="Dados morfométricos e ambientais"/>
         <Form>
           <ItemForm
-            title="k1(20ºC)"
-            unity="1/d"
+            title="K1(20ºC)"
+            unity="1/dia"
             locale="k120c"
             setData={props.setData}
             data={props.data}
@@ -103,8 +102,8 @@ export default function Step2(props) {
 
           />
           <ItemForm
-            title="θ para k1"
-            unity="M/A"
+            title="θ para K1"
+            unity="ad."
             locale="tetak1"
             setData={props.setData}
             data={props.data}
@@ -125,9 +124,9 @@ export default function Step2(props) {
         <Subtitle>Ou</Subtitle>
 
         <ItemForm
-          title="k1"
+          title="K1"
           sub="T"
-          unity= "1/d"
+          unity= "1/dia"
           locale="k1t"
           setData={props.setData}
           data={props.data}
@@ -137,27 +136,27 @@ export default function Step2(props) {
         />
       </CardInput>
       <CardHelp>
-      <Title title="Informações Auxiliares"/>
+      <Title title="Informações auxiliares"/>
           <br/>
         <HelpModal title="Clique para auxílio em K1" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (k1)">
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (K1)">
           <div>
 
-            <p>Valores típicos de k1 (base e, 20°C)</p>
+            <p>Valores típicos de K1 (base e, 20°C)</p>
             <Table table={table} />
 
 
-            <h5>Fonte: Von Sperling (2014)</h5>
+            <h5>Fonte: Adaptado de Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
           </div>
 
         </Modal>
 
-        <HelpModal title="Clique para auxílio em θ" handle={openModal2} />
-        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em θ">
+        <HelpModal title="Clique para auxílio em θ para K1" handle={openModal2} />
+        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em θ para K1">
           <p>
-            Valor usual de θ é de 1,047 (acréscimo de 4,7% em k₁ para cada aumento de 1 °C na temperatura da água).
+            Valor usual de θ é de 1,047 (acréscimo de 4,7% em K1 para cada aumento de 1 °C na temperatura da água).
           </p>
-          <h5>Fonte: Von Sperling (2014)</h5>
+          <h5>Fonte: Von Sperling (2005)</h5>
 
         </Modal>
         ajuda 2</CardHelp>

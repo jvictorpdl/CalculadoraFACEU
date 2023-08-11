@@ -21,7 +21,7 @@ export default function Step6(props) {
   return (
     <Content>
       <CardInput>
-      <Title title="Dados do Esgoto"/>
+      <Title title="Dados do esgoto"/>
 
         <FormTwo>
           <ItemForm
@@ -46,7 +46,7 @@ export default function Step6(props) {
       </CardInput>
 
       <CardHelp>
-      <Title title="Informações Auxiliares"/>
+      <Title title="Informações auxiliares"/>
 
         <HelpModal title="Clique aqui para auxílio em ODe " handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no esgoto">
@@ -60,7 +60,7 @@ export default function Step6(props) {
             </h3>
             </dt>
             <dd><li>
-              OD = 0 mg/L
+              ODe = 0 mg/L
 
             </li>
             </dd>
@@ -73,14 +73,14 @@ export default function Step6(props) {
             </h3>
             </dt>
             <dd>
-              <li>Tratamento primário: OD = 0 mg/L;</li>
-              <li>Tratamento anaeróbio: OD = 0 mg/L;</li>
-              <li>Lodos ativados, filtros biológicos percoladores e outros sistemas aeróbios similares: OD = 2 mg/L ou mais;</li>
-              <li>Lagoas facultativas: OD = 4 a 6 mg/L.</li>
+              <li>Tratamento primário: ODe = 0 mg/L;</li>
+              <li>Tratamento anaeróbio: ODe = 0 mg/L;</li>
+              <li>Lodos ativados, filtros biológicos percoladores e outros sistemas aeróbios similares: ODe = 2 mg/L ou mais;</li>
+              <li>Lagoas facultativas: ODe = 4 a 6 mg/L.</li>
             </dd>
           </dl>
           <br />
-          <h5>Fonte: Von Sperling (2014)</h5>
+          <h5>Fonte: Von Sperling (2005)</h5>
         </Modal>
         ajuda 6</CardHelp>
     </Content>

@@ -28,12 +28,12 @@ export default function Step3(props) {
       },
       {
         colspan: 2,
-        content: "k",
-        sub: 2,
+        content: "K2 ",
         mid: "(dia",
         up: "-1",
         final: ")",
       },
+      
     ],
     lines: [
       [
@@ -107,7 +107,7 @@ export default function Step3(props) {
           content: "> 1,15",
         },
         {
-          content: "1,61",
+          content: ">1,61",
         },
       ],
     ],
@@ -146,7 +146,7 @@ export default function Step3(props) {
           />
           <ItemForm
             title="θ para K2"
-            unity="M/A"
+            unity="ad."
             locale="tetak2"
             setData={props.setData}
             data={props.data}
@@ -181,7 +181,7 @@ export default function Step3(props) {
         <Form>
           <ItemForm
             title="K2 (20ºC)"
-            unity="1/d"
+            unity="1/dia"
             locale="k220c"
             setData={props.setData}
             data={props.data}
@@ -190,7 +190,7 @@ export default function Step3(props) {
           />
           <ItemForm
             title="θ para K2"
-            unity="M/A"
+            unity="ad."
             locale="tetak2"
             setData={props.setData}
             data={props.data}
@@ -214,7 +214,7 @@ export default function Step3(props) {
         <ItemForm
           title="K2"
           sub="T"
-          unity="1/d"
+          unity="1/dia"
           locale="k2t"
           setData={props.setData}
           data={props.data}
@@ -223,29 +223,28 @@ export default function Step3(props) {
         />
       </CardInput>
       <CardHelp>
-      <Title title="Informações Auxiliares"/>
+      <Title title="Informações auxiliares"/>
 
         <HelpModal title="Clique aqui para auxílio em K2" handle={openModal} />
         <Modal
           modalIsOpen={modalIsOpen}
           closeModal={closeModal}
-          title="Auxílio no coeficiente de reaeração (k2)"
+          title="Auxílio no coeficiente de reaeração (K2)"
         >
-          <p>Valores típicos de k₂ (base e, 20°C)</p>
+          <p>Valores típicos de K2 (base e, 20°C)</p>
           <Table table={table} />
-          <h5>Fonte: Von Sperling (2014)</h5>
+          <h5>Fonte: Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
         </Modal>
-        <HelpModal title="Clique para auxílio em θ" handle={openModal2} />
+        <HelpModal title="Clique para auxílio em θ para K2" handle={openModal2} />
         <Modal
           modalIsOpen={modalIsOpen2}
           closeModal={closeModal2}
-          title="Auxílio em θ"
+          title="Auxílio em θ para k2"
         >
           <p>
-            Valor usual de θ é de 1,047 (acréscimo de 4,7% em k₁ para cada
-            aumento de 1 °C na temperatura da água).
+            Valor usual de θ é de 1,024.
           </p>
-          <h5>Fonte: Von Sperling (2014)</h5>
+          <h5>Fonte: Von Sperling (2005)</h5>
         </Modal>
         ajuda 3
       </CardHelp>

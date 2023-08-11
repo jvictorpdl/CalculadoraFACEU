@@ -62,7 +62,7 @@ export default function Step4(props) {
 
       </CardInput>
       <CardHelp>
-        <Title title="Informações Auxiliares" />
+        <Title title="Informações auxiliares" />
         <HelpModal title="Clique aqui para auxílio em Nº de trechos" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Número de trechos no rio">
           <p>Número de trechos ao longo da distância para o cálculo do oxigênio dissolvido.</p>

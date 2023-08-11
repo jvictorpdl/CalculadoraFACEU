@@ -9,8 +9,17 @@ margin: 50px 0;
 `
 export  const ContainerTwo = styled.div`
 width: 700px;
-/* background-color: red; */
+//  background-color: red; 
 display: flex;
 justify-content: left;
+margin: 50px 0;
+`
+export  const ContainerThree = styled.div`
+// width: 700px;
+display: flex;
+background-color: tomato; 
+justify-content: center;
+align-items: center;
+align-content: center;
 margin: 50px 0;
 `
