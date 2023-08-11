@@ -137,7 +137,7 @@ export default function Step3(props) {
           <ItemForm
             title="v"
             unity="m/s"
-            locale="volume"
+            locale="velocidade"
             setData={props.setData}
             data={props.data}
             tooltip="Velocidade"
@@ -200,8 +200,6 @@ export default function Step3(props) {
 
           <ItemForm
             title="T"
-            value="valor"
-            disabled={true}
             unity={props.data.temperatura + " °C"}
             locale="temperatura"
             setData={props.setData}

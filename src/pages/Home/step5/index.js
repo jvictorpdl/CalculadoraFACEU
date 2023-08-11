@@ -24,7 +24,7 @@ export default function Step5(props) {
           <ItemForm
             title="h"
             unity="m"
-            locale="h"
+            locale="altitude"
             setData={props.setData}
             data={props.data}
             tooltip="Altitude"

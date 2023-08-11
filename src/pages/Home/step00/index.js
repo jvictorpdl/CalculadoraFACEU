@@ -18,7 +18,7 @@ export default function Step0(props) {
   return (
     <Content>
       <CardBoard>
-        <Title title="Inserção de dados:" />
+      {/* <Title title="Inserção de dados:" /> */}
         <Container>
 
           <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />

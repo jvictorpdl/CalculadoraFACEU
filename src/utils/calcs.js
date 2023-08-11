@@ -2,28 +2,29 @@ export const Calculadora = (props) => {
   console.log(props);
   const entrada = {
     qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
-    odr: Number(props.odr),
-    dbor: Number(props.dbor),
-    odmin: Number(props.odmin),
-    k120c: Number(props.k120c),
-    tetak1: Number(props.tetak1),
-    temperatura: Number(props.temperatura),
-    k1t: Number(props.k1t),
-    tetak2: Number(props.tetak2),
-    h: Number(props.h), //altitude
-    k220c: Number(props.k220c),
-    k2t: Number(props.k2t),
-    distancia: Number(props.distancia),
-    velocidade: Number(props.velocidade),
-    particoes: Number(props.particoes),
-    tempo: Number(props.tempo),
-    cs: Number(props.cs),
-    cslinha: Number(props.cslinha),
-    qe: Number(props.qe),
-    ode: Number(props.ode),
-    dboe: Number(props.dboe),
-    dboefl: Number(props.dboefl),
-    e: Number(props.e),
+    odr: Number(String(props.odr).replaceAll('.', '').replace(',', '.')),
+    dbor: Number(String(props.dbor).replaceAll('.', '').replace(',', '.')),
+    odmin: Number(String(props.odmin).replaceAll('.', '').replace(',', '.')),
+    k120c: Number(String(props.k120c).replaceAll('.', '').replace(',', '.')),
+    tetak1: Number(String(props.tetak1).replaceAll('.', '').replace(',', '.')),
+    temperatura: Number(String(props.temperatura).replaceAll('.', '').replace(',', '.')),
+    k1t: Number(String(props.k1t).replaceAll('.', '').replace(',', '.')),
+    tetak2: Number(String(props.tetak2).replaceAll('.', '').replace(',', '.')),
+    h: Number(String(props.h).replaceAll('.', '').replace(',', '.')), 
+    k220c: Number(String(props.k220c).replaceAll('.', '').replace(',', '.')),
+    k2t: Number(String(props.k2t).replaceAll('.', '').replace(',', '.')),
+    distancia: Number(String(props.distancia).replaceAll('.', '').replace(',', '.')),
+    velocidade: Number(String(props.velocidade).replaceAll('.', '').replace(',', '.')),
+    particoes: Number(String(props.particoes).replaceAll('.', '').replace(',', '.')),
+    tempo: Number(String(props.tempo).replaceAll('.', '').replace(',', '.')),
+    cs: Number(String(props.cs).replaceAll('.', '').replace(',', '.')),
+    cslinha: Number(String(props.cslinha).replaceAll('.', '').replace(',', '.')),
+    qe: Number(String(props.qe).replaceAll('.', '').replace(',', '.')),
+    ode: Number(String(props.ode).replaceAll('.', '').replace(',', '.')),
+    dboe: Number(String(props.dboe).replaceAll('.', '').replace(',', '.')),
+    dboefl: Number(String(props.dboefl).replaceAll('.', '').replace(',', '.')),
+    e: Number(String(props.e).replaceAll('.', '').replace(',', '.')),
+    altitude: Number(String(props.altitude).replaceAll('.', '').replace(',', '.')),
     //saída//
     co: 0,
     do: 0,
@@ -65,35 +66,38 @@ export const Calculadora = (props) => {
 
     // console.log("k2t: ", entrada.k2t);
     // console.log("k2t = k220c: ",entrada.k220c, "* tetak1 ^ temperatura - 20: ", Math.pow(entrada.tetak2, entrada.temperatura - 20));
-  } else if (entrada.velocidade) {
+  } else if (entrada.h) {
     if (
-      entrada.h <= 4 &&
+      entrada.h < 4 &&
       entrada.h >= 0.6 &&
       0.05 <= entrada.velocidade &&
       entrada.velocidade < 0.8
     ) {
       //formula O'Connor e Dobbins
-      entrada.k2t =
-        3.73 * Math.pow(entrada.tetak2, 0.5) * Math.pow(entrada.h, -1.5);
+      entrada.k220c =
+        3.73 * Math.pow(entrada.velocidade, 0.5) * Math.pow(entrada.h, -1.5);
     } else if (
-      entrada.h <= 4 &&
+      entrada.h < 4 &&
       entrada.h >= 0.6 &&
       0.8 <= entrada.velocidade &&
       entrada.velocidade < 1.5
     ) {
       //formula Churchill et al
-      entrada.k2t =
-        5 * Math.pow(entrada.velocidade, 0.97) * Math.pow(entrada.h, 1.67);
+      entrada.k220c =
+        5 * Math.pow(entrada.velocidade, 0.97) * Math.pow(entrada.h, -1.67);
     } else if (
       entrada.h >= 0.1 &&
-      entrada.h <= 0.6 &&
-      0.5 <= entrada.velocidade &&
+      entrada.h < 0.6 &&
+      0.05 <= entrada.velocidade &&
       entrada.velocidade < 1.5
     ) {
       //formula Owens et al
-      entrada.k2t =
+      entrada.k220c =
         5.3 * Math.pow(entrada.velocidade, 0.67) * Math.pow(entrada.h, -1.85);
     }
+
+    entrada.k2t = entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
+
   }
   // entrada.k2t = Number(entrada.k2t).toFixed(2)
 
@@ -109,7 +113,7 @@ export const Calculadora = (props) => {
       4.1022 * Math.pow(10, -1) * entrada.temperatura +
       7.991 * Math.pow(10, -3) * Math.pow(entrada.temperatura, 2) -
       7.7774 * Math.pow(10, -5) * Math.pow(entrada.temperatura, 3);
-    entrada.cslinha = entrada.cs * (1 - entrada.h / 9450);
+    entrada.cslinha = entrada.cs * (1 - entrada.altitude / 9450);
   }
   // entrada.cslinha = Number(entrada.cslinha).toFixed(2)
 
