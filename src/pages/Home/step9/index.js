@@ -11,7 +11,7 @@ export default function Step10(props) {
       <CardInput>
         <Title title="Alternativas de tratamento do esgoto" />
 
-        <FormTwo>
+        <Form>
           <ItemForm
             title="E"
             unity="%"
@@ -47,7 +47,7 @@ export default function Step10(props) {
             tooltip="Temperatura do líquido"
 
           />
-        </FormTwo>
+        </Form>
       </CardInput>
 
       <CardHelp>ajuda simulação</CardHelp>

@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 export const Calculadora = (props) => {
   console.log(props);
   const entrada = {
@@ -10,7 +11,7 @@ export const Calculadora = (props) => {
     temperatura: Number(String(props.temperatura).replaceAll('.', '').replace(',', '.')),
     k1t: Number(String(props.k1t).replaceAll('.', '').replace(',', '.')),
     tetak2: Number(String(props.tetak2).replaceAll('.', '').replace(',', '.')),
-    h: Number(String(props.h).replaceAll('.', '').replace(',', '.')), 
+    h: Number(String(props.h).replaceAll('.', '').replace(',', '.')),
     k220c: Number(String(props.k220c).replaceAll('.', '').replace(',', '.')),
     k2t: Number(String(props.k2t).replaceAll('.', '').replace(',', '.')),
     distancia: Number(String(props.distancia).replaceAll('.', '').replace(',', '.')),
@@ -38,7 +39,7 @@ export const Calculadora = (props) => {
     lancamentos: props.lancamentos,
   };
   console.log(entrada);
- 
+
 
 
   const particoesVet = [];
@@ -118,20 +119,20 @@ export const Calculadora = (props) => {
   // entrada.cslinha = Number(entrada.cslinha).toFixed(2)
 
   if (entrada.e) {
-    if(entrada.dboefl){
+    if (entrada.dboefl) {
       entrada.dboe = entrada.dboefl;
     }
     entrada.dboefl = (1 - entrada.e / 100) * entrada.dboe;
     // console.log("entrou -------------------------------------- dboefl: ", entrada.dboefl);
-  }else 
+  } else
 
-  // entrada.dboefl = Number(entrada.dboefl).toFixed(2)
+    // entrada.dboefl = Number(entrada.dboefl).toFixed(2)
 
-  //DADOS DE SAÍDA
-  //adicionar comentario
-  entrada.co =
-  (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
-  (entrada.qr + entrada.qe);
+    //DADOS DE SAÍDA
+    //adicionar comentario
+    entrada.co =
+      (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
+      (entrada.qr + entrada.qe);
   if (entrada.lancamentos.length) {
     let qeXode = 0, qe_qe = 0;
 
@@ -234,6 +235,7 @@ export const Calculadora = (props) => {
   entrada.dc = entrada.tc * entrada.velocidade * 86400;
   // entrada.dc = Number(entrada.dc).toFixed(2)
 
+  // eslint-disable-next-line no-lone-blocks
   {
     //ODC
     //deficitc = defice crítico
@@ -301,6 +303,7 @@ export const Calculadora = (props) => {
     let aux = entrada.distancia / entrada.particoes;
     kmvet.push((aux * i) / 1000);
     ctVet.push(entrada.ct.toFixed(2));
+    // ctVet.push(-1);
 
     // console.log("isto é o vetor distancia *****************************", kmvet);
     // if (entrada.ct < entrada.odmin){

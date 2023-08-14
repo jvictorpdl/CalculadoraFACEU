@@ -19,30 +19,30 @@ function Home() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr: "",
-    odr: "",
-    dbor: "",
-    odmin: "",
-    k120c: "",
-    tetak1: "",
-    temperatura: "",
+    qr: "0,651",
+    odr: "7",
+    dbor: "2",
+    odmin: "5",
+    k120c: "0,38",
+    tetak1: "1,047",
+    temperatura: "23",
     k1t: "",
-    tetak2: "",
+    k220c: "3,08",
+    tetak2: "1,024",
     h: "", //profundidade
-    k220c: "",
     k2t: "", //3.31
-    distancia: "",
-    velocidade: "",
-    particoes: "",
-    tempo: "",
+    distancia: "50000",
+    velocidade: "0,35",
+    particoes: "10",
+    tempo: "0,35",
     cs: "",
     cslinha: "",
-    qe: "",
-    ode: "",
-    dboe: "",
+    qe: "0,114",
+    ode: "0",
+    dboe: "341",
     dboefl: "",
-    e: "",
-    altitude: "",
+    e: "0",
+    altitude: "1000",
     //saída
     co: "",
     do: "",
@@ -93,7 +93,7 @@ function Home() {
         {step === 6 && <Step6 data={data} setData={setData} />}
         {step === 7 && <Step7 data={data} setData={setData} />}
         {step === 8 && <Step8 data={data} setData={setData} />}
-        {step === 9 && <Result data={data} />}
+        {step === 9 &&<Result data={data} />}
         {step === 10 && <Step9 data={data} setData={setData} />}
 
 
