@@ -22,7 +22,7 @@ export default function Result (props) {
       <CardInput>
           <img src={ alertIcon } />
 
-        <h1>Alerta, o modelo de .... nao pode ser utilizado para o calculo deste caso.</h1>
+        <h1>Concentração negativa de oxigênio dissolvido!!! O modelo de Streeter-Phelps não tem validade para este caso.</h1>
       </CardInput>
     }
     </>
