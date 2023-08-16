@@ -4,7 +4,6 @@ import { CardInput, CardHelp, Content } from "../styleSteps";
 import Title from "../../../components/Title";
 
 export default function Step8(props) {
-  // console.log(props.data);
   function calculalancamentos() {
 
   }

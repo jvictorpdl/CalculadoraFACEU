@@ -152,7 +152,7 @@ export default function Step1(props) {
   return (
     <Content>
       <CardInput>
-        <Title title="Dados do rio"/>
+        <Title title="Dados do rio" />
         <Form>
           <ItemForm
             title="Qr"
@@ -197,8 +197,8 @@ export default function Step1(props) {
         </Form>
       </CardInput>
       <CardHelp>
-        <Title title="Informações auxiliares"/>
-          <br/>
+        <Title title="Informações auxiliares" />
+        <br />
         <HelpModal title="Clique aqui para auxílio em ODr" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no rio" ariaHideApp={false}>
           <p>
@@ -211,8 +211,8 @@ export default function Step1(props) {
             ODr pode ser de 80 a 90% do valor de saturação de oxigênio do rio;
           </li>
           <li>curso d'água bem poluído: <br />
-          incluir os principais focos poluidores (ODr será bem inferior ao teor de saturação).</li>
-          
+            incluir os principais focos poluidores (ODr será bem inferior ao teor de saturação).</li>
+
           <br />
           <h5>Fonte: Von Sperling (2005)</h5>
         </Modal>
@@ -234,9 +234,7 @@ export default function Step1(props) {
         </Modal>
 
 
-
-
-        ajuda 1</CardHelp>
+      </CardHelp>
     </Content>
   );
 }

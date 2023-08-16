@@ -19,30 +19,30 @@ function Home() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr: "0,651",
-    odr: "7",
-    dbor: "2",
-    odmin: "5",
-    k120c: "0,38",
-    tetak1: "1,047",
-    temperatura: "23",
+    qr: "", 
+    odr: "",
+    dbor: "",
+    odmin: "",
+    k120c: "",
+    tetak1: "",
+    temperatura: "",
     k1t: "",
-    k220c: "3,08",
-    tetak2: "1,024",
+    k220c: "",
+    tetak2: "",
     h: "", //profundidade
     k2t: "", //3.31
-    distancia: "50000",
-    velocidade: "0,35",
-    particoes: "10",
-    tempo: "0,35",
+    distancia: "",
+    velocidade: "",
+    particoes: "",
+    tempo: "",
     cs: "",
     cslinha: "",
-    qe: "0,114",
-    ode: "0",
-    dboe: "341",
+    qe: "",
+    ode: "",
+    dboe: "",
     dboefl: "",
-    e: "0",
-    altitude: "1000",
+    e: "",
+    altitude: "",
     //saída
     co: "",
     do: "",
@@ -64,16 +64,16 @@ function Home() {
 
 
   const prev = () => {
-    setProgressWidth(progressWidth - 9);
+    // setProgressWidth(progressWidth - 9);
     setStep(step - 1);
   };
   const next = () => {
-    setProgressWidth(progressWidth + 9);
+    // setProgressWidth(progressWidth + 9);
     setStep(step + 1);
   };
 
   const resetStep = () => {
-    setProgressWidth(8);
+    // setProgressWidth(8);
     setStep(1);
   };
 
@@ -83,7 +83,7 @@ function Home() {
         <TitlePage>
           <h1>AutoDepura</h1>
         </TitlePage>
-        <Progress width={`${progressWidth}%`} />
+        {/* <Progress width={`${progressWidth}%`} /> */}
         {step === 0 && <Step0 data={data} setStep={setStep} setRestartStep={setRestartStep} />}
         {step === 1 && <Step1 data={data} setData={setData} />}
         {step === 2 && <Step2 data={data} setData={setData} restartStep={resetStep} />}

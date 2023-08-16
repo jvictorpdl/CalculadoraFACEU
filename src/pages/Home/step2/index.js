@@ -90,7 +90,7 @@ export default function Step2(props) {
   return (
     <Content>
       <CardInput>
-      <Title title="Dados morfométricos e ambientais"/>
+        <Title title="Dados morfométricos e ambientais" />
         <Form>
           <ItemForm
             title="K1(20ºC)"
@@ -126,7 +126,7 @@ export default function Step2(props) {
         <ItemForm
           title="K1"
           sub="T"
-          unity= "1/dia"
+          unity="1/dia"
           locale="k1t"
           setData={props.setData}
           data={props.data}
@@ -136,8 +136,8 @@ export default function Step2(props) {
         />
       </CardInput>
       <CardHelp>
-      <Title title="Informações auxiliares"/>
-          <br/>
+        <Title title="Informações auxiliares" />
+        <br />
         <HelpModal title="Clique para auxílio em K1" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (K1)">
           <div>
@@ -159,7 +159,7 @@ export default function Step2(props) {
           <h5>Fonte: Von Sperling (2005)</h5>
 
         </Modal>
-        ajuda 2</CardHelp>
+      </CardHelp>
     </Content>
   );
 }

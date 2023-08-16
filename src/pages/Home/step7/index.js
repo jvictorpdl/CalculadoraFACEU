@@ -23,7 +23,7 @@ export default function Step7(props) {
   return (
     <Content>
       <CardInput>
-      <Title title="Dados do esgoto"/>
+        <Title title="Dados do esgoto" />
 
         <FormTwo>
           <ItemForm
@@ -59,7 +59,7 @@ export default function Step7(props) {
         />
       </CardInput>
       <CardHelp>
-        <Title title="Informações auxiliares"/>
+        <Title title="Informações auxiliares" />
 
         <HelpModal title="Clique para auxílio em DBOe" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição da demando bioquímica do esgoto (DBOe)">
@@ -71,8 +71,7 @@ export default function Step7(props) {
           <h5>Fonte: Von Sperling (2005)</h5>
 
         </Modal>
-        ajuda 7
-        </CardHelp>
+      </CardHelp>
     </Content>
   );
 }

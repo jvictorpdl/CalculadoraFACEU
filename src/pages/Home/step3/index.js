@@ -33,7 +33,7 @@ export default function Step3(props) {
         up: "-1",
         final: ")",
       },
-      
+
     ],
     lines: [
       [
@@ -130,7 +130,7 @@ export default function Step3(props) {
   return (
     <Content>
       <CardInput>
-      <Title title="Dados morfométricos e ambientais"/>
+        <Title title="Dados morfométricos e ambientais" />
 
         <Form>
 
@@ -223,7 +223,7 @@ export default function Step3(props) {
         />
       </CardInput>
       <CardHelp>
-      <Title title="Informações auxiliares"/>
+        <Title title="Informações auxiliares" />
 
         <HelpModal title="Clique aqui para auxílio em K2" handle={openModal} />
         <Modal
@@ -246,7 +246,7 @@ export default function Step3(props) {
           </p>
           <h5>Fonte: Von Sperling (2005)</h5>
         </Modal>
-        ajuda 3
+
       </CardHelp>
     </Content>
   );

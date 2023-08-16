@@ -1,4 +1,4 @@
-import { Container, Header, Content } from "./styles"
+import { Container, Header, Content, ContainerChildren } from "./styles"
 import ModalComp from 'react-modal'
 import CloseIcon from "../../assets/Close.svg"
 import "./style.css"
@@ -24,8 +24,11 @@ export default function Modal(props) {
                     <img onClick={props.closeModal} src={CloseIcon} />
                 </Header>
                 <Content>
+                    <ContainerChildren>
+
                     {props.children}
 
+                    </ContainerChildren>
                 </Content>
             </ModalComp>
         </Container>

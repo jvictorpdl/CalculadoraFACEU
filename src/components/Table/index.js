@@ -12,6 +12,7 @@ export default function Table(props) {
                     return (
                         <th key={index} colSpan={th.colspan} rowSpan={th.rowspan}>
                             {th.content}
+                    
                             {th.sub &&
                                 <sub>{th.sub}</sub>
                             }
@@ -28,10 +29,11 @@ export default function Table(props) {
 
             {props.table.lines.map((tr, index) => {
                 return (
-                    <tr key={index}>
+                    <tr key={index} colSpan={tr.colspan} rowSpan={tr.rowspan}>
                         {tr.map((td, i) => {
+
                             return (
-                                <td key={i + "a"}>
+                                <td key={i + "a"} colSpan={td.colspan} rowSpan={td.rowspan}>
                                     {td.content}
                                 </td>
                             )

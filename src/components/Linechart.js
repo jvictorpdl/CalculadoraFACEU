@@ -4,7 +4,6 @@ import Chart from "react-apexcharts"
 
 function Linechart(props)
 {
-  console.log("props: ",props);
     return(<React.Fragment>
         <div className="container-fluid mt-3 mb-3">
             {/* <h2>Perfil de OD</h2> */}

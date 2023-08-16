@@ -5,6 +5,14 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
+export const ContainerChildren = styled.div`
+  display: block;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  width: auto;
+
+`;
 export const Header = styled.div`
 display: flex;
 justify-content: space-between;
