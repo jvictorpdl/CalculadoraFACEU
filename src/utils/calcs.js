@@ -1,5 +1,6 @@
 /* eslint-disable no-lone-blocks */
 export const Calculadora = (props) => {
+  console.log(props);
   const entrada = {
     qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
     odr: Number(String(props.odr).replaceAll('.', '').replace(',', '.')),
@@ -37,8 +38,7 @@ export const Calculadora = (props) => {
     ct: 0,
     lancamentos: props.lancamentos,
   };
-  let neperiano = 2.7182818285;
-
+  console.log(entrada);
 
 
 
@@ -46,6 +46,7 @@ export const Calculadora = (props) => {
   const ctVet = [];
   const odminVet = [];
   const kmvet = [];
+  console.log("props", entrada);
 
   if (entrada.k120c) {
     entrada.k1t =
@@ -58,6 +59,7 @@ export const Calculadora = (props) => {
     entrada.k2t =
       entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
 
+   
   } else if (entrada.h) {
     if (
       entrada.h < 4 &&
@@ -116,6 +118,7 @@ export const Calculadora = (props) => {
 
 
     //DADOS DE SAÍDA
+    //adicionar comentario
     entrada.co =
       (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
       (entrada.qr + entrada.qe);
@@ -127,6 +130,7 @@ export const Calculadora = (props) => {
       qe_qe += lancamento.qe;
 
     })
+    console.log("variaveis para o co------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
 
     entrada.co =
       (entrada.qr * entrada.odr + entrada.qe * entrada.ode + qeXode) /
@@ -134,8 +138,10 @@ export const Calculadora = (props) => {
   } else {
     entrada.co =
       (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
-      (entrada.qr + entrada.qe); 
-    
+      (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
+    console.log("co: ", entrada.co);
+    console.log("variaveis para o co/////////////////////////////: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
+    console.log("co: ", entrada.co);
 
   }
 
@@ -155,7 +161,7 @@ export const Calculadora = (props) => {
 
       entrada.lo = entrada.dbo5 * entrada.kt;
 
-
+    
     } else {
       entrada.dbo5 =
         (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) /
@@ -165,7 +171,7 @@ export const Calculadora = (props) => {
         1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
 
       entrada.lo = entrada.dbo5 * entrada.kt;
-    
+
     }
   }
 
@@ -178,22 +184,24 @@ export const Calculadora = (props) => {
         ((entrada.do * (entrada.k2t - entrada.k1t)) / entrada.lo) *
         entrada.k1t)
     );
-  
 
   entrada.dc = entrada.tc * entrada.velocidade * 86400;
+  // entrada.dc = Number(entrada.dc).toFixed(2)
 
+  // eslint-disable-next-line no-lone-blocks
   {
     //ODC
     //deficitc = defice crítico
     entrada.deficitc =
       (entrada.k1t / entrada.k2t) *
       entrada.lo *
-      Math.pow(neperiano, -entrada.k1t * entrada.tc);
+      Math.pow(2.7182818285, -entrada.k1t * entrada.tc);
     // entrada.deficitc = Number(entrada.deficitc).toFixed(2)
 
-   
+
     entrada.odc = entrada.cslinha - entrada.deficitc; //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
   }
+
 
   for (let i = 0; i <= entrada.particoes; i++) {
     particoesVet.push(i);
@@ -206,20 +214,22 @@ export const Calculadora = (props) => {
       entrada.ct = entrada.co;
 
     } else {
+
       entrada.ct =
         entrada.cslinha -
         (((entrada.k1t * entrada.lo) / (entrada.k2t - entrada.k1t)) *
-          (Math.pow(neperiano, -entrada.k1t * tempop) -
-            Math.pow(neperiano, -entrada.k2t * tempop)) +
+          (Math.pow(2.7182818285, -entrada.k1t * tempop) -
+            Math.pow(2.7182818285, -entrada.k2t * tempop)) +
           (entrada.cslinha - entrada.co) *
-          Math.pow(neperiano, -entrada.k2t * tempop));
+          Math.pow(2.7182818285, -entrada.k2t * tempop));
 
+ 
     }
 
     let aux = entrada.distancia / entrada.particoes;
     kmvet.push((aux * i) / 1000);
     ctVet.push(entrada.ct.toFixed(2));
-    
+
   }
   const resultado = {
     ctVet,
@@ -227,6 +237,5 @@ export const Calculadora = (props) => {
     particoesVet,
     kmvet,
   };
-  
   return resultado;
 };
