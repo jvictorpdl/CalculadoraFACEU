@@ -31,21 +31,21 @@ export const Calculadora = (props) => {
   if(represa === false){
 
     // Concentração de coliformes na mistura esgoto-rio (equação da mistura):
-    concentracaoColiformesMistura = ((qr * nr) + (qe * nr)) / (qr + qe);
+    entrada.concentracaoColiformesMistura = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
       
     // Perfil da concentracao ao longo da distancia 
-    kbt = kb20 * Math.pow(teta, (temperatura - 20));
+    entrada.kbt = entrada.kb20 * Math.pow(entrada.teta, (entrada.temperatura - 20));
     //resulta em uma variavel 1/d
       
-    n = n0 * Math.pow(neperiano, (kbt * t));
+    entrada.n = entrada.n0 * Math.pow(entrada.neperiano, (entrada.kbt * entrada.t));
       
-    d = v * t;
+    entrada.d = entrada.v * entrada.t;
       
     // Concentração máxima permissível de coliformes nos esgotos:
-    concentracaoMaxPermitidaEsgotos = (nop * (qr + qe) - (qr*nr)) / qe;
+    entrada.concentracaoMaxPermitidaEsgotos = (entrada.nop * (entrada.qr + entrada.qe) - (entrada.qr*entrada.nr)) / entrada.qe;
       
     // Eficiencia requerida para a remocao de coliformes fecais no tratamentos de esgotos
-    eficiencia = (ne - nep) / ne
+    entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne
     //Ne é a concentração de coliformes fecais no esgoto, onde usamos o esgoto bruto nesse exemplo, descobrir oq significa o p no segundo Ne
       
   }
@@ -54,19 +54,19 @@ export const Calculadora = (props) => {
   if (represa === true){
 
     // Concentração de coliformes na mistura esgoto-rio (equação da mistura):
-    concentracaoColiformesMistura = ((qr * nr) + (qe * nr)) / (qr + qe);    
+    entrada.concentracaoColiformesMistura = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);    
 
     //vazao total afluente a represa
-    q = qr + qe;
+    entrada.q = entrada.qr + entrada.qe;
     
     //Tempo de detenção na represa
-    t = v / q;
+    entrada.t = entrada.v / entrada.q;
 
     //Concentracao coliformes na represa
-    concentracaoColiformesRepresa = n0 / (1 + kb * t);
+    entrada.concentracaoColiformesRepresa = entrada.n0 / (1 + entrada.kb * entrada.t);
 
     //Concentracao maxima permissivel no esgoto para atendimento ao padrão para a represa
-    concentracaoMaxPermitidaEsgotos = n * (1 + kb * t)
+    entrada.concentracaoMaxPermitidaEsgotos = entrada.n * (1 + entrada.kb * entrada.t)
 
   }
  

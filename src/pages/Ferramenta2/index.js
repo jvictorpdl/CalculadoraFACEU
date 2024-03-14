@@ -97,22 +97,14 @@ function Ferramenta2() {
 
 
         <ButtonsSteps>
-          {(step === 1 || step === 0 || step === 10) && (
+          {(step === 1 || step === 0 || step === 10 || step === 6|| step === 2) && (
             <Button color="tertiary"  />
             )}
             {/**botoes para voltar ao menu inicial do step 0 */}
-          {(step === 2 || step === 6) && (
-            <Button text="Voltar" handle={() => { setStep(0); setRestartStep(true) }} />
-          )}
-          {/**botoes para retornar um step */}
-          {(step > 2 && step < 6)&& (
-              <Button text="Voltar" handle={() => prev()} />
-          )}
-          {step === 7 && (
-              <Button text="Voltar" handle={() => prev()} />
-          )}
+
+
           {/* botões para retornar ao step 0 ao concluir a inserção de dados */}
-          {(step === 1 || step === 5 || step === 7) && (
+          {(step === 1 || step === 2 || step === 6) && (
 
             <Button color="primary" text="Confirmar" handle={() => { setStep(0); setRestartStep(true) }} />
 
@@ -124,12 +116,8 @@ function Ferramenta2() {
 
           )}
           {/**botoes para avançar um step */}
-          {(step < 5 && step > 1) && (
-              <Button color="primary" text="Próximo" handle={() => next()}/>
-          )}
-          {step === 6 && (
-              <Button color="primary" text="Próximo" handle={() => next()} /> //lembrar de colocar o handle em todos os botoes
-          )}
+       
+
           {step === 8 && (
               <Button color="primary" text="Calcular" handle={() => next()} />
           )}
