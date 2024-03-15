@@ -95,8 +95,8 @@ export default function Step2(props) {
           />
           <ItemForm
             title="d"
-            unity="km"
-            locale="k120c"
+            unity="m"
+            locale="distancia"
             setData={props.setData}
             data={props.data}
             tooltip="Distância do percurso"
