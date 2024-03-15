@@ -44,7 +44,7 @@ export const Calculadora = (props) => {
     n0 = ((qr * nr) + (qe * ne)) / (qr + qe);
 
     // Perfil da concentracao ao longo da distancia 
-    entrada.kbt = entrada.kb20 * Math.pow(entrada.teta, (entrada.temperatura - 20));
+    kbt = kb20 * Math.pow(teta, (temperatura - 20));
     //resulta em uma variavel 1/d
 
 
@@ -99,13 +99,13 @@ export const Calculadora = (props) => {
     q = qr + qe;
 
     //Tempo de detenção na represa
-    entrada.t = entrada.v / entrada.q;
+    t = v / q;
 
     //Concentracao coliformes na represa
-    entrada.concentracaoColiformesRepresa = entrada.n0 / (1 + entrada.kb * entrada.t);
+    concentracaoColiformesRepresa = n0 / (1 + kb * t);
 
     //Concentracao maxima permissivel no esgoto para atendimento ao padrão para a represa
-    entrada.concentracaoMaxPermitidaEsgotos = entrada.n * (1 + entrada.kb * entrada.t)
+    concentracaoMaxPermitidaEsgotos = n * (1 + kb * t)
 
   }
 
