@@ -2,6 +2,7 @@ import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import Title from "../../../components/Title";
+import FormTwo from "../../../components/FormTwo";
 
 export default function Step8(props) {
   function calculalancamentos() {
@@ -12,7 +13,7 @@ export default function Step8(props) {
       <CardInput>
         <Title title="Dados do rio" />
 
-        <Form>
+        <FormTwo>
           <ItemForm
             title="Qr"
             unity={props.data.qr + " m³/s"}
@@ -24,35 +25,23 @@ export default function Step8(props) {
 
           />
           <ItemForm
-            title="ODr"
-            unity={props.data.odr + " mg/L"}
+            title="Nr"
+            unity={props.data.nr + " org/100mL"}
             disabled={true}
-            locale="odr"
+            locale="nr"
             setData={props.setData}
             data={props.data}
-            tooltip="Oxigênio dissolvido"
+            tooltip="Concentração de coliformes no rio, a montante do lançamento"
 
           />
-          <ItemForm
-            title="DBOr"
-            disabled={true}
-            unity={props.data.dbor + " mg/L"}
-            locale="dbor"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Demanda bioquímica de oxigênio"
-
-          />
-
-
-
-        </Form>
+          
+        </FormTwo>
 
       </CardInput>
       <CardInput>
         <Title title="Dados do esgoto" />
 
-        <Form>
+        <FormTwo>
           <ItemForm
             title="Qe"
             disabled={true}
@@ -65,118 +54,74 @@ export default function Step8(props) {
 
           />
           <ItemForm
-            title="ODe"
+            title="Ne"
             disabled={true}
-            unity={props.data.ode + " mg/L"}
-            locale="ODe"
+            unity={props.data.ne + " org/100mL"}
+            locale="ne"
             setData={props.setData}
             data={props.data}
-            tooltip="Oxigênio dissolvido"
+            tooltip="Concentração de coliformes no esgoto"
 
           />
-          <ItemForm
-            title="DBOe"
-            disabled={true}
-            unity={props.data.dboe + " mg/L"}
-            locale="DBOe"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Demanda bioquímica de oxigênio"
-
-          />
-        </Form>
+          
+        </FormTwo>
       </CardInput>
       <CardInput>
         <Title title="Dados morfométricos e ambientais" />
 
         <Form>
           <ItemForm
-            title="v"
+            title="T"
             disabled={true}
-            unity={props.data.cslinha + "m/s"}
-            locale="velocidade"
+            unity={props.data.cslinha + " ºC"}
+            locale="temperratura"
             setData={props.setData}
             data={props.data}
-            tooltip="Velocidade"
+            tooltip="Temperatura do líquido"
 
           />
+            <ItemForm
+              title="d"
+              unity={props.data.distancia + " m"}
+              disabled={true}
+              locale="distancia"
+              setData={props.setData}
+              data={props.data}
+              tooltip="Distancia do percursso"
+  
+            />
           <ItemForm
-            title="H"
-            unity={props.data.h + " m"}
+            title="v"
+            unity={props.data.h + " m/s"}
             disabled={true}
-            locale="h"
+            locale="v"
             setData={props.setData}
             data={props.data}
-            tooltip="Profundidade"
+            tooltip="Velocidade do curso d'água"
 
           />
           
-          <ItemForm
-            title="d"
-            unity={props.data.distancia + " m"}
-            disabled={true}
-            locale="distancia"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Distancia"
-
-          />
            <ItemForm
-            title="t"
+            title="Kb"
             disabled={true}
-            unity={props.data.tempo + " dia"}
-            locale="t"
+            unity={props.data.tempo + " 1/dia"}
+            locale="kb"
             setData={props.setData}
             data={props.data}
-            tooltip="Tempo de percurso"
+            tooltip="Coeficiente de decaimento bacteriano"
 
           />
           <ItemForm
-            title="k1"
-            sub="T"
+            title="θ para Kb"
+            // sub="T"
             disabled={true}
             unity={props.data.odmin + "  1/dia"}
-            locale="k1t"
+            locale="tetakb"
             setData={props.setData}
             data={props.data}
-            tooltip="Coeficiente de desoxigenação a uma temperatura (T)"
+            tooltip="Coeficiente de temperatura"
           />
-          <ItemForm
-            title="k2"
-            sub="T"
-            disabled={true}
-            unity={props.data.k2t + "  1/dia"}
-            locale="k2t"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Coeficiente de reaeração a uma temperatura (T)"
-
-          />
-
-         
-          <ItemForm
-            title="Cs'"
-            disabled={true}
-            unity={props.data.cslinha + " mg/L"}
-            locale="cslinha"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Concentração de saturação na altitude (h)"
-
-          />
-          <ItemForm
-            title="ODmín"
-            unity={props.data.odmin + " mg/L"}
-            disabled={true}
-            locale="odmin"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Oxigênio dissolvido mínimo"
-
-          />
-
-
-
+          
         </Form>
 
       </CardInput>
