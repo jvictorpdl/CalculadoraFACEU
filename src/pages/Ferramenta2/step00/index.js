@@ -23,15 +23,15 @@ export default function Step0(props) {
         <Container>
 
           <ContainerFor>
-          <Box boxname="Dados 1" setStep={props.setStep} numberStep={6} />
+          <Box boxname="Dados do Rio" setStep={props.setStep} numberStep={1} />
           </ContainerFor>
 
           <ContainerFor>
-          <Box boxname="Dados 2" setStep={props.setStep} numberStep={2} />
+          <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />
           </ContainerFor>
 
           <ContainerFor>
-          <Box boxname="Dados 3" setStep={props.setStep} numberStep={1} />
+          <Box boxname="Dados adicionais" setStep={props.setStep} numberStep={2} />
           </ContainerFor>
 
         </Container>

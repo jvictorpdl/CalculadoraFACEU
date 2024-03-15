@@ -12,7 +12,7 @@ import Table from "../../../components/Table";
 
 export default function Step2(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalIsOpen2, setIsOpen2] = useState(false);
+  // const [modalIsOpen2, setIsOpen2] = useState(false);
   const table = {
     header: [
       {
@@ -75,41 +75,15 @@ export default function Step2(props) {
   function openModal() {
     setIsOpen(true);
   }
-  function openModal2() {
-    setIsOpen2(true);
-  }
-
-
-
   function closeModal() {
     setIsOpen(false);
   }
-  function closeModal2() {
-    setIsOpen2(false);
-  }
+ 
   return (
     <Content>
       <CardInput>
         <Title title="Dados morfométricos e ambientais" />
         <Form>
-          <ItemForm
-            title="K1(20ºC)"
-            unity="1/dia"
-            locale="k120c"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Coeficiente de desoxigenação(20ºC)"
-
-          />
-          <ItemForm
-            title="θ para K1"
-            unity="ad."
-            locale="tetak1"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Coeficiente de temperatura"
-
-          />
           <ItemForm
             title="T"
             unity="ºC"
@@ -119,27 +93,50 @@ export default function Step2(props) {
             tooltip="Temperatura do líquido"
 
           />
+          <ItemForm
+            title="d"
+            unity="km"
+            locale="k120c"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Distância do percurso"
+
+          />
+          <ItemForm
+            title="v"
+            unity="m/s"
+            locale="v"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Velocidade do curso d'água"
+
+          />
+          <ItemForm
+            title="Kb"
+            unity="1/dia"
+            locale="kb" //criar
+            setData={props.setData}
+            data={props.data}
+            tooltip="Coeficiente de decaimento bacteriano"
+
+          />
+          <ItemForm
+            title="θ para Kb"
+            unity="1/dia"
+            locale="tetakb"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Coeficiente de temperatura"
+
+          />
         </Form>
-
-        <Subtitle>Ou</Subtitle>
-
-        <ItemForm
-          title="K1"
-          sub="T"
-          unity="1/dia"
-          locale="k1t"
-          setData={props.setData}
-          data={props.data}
-          tooltip="Coeficiente de desoxigenação a uma temperatura(T)"
-
-
-        />
       </CardInput>
+
       <CardHelp>
         <Title title="Informações auxiliares" />
         <br />
-        <HelpModal title="Clique para auxílio em K1" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (K1)">
+        {/* <HelpModal title="Clique para auxílio em K1" handle={openModal} /> */}
+        {/* <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (K1)">
           <div>
 
             <p>Valores típicos de K1 (base e, 20°C)</p>
@@ -149,14 +146,15 @@ export default function Step2(props) {
             <h5>Fonte: Adaptado de Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
           </div>
 
-        </Modal>
+        </Modal> */}
 
-        <HelpModal title="Clique para auxílio em θ para K1" handle={openModal2} />
-        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em θ para K1">
+        <HelpModal title="Clique para auxílio em θ para b1" handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para K1">
           <p>
-            Valor usual de θ é de 1,047 (acréscimo de 4,7% em K1 para cada aumento de 1 °C na temperatura da água).
+            Valor usual de θ é de 1,07.
           </p>
-          <h5>Fonte: Von Sperling (2005)</h5>
+          <br />
+          <h5>Fonte: Castignino (1977); Thomann e Mueller (1987) apud Von Sperling (2005)</h5>
 
         </Modal>
       </CardHelp>

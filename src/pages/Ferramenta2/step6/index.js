@@ -34,12 +34,12 @@ export default function Step6(props) {
 
           />
           <ItemForm
-            title="ODe"
-            unity="mg/L"
-            locale="ode"
+            title="Ne"
+            unity="org/100mL"
+            locale="ne" //criar
             setData={props.setData}
             data={props.data}
-            tooltip="Oxigênio dissolvido"
+            tooltip="Concentração de coliformes no esgoto"
 
           />
         </FormTwo>

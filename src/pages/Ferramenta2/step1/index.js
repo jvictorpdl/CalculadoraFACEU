@@ -1,11 +1,11 @@
 import { CardInput, CardHelp, Content } from "../styleSteps";
-import Form from "../../../components/Form";
 import Title from "../../../components/Title"
 import ItemForm from "../../../components/ItemForm";
 import Modal from "../../../components/Modal";
 import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
 import Table from "../../../components/Table";
+import FormTwo from "../../../components/FormTwo";
 
 export default function Step1(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -153,7 +153,7 @@ export default function Step1(props) {
     <Content>
       <CardInput>
         <Title title="Dados do rio" />
-        <Form>
+        <FormTwo>
           <ItemForm
             title="Qr"
             unity="m³/s"
@@ -162,17 +162,17 @@ export default function Step1(props) {
             data={props.data}
             tooltip="Vazão"
           />
-          <ItemForm
-            title="ODr"
-            unity="mg/L"
-            locale="odr"
+          <ItemForm //mudar para select com 3 opções (classes 1,2 e 3)
+            title="Nr"
+            unity="org/100mL"
+            locale="nr" //criar
             setData={props.setData}
             data={props.data}
-            tooltip="Oxigênio dissolvido"
+            tooltip="Concentração de coliformes no rio, a montante do lançamento"
 
 
           />
-          <ItemForm
+          {/* <ItemForm
             title="DBOr"
             unity="mg/L"
             locale="dbor"
@@ -189,12 +189,12 @@ export default function Step1(props) {
             data={props.data}
             tooltip="Oxigênio dissolvido mínimo"
 
-          />
+          /> */}
           {/* {props.data.qr}
           {props.data.odr}
           {props.data.dbor}
           {props.data.odmin} */}
-        </Form>
+        </FormTwo>
       </CardInput>
       <CardHelp>
         <Title title="Informações auxiliares" />
