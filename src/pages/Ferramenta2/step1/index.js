@@ -172,31 +172,10 @@ export default function Step1(props) {
 
 
           />
-          {/* <ItemForm
-            title="DBOr"
-            unity="mg/L"
-            locale="dbor"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Demanda bioquímica de oxigênio"
-
-          />
-          <ItemForm
-            title="ODmín"
-            unity="mg/L"
-            locale="odmin"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Oxigênio dissolvido mínimo"
-
-          /> */}
-          {/* {props.data.qr}
-          {props.data.odr}
-          {props.data.dbor}
-          {props.data.odmin} */}
+          
         </FormTwo>
       </CardInput>
-      <CardHelp>
+      {/* <CardHelp>
         <Title title="Informações auxiliares" />
         <br />
         <HelpModal title="Clique aqui para auxílio em ODr" handle={openModal} />
@@ -234,7 +213,7 @@ export default function Step1(props) {
         </Modal>
 
 
-      </CardHelp>
+      </CardHelp> */}
     </Content>
   );
 }

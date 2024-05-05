@@ -130,99 +130,21 @@ export default function Step3(props) {
   return (
     <Content>
       <CardInput>
-        <Title title="Dados morfométricos e ambientais" />
-
-        <Form>
-
-          <ItemForm
-            title="v"
-            unity="m/s"
-            locale="velocidade"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Velocidade"
-
-
-          />
-          <ItemForm
-            title="θ para K2"
-            unity="ad."
-            locale="tetak2"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Coeficiente de temperatura"
-
-
-          />
-          <ItemForm
-            title="T"
-            unity={props.data.temperatura + " °C"}
-            locale="temperatura"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Temperatura do líquido"
-
-
-          />
-          <ItemForm
-            title="H"
-            unity="m"
-            locale="h"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Profundidade"
-
-          />
-          {/*<ItemSelect options={options} required />*/}
-        </Form>
-
-        <Subtitle>Ou</Subtitle>
-
-        <Form>
-          <ItemForm
-            title="K2 (20ºC)"
-            unity="1/dia"
-            locale="k220c"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Coeficiente de reaeração(20ºC)"
-
-          />
-          <ItemForm
-            title="θ para K2"
-            unity="ad."
-            locale="tetak2"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Coeficiente de temperatura"
-
-          />
-
-          <ItemForm
-            title="T"
-            unity={props.data.temperatura + " °C"}
-            locale="temperatura"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Temperatura do líquido"
-
-          />
-        </Form>
-
-        <Subtitle>Ou</Subtitle>
+        <Title title="Dados da Mistura" />
 
         <ItemForm
-          title="K2"
-          sub="T"
-          unity="1/dia"
-          locale="k2t"
-          setData={props.setData}
-          data={props.data}
-          tooltip="Coeficiente de reaeração a temperatura"
+            title="Nop"
+            unity="org/100 mL"
+            locale="" //ATENCAO PARA TERMINAR ESTE INPUT
+            setData={props.setData}
+            data={props.data}
+            tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"
 
-        />
+          />
+         
       </CardInput>
       <CardHelp>
+        {/* adicionar a tabela para ajuda Nop */}
         <Title title="Informações auxiliares" />
 
         <HelpModal title="Clique aqui para auxílio em K2" handle={openModal} />
@@ -235,18 +157,7 @@ export default function Step3(props) {
           <Table table={table} />
           <h5>Fonte: Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
         </Modal>
-        <HelpModal title="Clique para auxílio em θ para K2" handle={openModal2} />
-        <Modal
-          modalIsOpen={modalIsOpen2}
-          closeModal={closeModal2}
-          title="Auxílio em θ para k2"
-        >
-          <p>
-            Valor usual de θ é de 1,024.
-          </p>
-          <h5>Fonte: Von Sperling (2005)</h5>
-        </Modal>
-
+       
       </CardHelp>
     </Content>
   );

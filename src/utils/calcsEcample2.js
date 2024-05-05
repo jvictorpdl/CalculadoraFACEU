@@ -41,20 +41,20 @@ export const Calculadora = (props) => {
   if (represa === false) {
 
     // Concentração de coliformes na mistura esgoto-rio (equação da mistura):
-    n0 = ((qr * nr) + (qe * ne)) / (qr + qe);
+    entrada.n0 = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.ne)) / (entrada.qr + entrada.qe);
 
     // Perfil da concentracao ao longo da distancia 
-    kbt = kb20 * Math.pow(teta, (temperatura - 20));
+    entrada.kbt = entrada.kb20 * Math.pow(entrada.teta, (entrada.temperatura - 20));
     //resulta em uma variavel 1/d
 
-
+    
 
     // tempo = (distancia / velocidade)/86400;
 
 
 
     for (let i = 0; i <= entrada.particoes; i++) {
-      particoesVet.push(i);
+      entrada.particoesVet.push(i);
 
       let tempop =
         ((entrada.distancia / entrada.particoes) * i) /
@@ -64,24 +64,24 @@ export const Calculadora = (props) => {
 
       } else {
 
-        ntempo = n0 * Math.pow(neperiano, (kbt * t));
+        entrada.ntempo = entrada.n0 * Math.pow(entrada.neperiano, (entrada.kbt * entrada.t));
         // para calcular pela segunda vez, o n0 irá se tornar o limite da classe (valores nas variaveis)
 
 
       }
 
       let aux = entrada.distancia / entrada.particoes;
-      kmvet.push((aux * i) / 1000);
-      ntempoVet.push(entrada.ntempo.toFixed(2));
+      entrada.kmvet.push((aux * i) / 1000);
+      entrada.ntempoVet.push(entrada.ntempo.toFixed(2));
 
     }
     //fazer isso como uma função recursiva para refazer o grafico de ntempo
-    if( n0 > classLimit){
+    if( entrada.n0 > entrada.classLimit){
       // Concentração máxima permissível de coliformes nos esgotos:
-      nep = (n0p * (qr + qe) - (qr * nr)) / qe;
+      entrada.nep = (entrada.n0p * (entrada.qr + entrada.qe) - (entrada.qr * entrada.nr)) / entrada.qe;
   
       // Eficiencia requerida para a remocao de coliformes fecais no tratamentos de esgotos
-      eficiencia = (ne - nep) / ne
+      entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne
       //Ne é a concentração de coliformes fecais no esgoto, onde usamos o esgoto bruto nesse exemplo, p é o maximo permissivel
     }
     //a eficiencia deve ser mostrada para o usuario
@@ -93,19 +93,19 @@ export const Calculadora = (props) => {
   if (represa === true) {
 
     // Concentração de coliformes na mistura esgoto-rio (equação da mistura):
-    n0 = ((qr * nr) + (qe * nr)) / (qr + qe);
+    entrada.n0 = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
 
     //vazao total afluente a represa
-    q = qr + qe;
+    entrada.q = entrada.qr + entrada.qe;
 
     //Tempo de detenção na represa
-    t = v / q;
+    entrada.t = entrada.v / entrada.q;
 
     //Concentracao coliformes na represa
-    concentracaoColiformesRepresa = n0 / (1 + kb * t);
+    entrada.concentracaoColiformesRepresa = entrada.n0 / (1 + entrada.kb * entrada.t);
 
     //Concentracao maxima permissivel no esgoto para atendimento ao padrão para a represa
-    concentracaoMaxPermitidaEsgotos = n * (1 + kb * t)
+    entrada.concentracaoMaxPermitidaEsgotos = entrada.n * (1 + entrada.kb * entrada.t)
 
   }
 

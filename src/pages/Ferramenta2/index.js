@@ -104,7 +104,7 @@ function Ferramenta2() {
 
 
           {/* botões para retornar ao step 0 ao concluir a inserção de dados */}
-          {(step === 1 || step === 2 || step === 6) && (
+          {(step === 1 || step === 2 || step === 6 || step ===3) && (
 
             <Button color="primary" text="Confirmar" handle={() => { setStep(0); setRestartStep(true) }} />
 

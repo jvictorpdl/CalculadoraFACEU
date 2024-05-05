@@ -129,6 +129,8 @@ export default function Step2(props) {
             tooltip="Coeficiente de temperatura"
 
           />
+
+
         </Form>
       </CardInput>
 
@@ -147,14 +149,15 @@ export default function Step2(props) {
           </div>
 
         </Modal> */}
-
-        <HelpModal title="Clique para auxílio em θ para b1" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para K1">
+        
+        <HelpModal title="Clique para auxílio em θ para Kb" handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
           <p>
-            Valor usual de θ é de 1,07.
+            Valor usual de θ é de 1,00 1/dia para a temperatura de 20º C.
           </p>
+          {/* editar para dia elevado a menos 1 dps */}
           <br />
-          <h5>Fonte: Castignino (1977); Thomann e Mueller (1987) apud Von Sperling (2005)</h5>
+          <h5>Fonte: Von Sperling (2005)</h5>
 
         </Modal>
       </CardHelp>

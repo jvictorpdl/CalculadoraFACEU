@@ -31,8 +31,14 @@ export default function Step0(props) {
           </ContainerFor>
 
           <ContainerFor>
-          <Box boxname="Dados adicionais" setStep={props.setStep} numberStep={2} />
+          <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} />
           </ContainerFor>
+          
+          <ContainerFor>
+          <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} />
+          </ContainerFor>
+
+
 
         </Container>
 
