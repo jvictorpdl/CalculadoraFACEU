@@ -42,7 +42,7 @@ export const CardBoard = styled.section`
 display: inline-flex;
 height: 450px;
 width: 800px;
-padding: 12px 14.998px 504.473px 11.998px;
+padding: 12px 15px 505px 12px;
 display: flex;
 flex-direction: column;
 align-items: center;

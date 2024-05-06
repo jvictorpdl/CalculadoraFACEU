@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 export  const Container = styled.div`
+width: 700px;
+
 display: flex;
 justify-content: space-between;
-margin: 50px -5;
+/* margin: 50px -5; */
 /* background-color: green; */
 
 `
@@ -12,7 +14,7 @@ width: 700px;
 //  background-color: red; 
 display: flex;
 justify-content: left;
-margin: 50px -5;
+/* margin: 50px -5; */
 `
 export  const ContainerThree = styled.div`
 // width: 700px;

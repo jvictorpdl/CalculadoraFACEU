@@ -58,7 +58,7 @@ padding: 32px;
 `;
 export const CardBoardFerramenta2 = styled.section`
 display: inline-flex;
-height: 450px;
+height: 525px;
 width: 400px;
 padding: 12px 14.998px 504.473px 11.998px;
 display: flex;
