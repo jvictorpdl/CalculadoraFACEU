@@ -6,125 +6,19 @@ import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
 import Table from "../../../components/Table";
 import FormTwo from "../../../components/FormTwo";
+import ItemSelect from "../../../components/ItemSelect";
+import Form from "../../../components/Form";
 
 export default function Step1(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalIsOpen2, setIsOpen2] = useState(false);
-  const [modalIsOpen3, setIsOpen3] = useState(false);
-
-  //tabelas
-  const tableDBOr = {
-    header: [
-      {
-        content: "Condição do rio"
-      },
-      {
-        content: 'DBO5 do rio (mg/L)',
-
-      }
-    ],
-    lines: [
-      [
-        {
-          content: 'Bastante limpo'
-        },
-        {
-          content: '1'
-        },
-      ],
-      [
-        {
-          content: 'Limpo'
-        },
-        {
-          content: '2'
-        },
-      ],
-      [
-        {
-          content: 'Razoalmente limpo'
-        },
-        {
-          content: '3'
-        },
-      ],
-      [
-        {
-          content: 'Duvidoso'
-        },
-        {
-          content: '5'
-        },
-      ],
-      [
-        {
-          content: 'Ruim'
-        },
-        {
-          content: '>10'
-        },
-
-      ],
-
-    ]
-  }
-  const tableOdmin = {
-    header: [
-      {
-        content: "Classe"
-      },
-      {
-        content: 'OD mínimo (mg/L)',
-
-      }
-    ],
-    lines: [
-      [
-        {
-          content: 'Especial'
-        },
-        {
-          content: 'Não são permitidos lançamentos, mesmo tratados.'
-        },
-      ],
-      [
-        {
-          content: '1'
-        },
-        {
-          content: '6,0'
-        },
-      ],
-      [
-        {
-          content: '2'
-        },
-        {
-          content: '5,0'
-        },
-      ],
-      [
-        {
-          content: '3'
-        },
-        {
-          content: '4,0'
-        },
-      ],
-      [
-        {
-          content: '4'
-        },
-        {
-          content: '2,0'
-        },
-
-      ],
-
-    ]
-  }
+ 
 
 
+  const options = [
+    {value: 'Classe 1', label:"Classe 1"},
+    {value: 'Classe 2', label:"Classe 2"},
+    {value: 'Classe 3', label:"Classe 3"}
+  ]
   //funções open Modal
   function openModal() {
     setIsOpen(true);
@@ -133,27 +27,13 @@ export default function Step1(props) {
   function closeModal() {
     setIsOpen(false);
   }
-  function openModal2() {
-    setIsOpen2(true);
-  }
-
-  function closeModal2() {
-    setIsOpen2(false);
-  }
-  function openModal3() {
-    setIsOpen3(true);
-  }
-
-  function closeModal3() {
-    setIsOpen3(false);
-  }
-
+  
 
   return (
     <Content>
       <CardInput>
         <Title title="Dados do rio" />
-        <FormTwo>
+        <Form>
           <ItemForm
             title="Qr"
             unity="m³/s"
@@ -172,8 +52,9 @@ export default function Step1(props) {
 
 
           />
+          <ItemSelect options={options}/>
           
-        </FormTwo>
+        </Form>
       </CardInput>
       {/* <CardHelp>
         <Title title="Informações auxiliares" />
