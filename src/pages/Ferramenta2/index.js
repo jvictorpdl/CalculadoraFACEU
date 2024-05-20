@@ -18,43 +18,35 @@ function Ferramenta2() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr: "", 
-    odr: "",
-    dbor: "",
-    odmin: "",
-    k120c: "",
-    tetak1: "",
-    temperatura: "",
-    k1t: "",
-    k220c: "",
-    tetak2: "",
-    h: "", //profundidade
-    k2t: "", //3.31
-    distancia: "",
-    velocidade: "",
-    particoes: "",
-    tempo: "",
-    cs: "",
-    cslinha: "",
-    qe: "",
-    ode: "",
-    dboe: "",
-    dboefl: "",
-    e: "",
-    altitude: "",
-    //saída
-    co: "",
-    do: "",
-    dbo5: "",
-    kt: "",
-    tc: "",
-    distanciac: "",
-    deficitc: "",
-    odc: "",
-    ct: "",
+    qr:0.651,
+    qe: 0.114,
+    temperatura: 23,
+    no: 0, // Concentracao de Coliformes na Mistura
+    nop: 0, // Concentracao Max permitida de Coliformes no ponto de mistura
+    nr: 0, // Concentração de coliformes no Rio a montante do lançamento 
+    ne: 0, //Concentração de coliformes no esgoto
+    ntempo: 0, // Concentração de coliformes ao longo do tempo ou da distancia
+    nep: 0, //Concentração máxima permissivel de coliformes no esgoto
+    kb: 0, //Coeficiente de decaimento bacteriano
+    kbt: 1.23, //Coeficiente de decaimento bacteriano a uma temperatura T
+    teta: 0, //Coeficiente de temperatura 
+    eficiencia: 0, //eficiencia de remoção de coliformes requerida no tratamento
+    tempo: 0, //tempo de percurso
+    velocidade: 0.35, //velocidade de percurso
+    distancia: 50000, //distancia de percurso
+    particoes: 10, // Quantidade de partições no qual o calculo sera feito
+    classLimit: 0,
+    classLimit1: 200,
+    classLimit2: 1000,
+    classLimit3: 4000,
 
-    ctvet: [],
-    lancamentos: [],
+    //REPRESA
+    tRepresa: 0,
+
+
+
+    neperiano: 2.7182818285,
+
 
   });
   // ctvet[]: React.useState([]),
