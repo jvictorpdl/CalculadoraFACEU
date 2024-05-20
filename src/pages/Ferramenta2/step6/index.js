@@ -5,19 +5,59 @@ import Modal from "../../../components/Modal";
 import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
 import Title from "../../../components/Title";
+import Table from "../../../components/Table";
 
 export default function Step6(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
+  const table = {
+    header: [
+      {
+        rowspan: 2,
+        content: 'Parâmetro'
+      },
+      {
+        rowspan: 2,
+        content: 'Unidade'
+      },
+      {
+        colspan: 4,
+        content: "Padrão do corpo d'água(água doce)/n CLasse",
+      },
+      {
+        rowspan: 2,
+        content: "Padrão de lançamento",
+      }
+    ],
+    lines: [
+      [
+
+        {content: '1'},
+        {content: '2'},
+        {content: '3'},
+        {content: '4'},
+      ],
+      [
+        {content: 'Coliformes termotolerantes'},
+        {content: 'NMP/100 mL'},
+        {content: '200'},
+        {content: '1000'},
+        {content: '4000'},
+        {content: '-'},
+        {content: 'Não há'},
+      ],
+
+
+    ]
+  }
   function openModal() {
     setIsOpen(true);
   }
-
-
-
   function closeModal() {
     setIsOpen(false);
   }
+
+
   return (
     <Content>
       <CardInput>
@@ -48,39 +88,15 @@ export default function Step6(props) {
       <CardHelp>
         <Title title="Informações auxiliares" />
 
-        <HelpModal title="Clique aqui para auxílio em ODe " handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no esgoto">
-          <h3>Não sendo possível coletar amostras, sugere-se para esgoto doméstico:</h3>
+        <HelpModal title="Clique aqui para auxílio em Ne " handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Concentração de coliformes no esgoto">
+         <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
           <br />
 
+          <Table table={table} />
 
-          <dl>
-            <dt><h3>
-              Esgoto bruto:
-            </h3>
-            </dt>
-            <dd><li>
-              ODe = 0 mg/L
-
-            </li>
-            </dd>
-            {/* <br /> */}
-
-
-            <dt><h3>
-
-              Esgoto tratado:
-            </h3>
-            </dt>
-            <dd>
-              <li>Tratamento primário: ODe = 0 mg/L;</li>
-              <li>Tratamento anaeróbio: ODe = 0 mg/L;</li>
-              <li>Lodos ativados, filtros biológicos percoladores e outros sistemas aeróbios similares: ODe = 2 mg/L ou mais;</li>
-              <li>Lagoas facultativas: ODe = 4 a 6 mg/L.</li>
-            </dd>
-          </dl>
           <br />
-          <h5>Fonte: Von Sperling (2005)</h5>
+          <h5>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</h5>
         </Modal>
       </CardHelp>
     </Content>
