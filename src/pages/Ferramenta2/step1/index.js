@@ -125,45 +125,7 @@ export default function Step1(props) {
           <h5>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</h5>
         </Modal>
       </CardHelp>
-      {/* <CardHelp>
-        <Title title="Informações auxiliares" />
-        <br />
-        <HelpModal title="Clique aqui para auxílio em ODr" handle={openModal} />
-        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Oxigênio dissolvido no rio" ariaHideApp={false}>
-          <p>
-            Não sendo possível coletar amostras, pode-se estimar a
-            concentração de ODr em função do grau de poluição do curso
-            d’água:</p>
-          <br />
-          <li>
-            curso d’água com poucos indícios de poluição: <br />
-            ODr pode ser de 80 a 90% do valor de saturação de oxigênio do rio;
-          </li>
-          <li>curso d'água bem poluído: <br />
-            incluir os principais focos poluidores (ODr será bem inferior ao teor de saturação).</li>
-
-          <br />
-          <h5>Fonte: Von Sperling (2005)</h5>
-        </Modal>
-        <HelpModal title="Clique aqui para auxílio em DBOr" handle={openModal2} />
-        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio na definição da demanda bioquímica de oxigênio (DBO5)">
-          <h3>Caso não possua, sugere-se o quadro abaixo:</h3>
-          <br />
-          <Table table={tableDBOr} />
-          <h5>Fonte: Klein (1962) apud Von Sperling (2005)</h5>
-
-        </Modal>
-        <HelpModal title="Clique aqui para auxílio em ODmín" handle={openModal3} />
-        <Modal modalIsOpen={modalIsOpen3} closeModal={closeModal3} title="Auxílio na definição do oxigênio dissolvido mínimo (ODmín)">
-          <h3>Caso não possua, sugere-se o quadro abaixo:</h3>
-          <br />
-          <Table table={tableOdmin} />
-          <h5>Fonte: Resolução CONAMA 357 (BRASIL, 2005)</h5>
-
-        </Modal>
-
-
-      </CardHelp> */}
+      
     </Content>
   );
 }

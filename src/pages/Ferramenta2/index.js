@@ -18,9 +18,9 @@ function Ferramenta2() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr:0.651,
-    qe: 0.114,
-    temperatura: 23,
+    qr:0,
+    qe: 0,
+    temperatura: 0,
     no: 0, // Concentracao de Coliformes na Mistura
     nop: 0, // Concentracao Max permitida de Coliformes no ponto de mistura
     nr: 0, // Concentração de coliformes no Rio a montante do lançamento 
@@ -28,17 +28,18 @@ function Ferramenta2() {
     ntempo: 0, // Concentração de coliformes ao longo do tempo ou da distancia
     nep: 0, //Concentração máxima permissivel de coliformes no esgoto
     kb: 0, //Coeficiente de decaimento bacteriano
-    kbt: 1.23, //Coeficiente de decaimento bacteriano a uma temperatura T
+    kbt: 0, //Coeficiente de decaimento bacteriano a uma temperatura T
     teta: 0, //Coeficiente de temperatura 
     eficiencia: 0, //eficiencia de remoção de coliformes requerida no tratamento
     tempo: 0, //tempo de percurso
-    velocidade: 0.35, //velocidade de percurso
-    distancia: 50000, //distancia de percurso
-    particoes: 10, // Quantidade de partições no qual o calculo sera feito
+    velocidade: 0, //velocidade de percurso
+    distancia: 0, //distancia de percurso
+    particoes: 0, // Quantidade de partições no qual o calculo sera feito
     classLimit: 0,
-    classLimit1: 200,
-    classLimit2: 1000,
-    classLimit3: 4000,
+    // classLimit1: 200,
+    // classLimit2: 1000,
+    // classLimit3: 4000,
+    represa: false,
 
     //REPRESA
     tRepresa: 0,
