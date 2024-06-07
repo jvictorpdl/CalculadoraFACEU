@@ -5,9 +5,7 @@ import Title from "../../../components/Title";
 import FormTwo from "../../../components/FormTwo";
 
 export default function Step8(props) {
-  function calculalancamentos() {
 
-  }
   return (
     <Content>
       <CardInput>
@@ -63,6 +61,26 @@ export default function Step8(props) {
             tooltip="Concentração de coliformes no esgoto"
 
           />
+          
+        </FormTwo>
+      </CardInput>
+
+      <CardInput>
+        <Title title="Dados da mistura" />
+
+        <FormTwo>
+          <ItemForm
+            title="Nop"
+            disabled={true}
+            unity={props.data.qe + " org/100 mL"}
+            locale="" //criar variavel
+            setData={props.setData}
+            data={props.data}
+            tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"
+
+
+          />
+         
           
         </FormTwo>
       </CardInput>
