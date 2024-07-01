@@ -5,7 +5,8 @@ export const ButtonPrimary = styled.button`
   font-size: 20px;
   padding: 5px 15px;
   border-radius: 8px;
-  background: #1A237A;
+  /* background: #1A237A; */
+  background: #2174d4;
   border: 2px solid #333;
   color: #fff;
   font-weight: bold;

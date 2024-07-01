@@ -27,7 +27,6 @@ export const ListItem = styled.div`
     color: black;
     text-decoration: wavy;
     font-size: 16px;
-    /* transition: background-color  0.3s; */
     transition: opacity 0.5s ease-in;
 
    
