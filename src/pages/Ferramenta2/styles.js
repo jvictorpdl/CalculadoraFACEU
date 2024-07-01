@@ -30,7 +30,7 @@ export const Progress = styled.hr`
 
 export const ButtonsSteps = styled.div`
   width: 100vw;
-  margin-top: 10px;
+  margin-top: 52px;
   padding-left: 57%;
   display: flex;
   column-gap: 20px;

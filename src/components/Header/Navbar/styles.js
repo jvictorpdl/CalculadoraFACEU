@@ -9,22 +9,26 @@ export const List = styled.ul`
 `;
 
 export const ListItem = styled.div`
-  height: 32px;
+  height: 58px;
   display: flex;
   align-items: center;
   margin-right: 8px;
   padding: 0px 4px 0px;
   border-radius: 4px;
 
+
   &:hover {
-    background-color: #333;
+    background-color: #318ce7;
     border-radius: 0.3s;
+    /* height: auto; */
   }
 
   a.route {
-    color: white;
-    text-decoration: none;
-    transition: background-color 0.3s;
+    color: black;
+    text-decoration: wavy;
+    font-size: 16px;
+    /* transition: background-color  0.3s; */
+    transition: opacity 0.5s ease-in;
 
    
   }

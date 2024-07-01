@@ -34,6 +34,19 @@ export const ButtonTertiary = styled.button`
   background-color: transparent;
   border: 0px;
 `;
+export const ButtonInative = styled.button`
+  width: 200px;
+  font-size: 20px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  background: gray;
+  border: 2px solid #333;
+  color: black;
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+`;
 
 /*export const ButtonPrimary = styled.button`
   .Button {

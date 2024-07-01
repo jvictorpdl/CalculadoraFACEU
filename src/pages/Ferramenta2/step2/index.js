@@ -129,6 +129,15 @@ export default function Step2(props) {
             tooltip="Coeficiente de temperatura"
 
           />
+          <ItemForm
+            title="Nº trechos"
+            unity="Quantidade"
+            locale="particoes"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Quantidade de segmentos"
+
+          />
 
 
         </Form>

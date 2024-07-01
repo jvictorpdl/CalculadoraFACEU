@@ -90,15 +90,23 @@ export default function Step1(props) {
             data={props.data}
             tooltip="Vazão"
           />
+          <ItemForm
+            title="Nr"
+            unity="NMP/100 mL"
+            locale="nr"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Concentração de coliformes no rio, a montante do lançamento"
+          />
 
-          <ItemSelect
+          {/* <ItemSelect
             title="Nr"
             options={optionsTwo}
             tooltip="Concentração de coliformes no rio, a montante do lançamento"
             locale="nr"
             setData={setFormData}
             data={formData}
-          />
+          /> */}
           <ItemSelect
             options={options}
             tooltip="Rio ou represa"

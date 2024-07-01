@@ -10,6 +10,7 @@ import Box from "../../../components/Box";
 import { Container, ContainerTwo, ContainerThree, ContainerFor } from "./styles";
 
 export default function Step0(props) {
+  const [represa, setRepresa] = useState(false);
   // const [goToRiver, setGoToRiver] = useState(false);
 
   // if (goToRiver) {
@@ -20,23 +21,69 @@ export default function Step0(props) {
     <Content>
       <CardBoardFerramenta2>
         {/* <Title title="Inserção de dados:" /> */}
+        <h1>INSERÇÃO DE DADOS</h1>
+        
         <Container>
+        {/* <Box
+                boxname="Dados do Rio"
+                setStep={props.setStep}
+                numberStep={1}
+                setRepresa={setRepresa}
+                represa={represa}
+            />
+            <Box
+                boxname="Dados da Represa"
+                setStep={props.setStep}
+                numberStep={2}
+                setRepresa={setRepresa}
+                represa={represa}
+            />
+            <Box
+                boxname="Outro Box Ativo"
+                setStep={props.setStep}
+                numberStep={3}
+                setRepresa={setRepresa}
+                represa={represa}
+            /> */}
+          <ContainerTwo>
 
           <ContainerFor>
-          <Box boxname="Dados do Rio" setStep={props.setStep} numberStep={1} />
+            <Box
+              boxname="Dados do Rio"
+              setStep={props.setStep}
+              numberStep={1}
+              represa={false}
+              setRepresa={setRepresa}
+            />
+          </ContainerFor>
+          Ou
+          <ContainerFor>
+            <Box
+              boxname="Dados da Represa"
+              setStep={props.setStep}
+              numberStep={1}
+              represa={false}
+              setRepresa={setRepresa}
+              />
+          </ContainerFor>
+              </ContainerTwo>
+<ContainerTwo>
+
+          <ContainerFor>
+            <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />
           </ContainerFor>
 
           <ContainerFor>
-          <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />
+            <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} />
           </ContainerFor>
 
           <ContainerFor>
-          <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} />
+            <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} />
           </ContainerFor>
-          
-          <ContainerFor>
-          <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} />
-          </ContainerFor>
+</ContainerTwo>
+<ContainerThree>
+
+</ContainerThree>
 
 
 

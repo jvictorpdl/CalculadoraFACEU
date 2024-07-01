@@ -58,8 +58,8 @@ padding: 32px;
 `;
 export const CardBoardFerramenta2 = styled.section`
 display: inline-flex;
-height: 525px;
-width: 400px;
+height: 325px;
+width: 975px;
 padding: 12px 14.998px 504.473px 11.998px;
 display: flex;
 flex-direction: column;
