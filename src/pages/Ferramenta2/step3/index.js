@@ -18,101 +18,48 @@ import HelpModal from "../../../components/HelpModal";
 
 export default function Step3(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalIsOpen2, setIsOpen2] = useState(false);
 
   const table = {
     header: [
       {
         rowspan: 2,
-        content: "Corpo d'água",
+        content: 'Parâmetro'
       },
       {
-        colspan: 2,
-        content: "K2 ",
-        mid: "(dia",
-        up: "-1",
-        final: ")",
+        rowspan: 2,
+        content: 'Unidade'
       },
-
+      {
+        colspan: 4,
+        content: "Padrão do corpo d'água(água doce)\nCLasse",
+      },
+      {
+        rowspan: 2,
+        content: "Padrão de lançamento",
+      }
     ],
     lines: [
       [
-        {
-          content: "Profundo",
-        },
-        {
-          content: "Raso",
-        },
-      ],
-      [
-        {
-          content: "Pequenas lagoas",
-        },
-        {
-          content: "0,12",
-        },
-        {
-          content: "0,23",
-        },
-      ],
-      [
-        {
-          content: "Rios vagarosos, grandes lagos",
-        },
-        {
-          content: "0,23",
-        },
-        {
-          content: "0,37",
-        },
-      ],
-      [
-        {
-          content: "Grandes rios com baixa velocidade",
-        },
-        {
-          content: "0,37",
-        },
-        {
-          content: "0,46",
-        },
-      ],
-      [
-        {
-          content: "Grandes rios com velocidade normal",
-        },
-        {
-          content: "0,46",
-        },
-        {
-          content: "0,69",
-        },
-      ],
-      [
-        {
-          content: "Rios rápidos",
-        },
-        {
-          content: "0,69",
-        },
-        {
-          content: "1,15",
-        },
-      ],
-      [
-        {
-          content: "Corredeiras e quedas d’água",
-        },
-        {
-          content: "> 1,15",
-        },
-        {
-          content: ">1,61",
-        },
-      ],
-    ],
-  };
 
+        {content: '1'},
+        {content: '2'},
+        {content: '3'},
+        {content: '4'},
+      ],
+      [
+        {content: 'Coliformes termotolerantes'},
+        {content: 'NMP/100 mL'},
+        {content: '200'},
+        {content: '1000'},
+        {content: '4000'},
+        {content: '-'},
+        {content: 'Não há'},
+      ],
+
+
+    ]
+  }
+  
   function openModal() {
     setIsOpen(true);
   }
@@ -120,13 +67,7 @@ export default function Step3(props) {
   function closeModal() {
     setIsOpen(false);
   }
-  function openModal2() {
-    setIsOpen2(true);
-  }
 
-  function closeModal2() {
-    setIsOpen2(false);
-  }
   return (
     <Content>
       <CardInput>
@@ -144,7 +85,21 @@ export default function Step3(props) {
          
       </CardInput>
       <CardHelp>
-        {/* adicionar a tabela para ajuda Nop */}
+        <Title title="Informações auxiliares" />
+
+        <HelpModal title="Clique aqui para auxílio em Nop " handle={openModal} />
+        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Concentração de coliformes no esgoto">
+         <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
+          <br />
+
+          <Table table={table} />
+
+          <br />
+          <h5>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</h5>
+        </Modal>
+      </CardHelp>
+      {/* <CardHelp>
+       // adicionar a tabela para ajuda Nop *
         <Title title="Informações auxiliares" />
 
         <HelpModal title="Clique aqui para auxílio em K2" handle={openModal} />
@@ -158,7 +113,7 @@ export default function Step3(props) {
           <h5>Fonte: Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
         </Modal>
        
-      </CardHelp>
+      </CardHelp> */}
     </Content>
   );
 }

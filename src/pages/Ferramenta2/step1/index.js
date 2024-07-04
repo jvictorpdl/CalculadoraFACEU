@@ -81,7 +81,7 @@ export default function Step1(props) {
     <Content>
       <CardInput>
         <Title title="Dados do rio" />
-        <Form>
+        <FormTwo>
           <ItemForm
             title="Qr"
             unity="m³/s"
@@ -107,7 +107,7 @@ export default function Step1(props) {
             setData={setFormData}
             data={formData}
           /> */}
-          <ItemSelect
+          {/* <ItemSelect
             options={options}
             tooltip="Rio ou represa"
             title="Tipo"
@@ -115,9 +115,9 @@ export default function Step1(props) {
             data={formData}
             setData={setFormData}
 
-          />
+          /> */}
           
-        </Form>
+        </FormTwo>
       </CardInput>
       <CardHelp>
         <Title title="Informações auxiliares" />
