@@ -47,6 +47,7 @@ export const ButtonInative = styled.button`
   cursor: pointer;
   text-align: center;
   line-height: 30px;
+  
 `;
 
 /*export const ButtonPrimary = styled.button`

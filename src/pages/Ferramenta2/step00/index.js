@@ -22,7 +22,7 @@ export default function Step0(props) {
       <CardBoardFerramenta2>
         {/* <Title title="Inserção de dados:" /> */}
         <h1>INSERÇÃO DE DADOS</h1>
-        
+
         <Container>
         {/* <Box
                 boxname="Dados do Rio"
@@ -56,13 +56,13 @@ export default function Step0(props) {
               setRepresa={setRepresa}
             />
           </ContainerFor>
-          Ou
+          <h3>Ou</h3>
           <ContainerFor>
             <Box
               boxname="Dados da Represa"
               setStep={props.setStep}
-              numberStep={1}
-              represa={false}
+              numberStep={4}
+              represa={true}
               setRepresa={setRepresa}
               />
           </ContainerFor>
