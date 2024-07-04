@@ -1,5 +1,5 @@
 import * as calc from "../../utils/calcs";
-import Linechart from "../../components/LinechartF2";
+import Linechart from "../../components/Linechart";
 import { CardInput } from "../Home/styleSteps";
 import alertIcon from "../../assets/alertIcon.svg"
 
