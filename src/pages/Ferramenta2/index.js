@@ -12,7 +12,7 @@ import Step6 from "./step6";
 import Step7 from "./step7";
 import Step8 from "./step8";
 import Step9 from "./step9";
-import Result from "../Result";
+import Result2 from "../ResultF2";
 
 function Ferramenta2() {
   const [step, setStep] = useState(0);
@@ -90,7 +90,7 @@ function Ferramenta2() {
         {step === 6 && <Step6 data={data} setData={setData} />}
         {step === 7 && <Step7 data={data} setData={setData} />}
         {step === 8 && <Step8 data={data} setData={setData} />}
-        {step === 9 &&<Result data={data} />}
+        {step === 9 && <Result2 data={data} />}
         {step === 10 && <Step9 data={data} setData={setData} />}
 
 
@@ -113,19 +113,18 @@ function Ferramenta2() {
             <Button text="Voltar" handle={() => { setStep(0); setRestartStep(true) }} />
 
           )}
-          {/**botoes para avançar um step */}
-       
-
-          {step === 8 && (
-              <Button color="primary" text="Calcular" handle={() => next()} />
-          )}
-
-
 
           {/*botao para conferir dados do step 0 */}
           {step === 0 && (
             <Button color="primary" text="Finalizar" handle={() => { setStep(8); setRestartStep(true) }} />
           )}
+          {/* botao para calcular */}
+          {step === 8 && (
+              <Button color="primary" text="Calcular" handle={() => { setStep(9); setRestartStep(true) }} />
+          )}
+
+
+
 
           {/*botoes na aba de resultado */}
           {step === 9 && (

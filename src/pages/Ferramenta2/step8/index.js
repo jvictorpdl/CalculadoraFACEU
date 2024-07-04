@@ -1,6 +1,6 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
-import { CardInput, CardHelp, Content } from "../styleSteps";
+import { CardInput, Content } from "../styleSteps";
 import Title from "../../../components/Title";
 import FormTwo from "../../../components/FormTwo";
 
@@ -73,7 +73,7 @@ export default function Step8(props) {
             title="Nop"
             disabled={true}
             unity={props.data.qe + " org/100 mL"}
-            locale="" //criar variavel
+            locale="nop" 
             setData={props.setData}
             data={props.data}
             tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"

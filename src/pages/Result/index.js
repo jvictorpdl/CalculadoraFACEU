@@ -15,7 +15,7 @@ export default function Result (props) {
       <Linechart ctVet={ctVet} odminVet={odminVet} particoesVet={particoesVet} kmvet={kmvet} />
       ||
       <CardInput>
-          <img src={ alertIcon } />
+          <img src={ alertIcon } alt="Icone de Alerta"/>
 
         <h1>Concentração negativa de oxigênio dissolvido!!! O modelo de Streeter-Phelps não tem validade para este caso.</h1>
       </CardInput>

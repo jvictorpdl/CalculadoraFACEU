@@ -1,5 +1,5 @@
 /* eslint-disable no-lone-blocks */
-export const Calculadora = (props) => {
+export const Calculadora2 = (props) => {
   console.log(props);
   //confirmar com fernando onde as variaveis poderiam ficar 
 
@@ -228,16 +228,18 @@ export const Calculadora = (props) => {
   // }
 
 
-const eficienciaTemp = entrada.eficiencia
+// const eficienciaAux = entrada.eficiencia
 
 let resultado2 = {}; 
 
 if (entrada.represa === true) {
-  resultado2.eficienciaTemp = eficienciaTemp;
+  resultado2.eficiencia = entrada.eficiencia;
 } else {
-  resultado2.particoesVet = particoesVet;
+  // resultado2.particoesVet = particoesVet;
   resultado2.ntempoVet = ntempoVet;
   resultado2.kmvet = kmvet;
+  resultado2.particoesVet = particoesVet;
+  resultado2.novet = novet;
 }
 
 console.log(entrada);
