@@ -116,7 +116,7 @@ export const Calculadora = (props) => {
 
 
   } else {
-    // Caso represa
+    // Caso represa === true
 
     // Concentração de coliformes na mistura esgoto-rio (equação da mistura):
     entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
@@ -144,6 +144,7 @@ export const Calculadora = (props) => {
       entrada.nep = (entrada.nRepresaMax*(entrada.qr+entrada.qe)-entrada.qr*entrada.nr)/entrada.qr
 
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne
+
 
     }
     //Concentracao maxima permissivel no esgoto para atendimento ao padrão para a represa
@@ -227,17 +228,18 @@ export const Calculadora = (props) => {
   // }
 
 
+const eficienciaTemp = entrada.eficiencia
 
+let resultado2 = {}; 
 
+if (entrada.represa === true) {
+  resultado2.eficienciaTemp = eficienciaTemp;
+} else {
+  resultado2.particoesVet = particoesVet;
+  resultado2.ntempoVet = ntempoVet;
+  resultado2.kmvet = kmvet;
+}
 
-  const resultado2 = {
-
-    particoesVet,
-    ntempoVet,
-    kmvet
-    //variaveis resultantes que irão retornar
-  };
-
-  console.log(entrada);
-  return resultado2;
+console.log(entrada);
+return resultado2;
 };

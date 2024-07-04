@@ -43,6 +43,11 @@ function Ferramenta2() {
 
     //REPRESA
     tRepresa: 0,
+    tDentencao: 0, 
+    volume: 0, 
+    qAfluente: 0, 
+    nRepresa: 0, //n0 represa
+    nRepresaMax: 0,
 
 
 
@@ -90,14 +95,14 @@ function Ferramenta2() {
 
 
         <ButtonsSteps>
-          {(step === 1 || step === 0 || step === 10 || step === 6|| step === 2) && (
+          {(step === 1 || step === 0 ||step ===4|| step === 10 || step === 6|| step === 2) && (
             <Button color="tertiary"  />
             )}
             {/**botoes para voltar ao menu inicial do step 0 */}
 
 
           {/* botões para retornar ao step 0 ao concluir a inserção de dados */}
-          {(step === 1 || step === 2 || step === 6 || step ===3) && (
+          {(step === 1 || step === 2 ||step ===4|| step === 6 || step ===3) && (
 
             <Button color="primary" text="Confirmar" handle={() => { setStep(0); setRestartStep(true) }} />
 
