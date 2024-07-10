@@ -33,7 +33,7 @@ export const Calculadora2 = (props) => {
   let particoesVet = [];
   let ntempoVet = [];
   let kmvet = [];
-  let novet = [50000000, 60000000, 70000000, 80000000, 90000000, 100000000];
+  let novet = [];
 
   if (entrada.represa === false) {
     entrada.no = (entrada.qr * entrada.nr + entrada.qe * entrada.ne) / (entrada.qr + entrada.qe);
@@ -76,6 +76,9 @@ export const Calculadora2 = (props) => {
   }
 
   let resultado2 = {};
+  // apenas para testar o grafico
+  // novet = [50000000, 60000000, 70000000, 80000000, 90000000, 50000000, 80000000, 60000000, 20000000, 70000000];
+
 
   if (entrada.represa === true) {
     resultado2.eficiencia = entrada.eficiencia;

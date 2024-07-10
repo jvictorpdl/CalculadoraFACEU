@@ -45,13 +45,12 @@ function Linechart2({ novet, particoesVet, kmvet }) {
               }
             }
           },
-          xaxis: {
-            title: { text: 'Distância (Km)' },
-            min: kmvet[0],  
-            max: kmvet[kmvet.length - 1],
-            categories: kmvet // Usar kmvet para categorias do eixo x
-
+          
+          xaxis:{
+            title: {text: 'Distância (Km)'},
+            categories: kmvet
           },
+
           yaxis: {
             title: { text: "CF (org / 100ml)" },
             labels: {
