@@ -26,7 +26,7 @@ function Linechart2({ novet, particoesVet, kmvet }) {
         series={[
           {
             name: "N0",
-            data: novet // Usar os valores não formatados para cálculos
+            data: novet // Aqui é utilizado os valores nao formatados para definir a posição no grafico (tendo em vista que o grafico só funciona com valores "reais")
           }
         ]}
         options={{
