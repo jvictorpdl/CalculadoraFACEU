@@ -88,11 +88,11 @@ export default function Step1(props) {
             locale="qr"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do rio"
           />
           <ItemForm
             title="Nr"
-            unity="NMP/100 mL"
+            unity="org/100 mL"
             locale="nr"
             setData={props.setData}
             data={props.data}
@@ -119,7 +119,7 @@ export default function Step1(props) {
           
         </FormTwo>
       </CardInput>
-      <CardHelp>
+      {/* <CardHelp>
         <Title title="Informações auxiliares" />
 
         <HelpModal title="Clique aqui para auxílio em Ne " handle={openModal} />
@@ -132,7 +132,7 @@ export default function Step1(props) {
           <br />
           <h5>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</h5>
         </Modal>
-      </CardHelp>
+      </CardHelp> */}
       
     </Content>
   );

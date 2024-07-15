@@ -20,7 +20,7 @@ export default function Step8(props) {
             locale="qr"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do rio"
 
           />
           <ItemForm
@@ -60,7 +60,7 @@ export default function Step8(props) {
             locale="Qe"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do esgoto"
 
 
           />
@@ -93,12 +93,11 @@ export default function Step8(props) {
           <ItemForm
             title="v"
             disabled={true}
-            unity={props.data.cslinha + "m/s"}
+            unity={props.data.velocidade + "m/s"}
             locale="velocidade"
             setData={props.setData}
             data={props.data}
             tooltip="Velocidade"
-
           />
           <ItemForm
             title="H"

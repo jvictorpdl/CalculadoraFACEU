@@ -11,7 +11,7 @@ export default function Navbar() {
         <Link to="/autodepura" className="route">AutoDepura</Link>
       </ListItem>
       <ListItem >
-        <Link to="/ferramenta2" className="route">Ferramenta 2</Link>
+        <Link to="/ferramenta2" className="route">ColiCalc</Link>
       </ListItem>
     </List>
   );

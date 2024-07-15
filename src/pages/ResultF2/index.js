@@ -10,6 +10,7 @@ export default function Result2(props) {
     particoesVet = [],
     kmvet = [],
     eficiencia = null
+    // alerta = false
   } = calc.Calculadora2(props.data);
 
   return (
@@ -31,6 +32,7 @@ export default function Result2(props) {
           </CardInput>
         )
       }
+
     </>
   );
 }

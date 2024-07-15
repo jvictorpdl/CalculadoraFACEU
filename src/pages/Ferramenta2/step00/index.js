@@ -62,7 +62,7 @@ export default function Step0(props) {
               boxname="Dados da Represa"
               setStep={props.setStep}
               numberStep={4}
-              represa={true}
+              represa={false}
               setRepresa={setRepresa}
               />
           </ContainerFor>

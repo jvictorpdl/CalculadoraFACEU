@@ -12,7 +12,7 @@ import Table from "../../../components/Table";
 
 export default function Step2(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
-  // const [modalIsOpen2, setIsOpen2] = useState(false);
+  const [modalIsOpen2, setIsOpen2] = useState(false);
   const table = {
     header: [
       {
@@ -79,6 +79,13 @@ export default function Step2(props) {
     setIsOpen(false);
   }
  
+  function openModal2() {
+    setIsOpen2(true);
+  }
+  function closeModal2() {
+    setIsOpen2(false);
+  }
+ 
   return (
     <Content>
       <CardInput>
@@ -123,7 +130,7 @@ export default function Step2(props) {
           <ItemForm
             title="θ para Kb"
             unity="1/dia"
-            locale="tetakb"
+            locale="teta"
             setData={props.setData}
             data={props.data}
             tooltip="Coeficiente de temperatura"
@@ -162,11 +169,21 @@ export default function Step2(props) {
         <HelpModal title="Clique para auxílio em θ para Kb" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
           <p>
-            Valor usual de θ é de 1,00 1/dia para a temperatura de 20º C.
+            Valor usual de θ é de 1,07 1/dia para a temperatura de 20º C.
           </p>
           {/* editar para dia elevado a menos 1 dps */}
           <br />
-          <h5>Fonte: Von Sperling (2005)</h5>
+          <h5>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</h5>
+
+        </Modal>
+        <HelpModal title="Clique para auxílio em Kb" handle={openModal2} />
+        <Modal modalIsOpen={modalIsOpen2} closeModal={closeModal2} title="Auxílio em Kb">
+          <p>
+          kb = 0,5 a 1,5 1/dia (T = 20 oC ), valor típico de 1,0 1/dia
+          </p>
+          {/* editar para dia elevado a menos 1 dps */}
+          <br />
+          <h5>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</h5>
 
         </Modal>
       </CardHelp>

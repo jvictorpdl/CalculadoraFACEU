@@ -2,38 +2,66 @@ export const Calculadora2 = (props) => {
   console.log(props);
 
   const entrada = {
-    qr: 0.651,
-    qe: 0.114,
-    temperatura: 23,
-    no: 0,
-    nop: 0,
-    nr: 0,
-    ne: 0,
-    ntempo: 0,
-    nep: 0,
-    kb: 0,
-    kbt: 1.23,
-    teta: 1,
-    eficiencia: 0,
-    tempo: 0,
-    velocidade: 0.35,
-    distancia: 50000,
-    particoes: 10,
-    classLimit: 0,
+    qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    qe: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    temperatura: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    no: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    nop: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    nr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    ne: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    ntempo: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    nep: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    kb: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    kbt: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    teta: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    eficiencia: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    tempo: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    velocidade: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    distancia: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    particoes: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    classLimit: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
     represa: false,
-    tRepresa: 0,
-    tDentencao: 0,
-    volume: 0,
-    qAfluente: 0,
-    nRepresa: 0,
-    nRepresaMax: 0,
+    tRepresa: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    tDentencao: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    volume: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    qAfluente: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    nRepresa: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    nRepresaMax: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
   };
+  // const entrada = {
+  //   qr: 0.651,
+  //   qe: 0.114,
+  //   temperatura: 23,
+  //   no: 0,
+  //   nop: 0,
+  //   nr: 0,
+  //   ne: 0,
+  //   ntempo: 0,
+  //   nep: 0,
+  //   kb: 0,
+  //   kbt: 1.23,
+  //   teta: 1,
+  //   eficiencia: 0,
+  //   tempo: 0,
+  //   velocidade: 0.35,
+  //   distancia: 50000,
+  //   particoes: 10,
+  //   classLimit: 0,
+  //   represa: false,
+  //   tRepresa: 0,
+  //   tDentencao: 0,
+  //   volume: 0,
+  //   qAfluente: 0,
+  //   nRepresa: 0,
+  //   nRepresaMax: 0,
+  // };
 
   const neperiano = 2.7182818285;
   let particoesVet = [];
   let ntempoVet = [];
   let kmvet = [];
   let novet = [];
+  let alerta 
 
   if (entrada.represa === false) {
     entrada.no = (entrada.qr * entrada.nr + entrada.qe * entrada.ne) / (entrada.qr + entrada.qe);
@@ -72,16 +100,20 @@ export const Calculadora2 = (props) => {
       entrada.nRepresaMax = entrada.nop * (1 + entrada.kbt * entrada.tDentencao);
       entrada.nep = (entrada.nRepresaMax * (entrada.qr + entrada.qe) - entrada.qr * entrada.nr) / entrada.qr;
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne;
+      alerta = true
+    }else{
+      alerta=false
     }
   }
 
   let resultado2 = {};
   // apenas para testar o grafico
-  // novet = [50000000, 60000000, 70000000, 80000000, 90000000, 50000000, 80000000, 60000000, 20000000, 70000000];
+  novet = [50000000, 60000000, 70000000, 80000000, 90000000, 50000000, 80000000, 60000000, 20000000, 70000000];
 
 
   if (entrada.represa === true) {
     resultado2.eficiencia = entrada.eficiencia;
+    // resultado2.alerta = alerta;
   } else {
     resultado2.particoesVet = particoesVet;
     resultado2.ntempoVet = ntempoVet;

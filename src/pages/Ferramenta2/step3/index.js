@@ -76,7 +76,7 @@ export default function Step3(props) {
         <ItemForm
             title="Nop"
             unity="org/100 mL"
-            locale="" //ATENCAO PARA TERMINAR ESTE INPUT
+            locale="nop" 
             setData={props.setData}
             data={props.data}
             tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"

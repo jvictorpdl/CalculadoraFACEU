@@ -18,36 +18,36 @@ function Ferramenta2() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr:0,
-    qe: 0,
-    temperatura: 0,
-    no: 0, // Concentracao de Coliformes na Mistura
-    nop: 0, // Concentracao Max permitida de Coliformes no ponto de mistura
-    nr: 0, // Concentração de coliformes no Rio a montante do lançamento 
-    ne: 0, //Concentração de coliformes no esgoto
-    ntempo: 0, // Concentração de coliformes ao longo do tempo ou da distancia
-    nep: 0, //Concentração máxima permissivel de coliformes no esgoto
-    kb: 0, //Coeficiente de decaimento bacteriano
-    kbt: 0, //Coeficiente de decaimento bacteriano a uma temperatura T
-    teta: 0, //Coeficiente de temperatura 
-    eficiencia: 0, //eficiencia de remoção de coliformes requerida no tratamento
-    tempo: 0, //tempo de percurso
-    velocidade: 0, //velocidade de percurso
-    distancia: 0, //distancia de percurso
-    particoes: 0, // Quantidade de partições no qual o calculo sera feito
-    classLimit: 0,
+    qr: "",
+    qe: "",
+    temperatura: "",
+    no: "", // Concentracao de Coliformes na Mistura
+    nop: "", // Concentracao Max permitida de Coliformes no ponto de mistura
+    nr: "", // Concentração de coliformes no Rio a montante do lançamento 
+    ne: "", //Concentração de coliformes no esgoto
+    ntempo: "", // Concentração de coliformes ao longo do tempo ou da distancia
+    nep: "", //Concentração máxima permissivel de coliformes no esgoto
+    kb: "", //Coeficiente de decaimento bacteriano
+    kbt: "", //Coeficiente de decaimento bacteriano a uma temperatura T
+    teta: "", //Coeficiente de temperatura 
+    eficiencia: "", //eficiencia de remoção de coliformes requerida no tratamento
+    tempo: "", //tempo de percurso
+    velocidade: "", //velocidade de percurso
+    distancia: "", //distancia de percurso
+    particoes: "", // Quantidade de partições no qual o calculo sera feito
+    classLimit: "",
     // classLimit1: 200,
     // classLimit2: 1000,
     // classLimit3: 4000,
     represa: false,
 
     //REPRESA
-    tRepresa: 0,
-    tDentencao: 0, 
-    volume: 0, 
-    qAfluente: 0, 
-    nRepresa: 0, //n0 represa
-    nRepresaMax: 0,
+    tRepresa: "",
+    tDentencao: "", 
+    volume: "", 
+    qAfluente: "", 
+    nRepresa: "", //n0 represa
+    nRepresaMax: "",
 
 
 

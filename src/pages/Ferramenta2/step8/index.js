@@ -19,7 +19,7 @@ export default function Step8(props) {
             locale="qr"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do rio"
 
           />
           <ItemForm
@@ -47,7 +47,7 @@ export default function Step8(props) {
             locale="Qe"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do esgoto"
 
 
           />
@@ -72,7 +72,7 @@ export default function Step8(props) {
           <ItemForm
             title="Nop"
             disabled={true}
-            unity={props.data.qe + " org/100 mL"}
+            unity={props.data.nop + " org/100 mL"}
             locale="nop" 
             setData={props.setData}
             data={props.data}
@@ -91,7 +91,7 @@ export default function Step8(props) {
           <ItemForm
             title="T"
             disabled={true}
-            unity={props.data.cslinha + " ºC"}
+            unity={props.data.temperatura + " ºC"}
             locale="temperratura"
             setData={props.setData}
             data={props.data}
@@ -105,12 +105,12 @@ export default function Step8(props) {
               locale="distancia"
               setData={props.setData}
               data={props.data}
-              tooltip="Distancia do percursso"
+              tooltip="Distancia do percurso"
   
             />
           <ItemForm
             title="v"
-            unity={props.data.h + " m/s"}
+            unity={props.data.velocidade + " m/s"}
             disabled={true}
             locale="v"
             setData={props.setData}
@@ -122,7 +122,7 @@ export default function Step8(props) {
            <ItemForm
             title="Kb"
             disabled={true}
-            unity={props.data.tempo + " 1/dia"}
+            unity={props.data.kb + " 1/dia"}
             locale="kb"
             setData={props.setData}
             data={props.data}
@@ -133,8 +133,8 @@ export default function Step8(props) {
             title="θ para Kb"
             // sub="T"
             disabled={true}
-            unity={props.data.odmin + "  1/dia"}
-            locale="tetakb"
+            unity={props.data.teta + "  1/dia"}
+            locale="teta"
             setData={props.setData}
             data={props.data}
             tooltip="Coeficiente de temperatura"
