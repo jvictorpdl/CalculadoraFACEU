@@ -4,19 +4,40 @@ import Rio from "../../../assets/Rio.svg";
 import boldArrow from "../../../assets/boldArrow.svg";
 import Button from "../../../components/Button";
 import { Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import Box from "../../../components/Box";
 import { Container, ContainerTwo, ContainerThree, ContainerFor } from "./styles";
 
 export default function Step0(props) {
-  const [represa, setRepresa] = useState(false);
+  const [represa, setRepresa] = useState(props.data.represa);
+
+  console.log(props.data.represa);
+  const handleClick = (boxname, numberStep) => {
+    console.log(boxname);
+
+    if (boxname === 'Dados do Rio') {
+      props.setData({ ...props.data, represa: false }); // Altera represa para false se clicar em "Dados do Rio"
+      console.log('entrou 1 ');
+      setRepresa(false)
+    } else if (boxname === 'Dados da Represa') {
+      props.setData({ ...props.data, represa: true });
+      console.log('entrou 2');
+      setRepresa(true)
+
+      // Altera represa para true se clicar em "Dados da Represa"
+    }
+    props.setStep(numberStep);
+  };
   // const [goToRiver, setGoToRiver] = useState(false);
 
   // if (goToRiver) {
   //   return <Navigate to ="/Step1" />;
   // }
+  useEffect(() => {
+    console.log('mudou ' + represa)
 
+  }, [represa])
   return (
     <Content>
       <CardBoardFerramenta2>
@@ -24,66 +45,61 @@ export default function Step0(props) {
         <h1>INSERÇÃO DE DADOS</h1>
 
         <Container>
-        {/* <Box
-                boxname="Dados do Rio"
-                setStep={props.setStep}
-                numberStep={1}
-                setRepresa={setRepresa}
-                represa={represa}
-            />
-            <Box
-                boxname="Dados da Represa"
-                setStep={props.setStep}
-                numberStep={2}
-                setRepresa={setRepresa}
-                represa={represa}
-            />
-            <Box
-                boxname="Outro Box Ativo"
-                setStep={props.setStep}
-                numberStep={3}
-                setRepresa={setRepresa}
-                represa={represa}
-            /> */}
           <ContainerTwo>
 
-          <ContainerFor>
-            <Box
-              boxname="Dados do Rio"
-              setStep={props.setStep}
-              numberStep={1}
-              represa={false}
-              setRepresa={setRepresa}
-            />
-          </ContainerFor>
-          <h3>Ou</h3>
-          <ContainerFor>
-            <Box
-              boxname="Dados da Represa"
-              setStep={props.setStep}
-              numberStep={4}
-              represa={true}
-              setRepresa={setRepresa}
+
+            <ContainerFor>
+              {/* {props.data.represa + ''} */}
+
+              {/* <button onClick={() => setRepresa(false)}>botao</button> */}
+              {/* {represa + ''} */}
+              <Box
+                boxname="Dados do Rio"
+                setStep={props.setStep}
+                handleClick={handleClick}
+                numberStep={1}
+                buttonColor={represa ? 'inative' : 'primary'}
+              // setData={props.setData}
+              // represa={false}
+              // setRepresa={setRepresa}
+              // data={props.data}
               />
-          </ContainerFor>
-              </ContainerTwo>
-<ContainerTwo>
+            </ContainerFor>
+            <h3>Ou</h3>
+            <ContainerFor>
+              {/* {props.data.represa + ''}
+              {represa + ''} */}
 
-          <ContainerFor>
-            <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />
-          </ContainerFor>
+              <Box
+                boxname="Dados da Represa"
+                setStep={props.setStep}
+                numberStep={4}
+                buttonColor={represa ? 'primary' : 'inative'}
 
-          <ContainerFor>
-            <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} />
-          </ContainerFor>
+                // represa={true}
+                // setRepresa={setRepresa}
+                handleClick={handleClick}
 
-          <ContainerFor>
-            <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} />
-          </ContainerFor>
-</ContainerTwo>
-<ContainerThree>
+              />
+            </ContainerFor>
+          </ContainerTwo>
+          <ContainerTwo>
 
-</ContainerThree>
+            <ContainerFor>
+              <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />
+            </ContainerFor>
+
+            <ContainerFor>
+              <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} />
+            </ContainerFor>
+
+            <ContainerFor>
+              <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} />
+            </ContainerFor>
+          </ContainerTwo>
+          <ContainerThree>
+
+          </ContainerThree>
 
 
 

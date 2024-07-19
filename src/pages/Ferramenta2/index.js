@@ -18,7 +18,7 @@ function Ferramenta2() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    qr:0,
+    qr: 0,
     qe: 0,
     temperatura: 0,
     no: 0, // Concentracao de Coliformes na Mistura
@@ -43,9 +43,9 @@ function Ferramenta2() {
 
     //REPRESA
     tRepresa: 0,
-    tDentencao: 0, 
-    volume: 0, 
-    qAfluente: 0, 
+    tDentencao: 0,
+    volume: 0,
+    qAfluente: 0,
     nRepresa: 0, //n0 represa
     nRepresaMax: 0,
 
@@ -81,7 +81,7 @@ function Ferramenta2() {
           <h1>Ferramenta 2</h1>
         </TitlePage>
         {/* <Progress width={`${progressWidth}%`} /> */}
-        {step === 0 && <Step0 data={data} setStep={setStep} setRestartStep={setRestartStep} />}
+        {step === 0 && <Step0 data={data} setStep={setStep} setRestartStep={setRestartStep} setData={setData} />}
         {step === 1 && <Step1 data={data} setData={setData} />}
         {step === 2 && <Step2 data={data} setData={setData} restartStep={resetStep} />}
         {step === 3 && <Step3 data={data} setData={setData} />}
@@ -95,14 +95,14 @@ function Ferramenta2() {
 
 
         <ButtonsSteps>
-          {(step === 1 || step === 0 ||step ===4|| step === 10 || step === 6|| step === 2) && (
-            <Button color="tertiary"  />
-            )}
-            {/**botoes para voltar ao menu inicial do step 0 */}
+          {(step === 1 || step === 0 || step === 4 || step === 10 || step === 6 || step === 2) && (
+            <Button color="tertiary" />
+          )}
+          {/**botoes para voltar ao menu inicial do step 0 */}
 
 
           {/* botões para retornar ao step 0 ao concluir a inserção de dados */}
-          {(step === 1 || step === 2 ||step ===4|| step === 6 || step ===3) && (
+          {(step === 1 || step === 2 || step === 4 || step === 6 || step === 3) && (
 
             <Button color="primary" text="Confirmar" handle={() => { setStep(0); setRestartStep(true) }} />
 
@@ -120,7 +120,7 @@ function Ferramenta2() {
           )}
           {/* botao para calcular */}
           {step === 8 && (
-              <Button color="primary" text="Calcular" handle={() => { setStep(9); setRestartStep(true) }} />
+            <Button color="primary" text="Calcular" handle={() => { setStep(9); setRestartStep(true) }} />
           )}
 
 
@@ -131,12 +131,12 @@ function Ferramenta2() {
             <Button text="Calcular novamente" handle={() => { setStep(0); setRestartStep(true) }} />
           )}
           {step === 9 && (
-              <Button color="primary" text="Simular novamente" handle={() => next()}/>
+            <Button color="primary" text="Simular novamente" handle={() => next()} />
           )}
 
           {/*botao no step 10 (step utilizado caso o usuario queira uma nova simulação) */}
           {step === 10 && (
-              <Button color="primary" text="Simular" handle={() => prev()}/>
+            <Button color="primary" text="Simular" handle={() => prev()} />
           )}
 
         </ButtonsSteps>

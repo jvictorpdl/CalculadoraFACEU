@@ -8,34 +8,69 @@ export default function Step8(props) {
 
   return (
     <Content>
-      <CardInput>
-        <Title title="Dados do rio" />
+      {
+        props.data.represa === false &&
 
-        <FormTwo>
-          <ItemForm
-            title="Qr"
-            unity={props.data.qr + " m³/s"}
-            disabled={true}
-            locale="qr"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Vazão"
+        <CardInput>
+          <Title title="Dados do rio" />
 
-          />
-          <ItemForm
-            title="Nr"
-            unity={props.data.nr + " org/100mL"}
-            disabled={true}
-            locale="nr"
-            setData={props.setData}
-            data={props.data}
-            tooltip="Concentração de coliformes no rio, a montante do lançamento"
+          <FormTwo>
+            <ItemForm
+              title="Qr"
+              unity={props.data.qr + " m³/s"}
+              disabled={true}
+              locale="qr"
+              setData={props.setData}
+              data={props.data}
+              tooltip="Vazão"
 
-          />
-          
-        </FormTwo>
+            />
+            <ItemForm
+              title="Nr"
+              unity={props.data.nr + " org/100mL"}
+              disabled={true}
+              locale="nr"
+              setData={props.setData}
+              data={props.data}
+              tooltip="Concentração de coliformes no rio, a montante do lançamento"
 
-      </CardInput>
+            />
+
+          </FormTwo>
+        </CardInput>
+      }
+      {
+        props.data.represa === true &&
+        <CardInput>
+          <Title title="Dados do represa" />
+
+          <FormTwo>
+            <ItemForm
+              title="Qr"
+              unity={props.data.qr + " m³/s"}
+              disabled={true}
+              locale="qr"
+              setData={props.setData}
+              data={props.data}
+              tooltip="Vazão"
+
+            />
+            <ItemForm
+              title="Nr"
+              unity={props.data.nr + " org/100mL"}
+              disabled={true}
+              locale="nr"
+              setData={props.setData}
+              data={props.data}
+              tooltip="Concentração de coliformes no rio, a montante do lançamento"
+
+            />
+
+          </FormTwo>
+        </CardInput>
+      }
+
+
       <CardInput>
         <Title title="Dados do esgoto" />
 
@@ -61,7 +96,7 @@ export default function Step8(props) {
             tooltip="Concentração de coliformes no esgoto"
 
           />
-          
+
         </FormTwo>
       </CardInput>
 
@@ -73,15 +108,15 @@ export default function Step8(props) {
             title="Nop"
             disabled={true}
             unity={props.data.qe + " org/100 mL"}
-            locale="nop" 
+            locale="nop"
             setData={props.setData}
             data={props.data}
             tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"
 
 
           />
-         
-          
+
+
         </FormTwo>
       </CardInput>
       <CardInput>
@@ -98,16 +133,16 @@ export default function Step8(props) {
             tooltip="Temperatura do líquido"
 
           />
-            <ItemForm
-              title="d"
-              unity={props.data.distancia + " m"}
-              disabled={true}
-              locale="distancia"
-              setData={props.setData}
-              data={props.data}
-              tooltip="Distancia do percursso"
-  
-            />
+          <ItemForm
+            title="d"
+            unity={props.data.distancia + " m"}
+            disabled={true}
+            locale="distancia"
+            setData={props.setData}
+            data={props.data}
+            tooltip="Distancia do percursso"
+
+          />
           <ItemForm
             title="v"
             unity={props.data.h + " m/s"}
@@ -118,8 +153,8 @@ export default function Step8(props) {
             tooltip="Velocidade do curso d'água"
 
           />
-          
-           <ItemForm
+
+          <ItemForm
             title="Kb"
             disabled={true}
             unity={props.data.tempo + " 1/dia"}
@@ -139,7 +174,7 @@ export default function Step8(props) {
             data={props.data}
             tooltip="Coeficiente de temperatura"
           />
-          
+
         </Form>
 
       </CardInput>
