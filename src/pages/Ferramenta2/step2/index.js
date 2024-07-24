@@ -78,7 +78,7 @@ export default function Step2(props) {
   function closeModal() {
     setIsOpen(false);
   }
- 
+
   return (
     <Content>
       <CardInput>
@@ -105,7 +105,7 @@ export default function Step2(props) {
           <ItemForm
             title="v"
             unity="m/s"
-            locale="v"
+            locale="velocidade"
             setData={props.setData}
             data={props.data}
             tooltip="Velocidade do curso d'água"
@@ -123,7 +123,7 @@ export default function Step2(props) {
           <ItemForm
             title="θ para Kb"
             unity="1/dia"
-            locale="tetakb"
+            locale="teta"
             setData={props.setData}
             data={props.data}
             tooltip="Coeficiente de temperatura"
@@ -146,19 +146,6 @@ export default function Step2(props) {
       <CardHelp>
         <Title title="Informações auxiliares" />
         <br />
-        {/* <HelpModal title="Clique para auxílio em K1" handle={openModal} /> */}
-        {/* <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio na definição do coeficiente de desoxigenação (K1)">
-          <div>
-
-            <p>Valores típicos de K1 (base e, 20°C)</p>
-            <Table table={table} />
-
-
-            <h5>Fonte: Adaptado de Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
-          </div>
-
-        </Modal> */}
-        
         <HelpModal title="Clique para auxílio em θ para Kb" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
           <p>

@@ -1,54 +1,89 @@
 export const Calculadora2 = (props) => {
-  console.log(props);
-
+  // console.log(props);
+  function convertToPercentage(value) {
+    // Multiplica o valor por 100 para converter para porcentagem
+    const percentage = value * 100;
+    // Formata o resultado para duas casas decimais
+    const formattedPercentage = percentage.toFixed(3).replace('.', ',');
+    // Adiciona o símbolo de porcentagem
+    return `${formattedPercentage}%`;
+  }
+  // const entrada = {
+  //   qr: 0.651,
+  //   qe: 0.114,
+  //   temperatura: 23,
+  //   no: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   nop: 1000,
+  //   nr: 10,
+  //   ne: 50000000,
+  //   ntempo: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   nep: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   kb: 1,
+  //   kbt: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   teta: 1.07,
+  //   eficiencia: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   tempo: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   velocidade: 0.35,
+  //   distancia: 50000,
+  //   particoes: 10,
+  //   classLimit: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   represa: Boolean(String(props.represa)),
+  //   tRepresa: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   tDentencao: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   volume: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   qAfluente: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   nRepresa: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  //   nRepresaMax: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+  // };
+  // console.log(entrada);
   const entrada = {
-    qr: 0.651,
-    qe: 0.114,
-    temperatura: 23,
-    no: 0,
-    nop: 0,
-    nr: 0,
-    ne: 0,
-    ntempo: 0,
-    nep: 0,
-    kb: 0,
-    kbt: 1.23,
-    teta: 1,
-    eficiencia: 0,
-    tempo: 0,
-    velocidade: 0.35,
-    distancia: 50000,
-    particoes: 10,
-    classLimit: 0,
-    represa: false,
-    tRepresa: 0,
-    tDentencao: 0,
-    volume: 0,
-    qAfluente: 0,
-    nRepresa: 0,
-    nRepresaMax: 0,
+    qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
+    qe: Number(String(props.qe).replaceAll('.', '').replace(',', '.')),
+    temperatura: Number(String(props.temperatura).replaceAll('.', '').replace(',', '.')),
+    no: Number(String(props.no).replaceAll('.', '').replace(',', '.')),
+    nop: Number(String(props.nop).replaceAll('.', '').replace(',', '.')),
+    nr: Number(String(props.nr).replaceAll('.', '').replace(',', '.')),
+    ne: Number(String(props.ne).replaceAll('.', '').replace(',', '.')),
+    ntempo: Number(String(props.ntempo).replaceAll('.', '').replace(',', '.')),
+    nep: Number(String(props.nep).replaceAll('.', '').replace(',', '.')),
+    kb: Number(String(props.kb).replaceAll('.', '').replace(',', '.')),
+    kbt: Number(String(props.kbt).replaceAll('.', '').replace(',', '.')),
+    teta: Number(String(props.teta).replaceAll('.', '').replace(',', '.')),
+    eficiencia: Number(String(props.eficiencia).replaceAll('.', '').replace(',', '.')),
+    tempo: Number(String(props.tempo).replaceAll('.', '').replace(',', '.')),
+    velocidade: Number(String(props.velocidade).replaceAll('.', '').replace(',', '.')),
+    distancia: Number(String(props.distancia).replaceAll('.', '').replace(',', '.')),
+    particoes: Number(String(props.particoes).replaceAll('.', '').replace(',', '.')),
+    classLimit: Number(String(props.classLimit).replaceAll('.', '').replace(',', '.')),
+    represa: props.represa,
+    tRepresa: Number(String(props.tRepresa).replaceAll('.', '').replace(',', '.')),
+    tDentencao: Number(String(props.tDentencao).replaceAll('.', '').replace(',', '.')),
+    volume: Number(String(props.volume).replaceAll('.', '').replace(',', '.')),
+    qAfluente: Number(String(props.qAfluente).replaceAll('.', '').replace(',', '.')),
+    nRepresa: Number(String(props.nRepresa).replaceAll('.', '').replace(',', '.')),
+    nRepresaMax: Number(String(props.nRepresaMax).replaceAll('.', '').replace(',', '.')),
   };
+  console.log(entrada);
 
   const neperiano = 2.7182818285;
   let particoesVet = [];
   let ntempoVet = [];
   let kmvet = [];
   let novet = [];
+  let kmvetTwo = [];
+  let novetTwo = [];
+
 
   if (entrada.represa === false) {
-    entrada.no = (entrada.qr * entrada.nr + entrada.qe * entrada.ne) / (entrada.qr + entrada.qe);
+    console.log('ENTROU EM RIO');
+    console.log('CALCULO DE N0 QR: ' + entrada.qr + ' Nr: '+entrada.nr + ' qe: '+entrada.qe+ ' ne: '+entrada.ne+ ' / qr+qe: '+ entrada.qr+entrada.qe);
+    entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.ne)) / (entrada.qr + entrada.qe);
+
+console.log('entrada n0 nesse caralho: ' + entrada.no);
     entrada.kbt = entrada.kb * Math.pow(entrada.teta, (entrada.temperatura - 20));
-
-    for (let i = 0; i <= entrada.particoes; i++) {
-      let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
-      entrada.noToPush = tempop === 0 ? entrada.no : entrada.no * Math.pow(neperiano, (-entrada.kbt * tempop));
-
-      let aux = entrada.distancia / entrada.particoes;
-      kmvet.push((aux * i) / 1000);
-      novet.push(Number(entrada.noToPush.toFixed(2)));
-    }
-
+console.log(entrada.no + ' Primeiro alculo de N0');
     if (entrada.no > entrada.nop) {
+      console.log('entrou no if no> nop');
       entrada.nep = (entrada.nop * (entrada.qr + entrada.qe) - entrada.qr * entrada.nr) / entrada.qe;
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne;
 
@@ -59,9 +94,24 @@ export const Calculadora2 = (props) => {
         let aux = entrada.distancia / entrada.particoes;
         kmvet.push((aux * i) / 1000);
         novet.push(Number(entrada.noToPush.toFixed(2)));
+        
+        console.log(Number(entrada.noToPush.toFixed(2)));
+      }
+    }else{
+      console.log('nao entrou no if no> nop');
+
+      for (let i = 0; i <= entrada.particoes; i++) {
+        let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
+        entrada.noToPush = tempop === 0 ? entrada.no : entrada.no * Math.pow(neperiano, (-entrada.kbt * tempop));
+        let aux = entrada.distancia / entrada.particoes;
+        kmvet.push((aux * i) / 1000);
+        novet.push(Number(entrada.noToPush.toFixed(2)));
       }
     }
-  } else {
+  } else { //CASO DE REPRESA===true
+    console.log('ENTROU EM REPRESA');
+
+    console.log('eficiencia ' + entrada.eficiencia);
     entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
     entrada.qAfluente = entrada.qr + entrada.qe;
     entrada.kbt = entrada.kb * Math.pow(entrada.teta, (entrada.temperatura - 20));
@@ -73,23 +123,37 @@ export const Calculadora2 = (props) => {
       entrada.nep = (entrada.nRepresaMax * (entrada.qr + entrada.qe) - entrada.qr * entrada.nr) / entrada.qr;
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne;
     }
-  }
+    console.log('no ' + entrada.no);
+    console.log('qAfluente ' + entrada.qAfluente);
 
+    console.log('kbt ' + entrada.kbt);
+    console.log('kb ' + entrada.kb);
+    console.log('tDentencao ' + entrada.tDentencao);
+    console.log('nRepresa ' + entrada.nRepresa);
+
+    console.log('nRepresaMax ' + entrada.nRepresaMax);
+    console.log('nep ' + entrada.nep);
+    console.log('eficiencia ' + entrada.eficiencia);
+  }
+  
   let resultado2 = {};
   // apenas para testar o grafico
-  novet = [50000000, 60000000, 70000000, 80000000, 90000000, 50000000, 80000000, 60000000, 20000000, 70000000];
+  // novet = [50000000, 60000000, 70000000, 80000000, 90000000, 50000000, 80000000, 60000000, 20000000, 70000000];
+  // entrada.eficiencia = 85
+  // entrada.eficiencia = convertToPercentage(entrada.eficiencia)
+  console.log('ATENCAO ATENCAO ATENCAO ATENCAO ATENCAO ATENCAO');
+  console.log(novet);
+  console.log(kmvet);
 
-
-  if (entrada.represa === true) {
-    resultado2.eficiencia = entrada.eficiencia;
-  } else {
-    resultado2.particoesVet = particoesVet;
-    resultado2.ntempoVet = ntempoVet;
-    resultado2.kmvet = kmvet;
-    resultado2.novet = novet;
-  }
-
-  console.log(entrada);
+  
+  resultado2.eficiencia = convertToPercentage(entrada.eficiencia);
+  resultado2.particoesVet = particoesVet;
+  resultado2.ntempoVet = ntempoVet;
+  resultado2.kmvet = kmvet;
+  resultado2.novet = novet;
+  console.log(resultado2);
+  
+  // console.log(entrada);
   return resultado2;
 };
 

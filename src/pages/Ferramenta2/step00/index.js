@@ -12,17 +12,14 @@ import { Container, ContainerTwo, ContainerThree, ContainerFor } from "./styles"
 export default function Step0(props) {
   const [represa, setRepresa] = useState(props.data.represa);
 
-  console.log(props.data.represa);
   const handleClick = (boxname, numberStep) => {
-    console.log(boxname);
+    // console.log(boxname);
 
     if (boxname === 'Dados do Rio') {
       props.setData({ ...props.data, represa: false }); // Altera represa para false se clicar em "Dados do Rio"
-      console.log('entrou 1 ');
       setRepresa(false)
     } else if (boxname === 'Dados da Represa') {
       props.setData({ ...props.data, represa: true });
-      console.log('entrou 2');
       setRepresa(true)
 
       // Altera represa para true se clicar em "Dados da Represa"
@@ -35,7 +32,6 @@ export default function Step0(props) {
   //   return <Navigate to ="/Step1" />;
   // }
   useEffect(() => {
-    console.log('mudou ' + represa)
 
   }, [represa])
   return (
@@ -86,15 +82,15 @@ export default function Step0(props) {
           <ContainerTwo>
 
             <ContainerFor>
-              <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} />
+              <Box boxname="Dados do Esgoto" setStep={props.setStep} numberStep={6} handleClick={handleClick} />
             </ContainerFor>
 
             <ContainerFor>
-              <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} />
+              <Box boxname="Dados da Mistura" setStep={props.setStep} numberStep={3} handleClick={handleClick} />
             </ContainerFor>
 
             <ContainerFor>
-              <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} />
+              <Box boxname="Dados Adicionais" setStep={props.setStep} numberStep={2} handleClick={handleClick} />
             </ContainerFor>
           </ContainerTwo>
           <ContainerThree>

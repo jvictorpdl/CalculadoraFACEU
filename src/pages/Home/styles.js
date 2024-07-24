@@ -14,6 +14,8 @@ export const TitlePage = styled.div`
   padding-left: 135px;
   margin-bottom: 10px;
   text-align: start;
+  color: #2174d4;
+
 `
 
 export const TitleCard = styled.h2`

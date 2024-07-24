@@ -41,25 +41,25 @@ export default function Step3(props) {
     lines: [
       [
 
-        {content: '1'},
-        {content: '2'},
-        {content: '3'},
-        {content: '4'},
+        { content: '1' },
+        { content: '2' },
+        { content: '3' },
+        { content: '4' },
       ],
       [
-        {content: 'Coliformes termotolerantes'},
-        {content: 'NMP/100 mL'},
-        {content: '200'},
-        {content: '1000'},
-        {content: '4000'},
-        {content: '-'},
-        {content: 'Não há'},
+        { content: 'Coliformes termotolerantes' },
+        { content: 'NMP/100 mL' },
+        { content: '200' },
+        { content: '1000' },
+        { content: '4000' },
+        { content: '-' },
+        { content: 'Não há' },
       ],
 
 
     ]
   }
-  
+
   function openModal() {
     setIsOpen(true);
   }
@@ -74,22 +74,22 @@ export default function Step3(props) {
         <Title title="Dados da Mistura" />
 
         <ItemForm
-            title="Nop"
-            unity="org/100 mL"
-            locale="" //ATENCAO PARA TERMINAR ESTE INPUT
-            setData={props.setData}
-            data={props.data}
-            tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"
+          title="Nop"
+          unity="org/100 mL"
+          locale="nop"
+          setData={props.setData}
+          data={props.data}
+          tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental"
 
-          />
-         
+        />
+
       </CardInput>
       <CardHelp>
         <Title title="Informações auxiliares" />
 
         <HelpModal title="Clique aqui para auxílio em Nop " handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Concentração de coliformes no esgoto">
-         <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
+          <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
           <br />
 
           <Table table={table} />

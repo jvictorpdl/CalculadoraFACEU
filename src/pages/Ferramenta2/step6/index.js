@@ -11,10 +11,10 @@ import ItemSelect from "../../../components/ItemSelect"
 export default function Step6(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
-    const [formData, setFormData] = useState({
-      mySelectField: ''
-    });
-    
+  const [formData, setFormData] = useState({
+    mySelectField: ''
+  });
+
 
 
   return (
@@ -35,7 +35,7 @@ export default function Step6(props) {
           <ItemForm
             title="Ne"
             unity="org/100mL"
-            locale="ne" //criar
+            locale="ne"
             setData={props.setData}
             data={props.data}
             tooltip="Concentração de coliformes no esgoto"
@@ -44,7 +44,7 @@ export default function Step6(props) {
         </FormTwo>
       </CardInput>
 
-      
+
     </Content>
   );
 }

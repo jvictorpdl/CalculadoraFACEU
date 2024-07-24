@@ -2,15 +2,24 @@ import React from "react";
 import Chart from "react-apexcharts";
 
 // Função para formatar um número em notação científica para exibição
-function formatScientific(number) {
-  const exponentialForm = number.toExponential(1); // 1 casa decimal
-  const [mantissa, exponent] = exponentialForm.split('e');
-  
-  // Formata a mantissa e o expoente conforme necessário
-  const formattedMantissa = mantissa.replace('.', ',');
-  const formattedExponent = exponent.toUpperCase().replace('+', '');
-  
-  return `${formattedMantissa}E+${formattedExponent}`;
+function formatScientific(value) {
+  const exponentialForm = value.toExponential(2);
+  const [coefficient, exponent] = exponentialForm.split('e');
+  const formattedCoefficient = parseFloat(coefficient).toFixed(2).replace('.', ',');
+  const formattedExponent = parseInt(exponent, 10);
+  const sign = formattedExponent >= 0 ? '+' : '';
+  const formattedExponentString = Math.abs(formattedExponent).toString().padStart(2, '0');
+  return `${formattedCoefficient}E${sign}${formattedExponentString}`;
+}
+function formatYAxisLabel(value) {
+  const exponent = Math.floor(Math.log10(value));
+  // Calcula o valor base para que comece com 1.00
+  const baseValue = value / (10 ** exponent);
+  // Garante que o coeficiente é sempre 1.00
+  const formattedCoefficient = '1,00';
+  // Formata o expoente para garantir que o formato seja '+X' ou '-X'
+  const formattedExponentString = exponent >= 0 ? `+${exponent}` : `${exponent}`;
+  return `${formattedCoefficient}E${formattedExponentString}`;
 }
 
 function Linechart2({ novet, particoesVet, kmvet }) {
@@ -55,7 +64,7 @@ function Linechart2({ novet, particoesVet, kmvet }) {
             title: { text: "CF (org / 100ml)" },
             labels: {
               formatter: function (val) {
-                return formatScientific(val);
+                return formatYAxisLabel(val);
               }
             }
           }
