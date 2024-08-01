@@ -40,7 +40,7 @@ function Linechart2({ novet, particoesVet, kmvet }) {
         ]}
         options={{
           title: {
-            text: 'Perfil de N0 (org / 100 ml)',
+            text: 'Perfil da concentração de coliformes ao longo da distância - N (org/100 mL)',
           },
           legend: {
             tooltipHoverFormatter: function(val, opts) {
@@ -56,7 +56,7 @@ function Linechart2({ novet, particoesVet, kmvet }) {
           },
           
           xaxis:{
-            title: {text: 'Distância (Km)'},
+            title: {text: 'Distância (km)'},
             categories: kmvet
           },
 
