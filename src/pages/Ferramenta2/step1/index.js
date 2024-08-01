@@ -89,7 +89,7 @@ export default function Step1(props) {
             locale="qr"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do rio"
           />
           <ItemForm
             title="Nr"

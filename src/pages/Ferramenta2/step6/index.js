@@ -29,7 +29,7 @@ export default function Step6(props) {
             locale="qe"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do esgoto"
 
           />
           <ItemForm

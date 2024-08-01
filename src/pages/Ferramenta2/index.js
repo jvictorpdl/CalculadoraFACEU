@@ -18,31 +18,7 @@ function Ferramenta2() {
   const [step, setStep] = useState(0);
   const [restartStep, setRestartStep] = useState(false);
   const [data, setData] = useState({
-    // qr: 0.651,
-    // qe: 0.114,
-    // temperatura: 23,
-    // no: "",
-    // nop: 1000,
-    // nr: 10,
-    // ne: 50000000,
-    // ntempo: "",
-    // nep: "",
-    // kb: 1,
-    // kbt: "",
-    // teta: 1.07,
-    // eficiencia: "",
-    // tempo: "",
-    // velocidade: 0.35,
-    // distancia: 50000,
-    // particoes: 10,
-    // classLimit: "",
-    // represa: false,
-    // tRepresa: "",
-    // tDentencao: "",
-    // volume: "",
-    // qAfluente: "",
-    // nRepresa: "",
-    // nRepresaMax: "",
+
     qr: "",
     qe: "",
     temperatura: "",
@@ -61,9 +37,6 @@ function Ferramenta2() {
     distancia: "", //distancia de percurso
     particoes: "", // Quantidade de partições no qual o calculo sera feito
     classLimit: "",
-    // classLimit1: 200,
-    // classLimit2: 1000,
-    // classLimit3: 4000,
     represa: false,
 
     //REPRESA
@@ -120,7 +93,7 @@ function Ferramenta2() {
 
 
         <ButtonsSteps>
-          {(step === 1 || step === 0 || step === 4 || step === 10 || step === 6 || step === 2) && (
+          {(step === 1 || step === 0 || step === 4 || step === 10 || step === 6 || step === 2 || step === 9) && (
             <Button color="tertiary" />
           )}
           {/**botoes para voltar ao menu inicial do step 0 */}
@@ -153,11 +126,11 @@ function Ferramenta2() {
 
           {/*botoes na aba de resultado */}
           {step === 9 && (
-            <Button text="Calcular novamente" handle={() => { setStep(0); setRestartStep(true) }} />
+            <Button color="primary" text="Calcular novamente" handle={() => { setStep(0); setRestartStep(true) }} />
           )}
-          {step === 9 && (
+          {/* {step === 9 && (
             <Button color="primary" text="Simular novamente" handle={() => next()} />
-          )}
+          )} */}
 
           {/*botao no step 10 (step utilizado caso o usuario queira uma nova simulação) */}
           {step === 10 && (

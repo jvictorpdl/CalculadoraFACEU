@@ -149,11 +149,11 @@ export default function Step2(props) {
         <HelpModal title="Clique para auxílio em θ para Kb" handle={openModal} />
         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
           <p>
-            Valor usual de θ é de 1,00 1/dia para a temperatura de 20º C.
+            Valor usual de θ é de 1,07 1/dia para a temperatura de 20º C.
           </p>
           {/* editar para dia elevado a menos 1 dps */}
           <br />
-          <h5>Fonte: Von Sperling (2005)</h5>
+          <h5>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</h5>
 
         </Modal>
       </CardHelp>

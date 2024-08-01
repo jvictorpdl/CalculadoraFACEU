@@ -22,7 +22,7 @@ export default function Step8(props) {
               locale="qr"
               setData={props.setData}
               data={props.data}
-              tooltip="Vazão"
+              tooltip="Vazão do rio"
 
             />
             <ItemForm
@@ -52,7 +52,7 @@ export default function Step8(props) {
               locale="qr"
               setData={props.setData}
               data={props.data}
-              tooltip="Vazão"
+              tooltip="Vazão do rio"
 
             />
             <ItemForm
@@ -82,7 +82,7 @@ export default function Step8(props) {
             locale="Qe"
             setData={props.setData}
             data={props.data}
-            tooltip="Vazão"
+            tooltip="Vazão do esgoto"
 
 
           />
@@ -123,11 +123,12 @@ export default function Step8(props) {
         <Title title="Dados morfométricos e ambientais" />
 
         <Form>
+
           <ItemForm
             title="T"
             disabled={true}
-            unity={props.data.cslinha + " ºC"}
-            locale="temperratura"
+            unity={props.data.temperatura + " ºC"}
+            locale="temperatura"
             setData={props.setData}
             data={props.data}
             tooltip="Temperatura do líquido"
@@ -145,9 +146,9 @@ export default function Step8(props) {
           />
           <ItemForm
             title="v"
-            unity={props.data.h + " m/s"}
+            unity={props.data.velocidade + " m/s"}
             disabled={true}
-            locale="v"
+            locale="velocidade"
             setData={props.setData}
             data={props.data}
             tooltip="Velocidade do curso d'água"
@@ -168,8 +169,8 @@ export default function Step8(props) {
             title="θ para Kb"
             // sub="T"
             disabled={true}
-            unity={props.data.odmin + "  1/dia"}
-            locale="tetakb"
+            unity={props.data.teta + "  1/dia"}
+            locale="teta"
             setData={props.setData}
             data={props.data}
             tooltip="Coeficiente de temperatura"
