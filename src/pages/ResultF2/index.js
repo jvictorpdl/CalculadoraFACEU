@@ -35,9 +35,16 @@ export default function Result2(props) {
         )
       ) : (
         eficiencia != '0,000%' ? (
-          <CardInput>
-            <h1>Valor resultante de eficiência: {eficiencia}</h1>
-          </CardInput>
+
+          eficiencia.startsWith("-") ? (
+            <CardInput>
+              <h1>Não será necessário nenhum tratamento</h1>
+            </CardInput>
+          ) : (
+            <CardInput>
+              <h1>Valor resultante de eficiência: {eficiencia}</h1>
+            </CardInput>
+          )
         ) : (
           <CardInput>
             <img src={alertIcon} alt="Icone de alerta" />
