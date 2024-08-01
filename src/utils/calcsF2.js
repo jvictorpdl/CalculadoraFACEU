@@ -75,13 +75,13 @@ export const Calculadora2 = (props) => {
 
 
   if (entrada.represa === false) {
-    console.log('ENTROU EM RIO');
-    console.log('CALCULO DE N0 QR: ' + entrada.qr + ' Nr: '+entrada.nr + ' qe: '+entrada.qe+ ' ne: '+entrada.ne+ ' / qr+qe: '+ entrada.qr+entrada.qe);
+    // console.log('ENTROU EM RIO');
+    // console.log('CALCULO DE N0 QR: ' + entrada.qr + ' Nr: '+entrada.nr + ' qe: '+entrada.qe+ ' ne: '+entrada.ne+ ' / qr+qe: '+ entrada.qr+entrada.qe);
     entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.ne)) / (entrada.qr + entrada.qe);
 
-console.log('entrada n0 nesse caralho: ' + entrada.no);
+// console.log('entrada n0 nesse caralho: ' + entrada.no);
     entrada.kbt = entrada.kb * Math.pow(entrada.teta, (entrada.temperatura - 20));
-console.log(entrada.no + ' Primeiro alculo de N0');
+// console.log(entrada.no + ' Primeiro alculo de N0');
     if (entrada.no > entrada.nop) {
       console.log('entrou no if no> nop');
       entrada.nep = (entrada.nop * (entrada.qr + entrada.qe) - entrada.qr * entrada.nr) / entrada.qe;
@@ -95,10 +95,10 @@ console.log(entrada.no + ' Primeiro alculo de N0');
         kmvet.push((aux * i) / 1000);
         novet.push(Number(entrada.noToPush.toFixed(2)));
         
-        console.log(Number(entrada.noToPush.toFixed(2)));
+        // console.log(Number(entrada.noToPush.toFixed(2)));
       }
     }else{
-      console.log('nao entrou no if no> nop');
+      // console.log('nao entrou no if no> nop');
 
       for (let i = 0; i <= entrada.particoes; i++) {
         let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
@@ -112,28 +112,44 @@ console.log(entrada.no + ' Primeiro alculo de N0');
     console.log('ENTROU EM REPRESA');
 
     console.log('eficiencia ' + entrada.eficiencia);
-    entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
+    console.log('N0: ' + entrada.no);
+    
     entrada.qAfluente = entrada.qr + entrada.qe;
+    console.log('q afluente: ' + entrada.qAfluente);
+    
     entrada.kbt = entrada.kb * Math.pow(entrada.teta, (entrada.temperatura - 20));
-    entrada.tDentencao = entrada.volume / entrada.qAfluente;
-    entrada.nRepresa = entrada.no / (1 + entrada.kbt * entrada.tDentencao);
+    console.log('kbt: ' + entrada.kbt);
+    entrada.tDentencao = entrada.volume / (entrada.qAfluente * 86400) ;
+    console.log('tempo de detencao: ' + entrada.tDentencao);
+    
+    // entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
+    entrada.nRepresa = entrada.nop * (1 + (entrada.kbt * entrada.tDentencao));
+    // entrada.nRepresa = entrada.no / (1 + entrada.kbt * entrada.tDentencao);
+    console.log('nrepresa: ' + entrada.nRepresa)
 
     if (entrada.nRepresa > entrada.nop) {
       entrada.nRepresaMax = entrada.nop * (1 + entrada.kbt * entrada.tDentencao);
-      entrada.nep = (entrada.nRepresaMax * (entrada.qr + entrada.qe) - entrada.qr * entrada.nr) / entrada.qr;
+      console.log("nrepresamax: " + entrada.nRepresaMax );
+      entrada.nep = (entrada.nRepresaMax * (entrada.qr + entrada.qe) - entrada.qr * entrada.nr) / entrada.qe;
+      console.log('nep: ' + entrada.nep);
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne;
+      console.log('EFICIENCIA REPRESA: ' + entrada.eficiencia);
+    }else{
+      entrada.eficiencia = -1
     }
-    console.log('no ' + entrada.no);
-    console.log('qAfluente ' + entrada.qAfluente);
 
-    console.log('kbt ' + entrada.kbt);
-    console.log('kb ' + entrada.kb);
-    console.log('tDentencao ' + entrada.tDentencao);
-    console.log('nRepresa ' + entrada.nRepresa);
 
-    console.log('nRepresaMax ' + entrada.nRepresaMax);
-    console.log('nep ' + entrada.nep);
-    console.log('eficiencia ' + entrada.eficiencia);
+    // console.log('no ' + entrada.no);
+    // console.log('qAfluente ' + entrada.qAfluente);
+
+    // console.log('kbt ' + entrada.kbt);
+    // console.log('kb ' + entrada.kb);
+    // console.log('tDentencao ' + entrada.tDentencao);
+    // console.log('nRepresa ' + entrada.nRepresa);
+
+    // console.log('nRepresaMax ' + entrada.nRepresaMax);
+    // console.log('nep ' + entrada.nep);
+    // console.log('eficiencia ' + entrada.eficiencia);
   }
   
   let resultado2 = {};
