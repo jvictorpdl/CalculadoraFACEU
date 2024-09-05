@@ -1,9 +1,4 @@
-import { Content, CardBoard, CardBoardFerramenta2 } from "../styleSteps";
-import Title from "../../../components/Title";
-import Rio from "../../../assets/Rio.svg";
-import boldArrow from "../../../assets/boldArrow.svg";
-import Button from "../../../components/Button";
-import { Navigate } from "react-router-dom";
+import { Content, CardBoardFerramenta2 } from "../styleSteps";
 import { useEffect, useState } from "react";
 import React from "react";
 import Box from "../../../components/Box";

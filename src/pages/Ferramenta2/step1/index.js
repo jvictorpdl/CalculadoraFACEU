@@ -6,25 +6,12 @@ import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
 import Table from "../../../components/Table";
 import FormTwo from "../../../components/FormTwo";
-import ItemSelect from "../../../components/ItemSelect";
-import Form from "../../../components/Form";
 
 export default function Step1(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  const [formData, setFormData] = useState({
-    mySelectField: ''
-  });
 
-  const optionsTwo = [
-    { value: 200, label: "Classe 1" },
-    { value: 1000, label: "Classe 2" },
-    { value: 4000, label: "Classe 3" }
-  ]
-  const options = [
-    { value: false, label: "Rio" },
-    { value: true, label: "Represa" }
-  ]
+
   //funções open Modal
   function openModal() {
     setIsOpen(true);

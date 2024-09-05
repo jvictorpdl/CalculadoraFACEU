@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, ButtonsSteps, ButtonsStepOne, Progress, TitlePage } from "./styles";
+import { Container, ButtonsSteps, TitlePage } from "./styles";
 import PageTemplate from "../PageTemplate";
 import Button from "../../components/Button";
 import Step0 from "./step00";
@@ -16,7 +16,7 @@ import Result2 from "../ResultF2";
 
 function Ferramenta2() {
   const [step, setStep] = useState(0);
-  const [restartStep, setRestartStep] = useState(false);
+  const [, setRestartStep] = useState(false);
   const [data, setData] = useState({
 
     qr: "",
@@ -55,17 +55,16 @@ function Ferramenta2() {
   });
   // ctvet[]: React.useState([]),
   // useState: ({ctvet[]}),
-  const [progressWidth, setProgressWidth] = useState(8);
 
 
   const prev = () => {
     // setProgressWidth(progressWidth - 9);
     setStep(step - 1);
   };
-  const next = () => {
-    // setProgressWidth(progressWidth + 9);
-    setStep(step + 1);
-  };
+  // const next = () => {
+  //   // setProgressWidth(progressWidth + 9);
+  //   setStep(step + 1);
+  // };
 
   const resetStep = () => {
     // setProgressWidth(8);

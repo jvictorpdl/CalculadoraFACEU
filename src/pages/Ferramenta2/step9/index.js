@@ -1,8 +1,6 @@
 import Form from "../../../components/Form";
-import FormTwo from "../../../components/FormTwo";
 import ItemForm from "../../../components/ItemForm";
 import { CardInput, CardHelp, Content } from "../styleSteps";
-import { Subtitle } from "../../../components/Subtitle/styles";
 import { useState } from "react";
 import Title from "../../../components/Title";
 import Modal from "../../../components/Modal";
@@ -356,13 +354,13 @@ export default function Step10(props) {
           <h5>(*) Reator UASB + pós-tratamento: praticamente todos os processos listados acima podem ser utilizados como pós-tratamento. A eficiência global (reator UASB + pós tratamento) é similar à do processo selecionado para o pós tratamento, caso este estivesse tratando esgotos brutos. Por exemplo, a eficiência do sistema de lodos ativados tratando esgotos brutos é similar à do sistema UASB + lodos ativados.</h5>
           <br />
           <h5>
-          (**) Os processos de infiltração no solo não geram efluentes superficiais, já que o mesmo infiltra-se no terreno. Medilções no subsolo, próximas ao local de infiltração, usualmente indicam eficiências superiores a 90%. Das variantes de infiltração, a mais eficiente é a infiltração lenta.
+            (**) Os processos de infiltração no solo não geram efluentes superficiais, já que o mesmo infiltra-se no terreno. Medilções no subsolo, próximas ao local de infiltração, usualmente indicam eficiências superiores a 90%. Das variantes de infiltração, a mais eficiente é a infiltração lenta.
           </h5>
           <br />
           <h5>Fonte: Von Sperling (2005)</h5>
 
         </Modal>
-        </CardHelp>
+      </CardHelp>
     </Content>
   );
 }

@@ -1,20 +1,11 @@
-import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import Title from "../../../components/Title";
-import { Subtitle } from "../../../components/Subtitle/styles";
 import { CardInput, CardHelp, Content } from "../styleSteps";
 import { useState } from "react";
 import Table from "../../../components/Table";
 import Modal from "../../../components/Modal";
 import HelpModal from "../../../components/HelpModal";
 
-//iria ser usado para um Select
-// const options = [
-//   { value: "", label: "Selecione" },
-//   { value: "1", label: "O'Connor Dobbins" },
-//   { value: "2", label: "Churchill et al" },
-//   { value: "3", label: "Owens et al" },
-// ];
 
 export default function Step3(props) {
   const [modalIsOpen, setIsOpen] = useState(false);

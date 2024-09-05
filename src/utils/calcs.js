@@ -59,7 +59,7 @@ export const Calculadora = (props) => {
     entrada.k2t =
       entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
 
-   
+
   } else if (entrada.h) {
     if (
       entrada.h < 4 &&
@@ -122,28 +122,29 @@ export const Calculadora = (props) => {
     entrada.co =
       (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
       (entrada.qr + entrada.qe);
-  if (entrada.lancamentos.length) {
-    let qeXode = 0, qe_qe = 0;
 
-    entrada.lancamentos.map(lancamento => {
-      qeXode += lancamento.qe * lancamento.ode;
-      qe_qe += lancamento.qe;
+  // if (entrada.lancamentos.length) {
+  //   let qeXode = 0, qe_qe = 0;
 
-    })
-    console.log("variaveis para o co------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
+  //   entrada.lancamentos.map(lancamento => {
+  //     qeXode += lancamento.qe * lancamento.ode;
+  //     qe_qe += lancamento.qe;
 
-    entrada.co =
-      (entrada.qr * entrada.odr + entrada.qe * entrada.ode + qeXode) /
-      (entrada.qr + entrada.qe + qe_qe);
-  } else {
-    entrada.co =
-      (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
-      (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
-    console.log("co: ", entrada.co);
-    console.log("variaveis para o co/////////////////////////////: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
-    console.log("co: ", entrada.co);
+  //   })
+  //   // console.log("variaveis para o co------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
 
-  }
+  //   entrada.co =
+  //     (entrada.qr * entrada.odr + entrada.qe * entrada.ode + qeXode) /
+  //     (entrada.qr + entrada.qe + qe_qe);
+  // } else {
+  //   entrada.co =
+  //     (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
+  //     (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
+  //   // console.log("co: ", entrada.co);
+  //   // console.log("variaveis para o co/////////////////////////////: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
+  //   // console.log("co: ", entrada.co);
+
+  // }
 
 
   entrada.do = entrada.cslinha - entrada.co;
@@ -161,7 +162,7 @@ export const Calculadora = (props) => {
 
       entrada.lo = entrada.dbo5 * entrada.kt;
 
-    
+
     } else {
       entrada.dbo5 =
         (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) /
@@ -223,7 +224,7 @@ export const Calculadora = (props) => {
           (entrada.cslinha - entrada.co) *
           Math.pow(2.7182818285, -entrada.k2t * tempop));
 
- 
+
     }
 
     let aux = entrada.distancia / entrada.particoes;

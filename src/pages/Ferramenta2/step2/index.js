@@ -2,75 +2,15 @@ import { CardInput, CardHelp, Content } from "../styleSteps";
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import Title from "../../../components/Title"
-import { Subtitle } from "../../../components/Subtitle/styles";
 import Modal from "../../../components/Modal";
 import React from "react";
 import { useState } from "react";
 import HelpModal from "../../../components/HelpModal";
-import Table from "../../../components/Table";
 
 
 export default function Step2(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   // const [modalIsOpen2, setIsOpen2] = useState(false);
-  const table = {
-    header: [
-      {
-        content: "Origem"
-      },
-      {
-        content: 'K1 ',
-        mid: '(dia',
-        up: '-1',
-        final: ')',
-
-      }
-    ],
-    lines: [
-      [
-        {
-          content: 'Esgoto bruto concentrado'
-        },
-        {
-          content: '0,35 - 0,45'
-        },
-      ],
-      [
-        {
-          content: 'Esgoto bruto de baixa concentração'
-        },
-        {
-          content: '0,30 - 0,40'
-        },
-      ],
-      [
-        {
-          content: 'Efluente primário'
-        },
-        {
-          content: '0,30 - 0,40'
-        },
-      ],
-      [
-        {
-          content: 'Efluente secundário'
-        },
-        {
-          content: '0,12 - 0,24'
-        },
-      ],
-      [
-        {
-          content: 'Curso d’água com águas limpas'
-        },
-        {
-          content: '0,08 - 0,20'
-        },
-
-      ],
-
-    ]
-  }
 
   function openModal() {
     setIsOpen(true);

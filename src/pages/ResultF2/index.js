@@ -33,7 +33,7 @@ export default function Result2(props) {
           </CardInput>
         )
       ) : (
-        eficiencia != '0,000%' ? (
+        eficiencia !== '0,000%' ? (
 
           eficiencia.startsWith("-") ? (
             <CardInput>

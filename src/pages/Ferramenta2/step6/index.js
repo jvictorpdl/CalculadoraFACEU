@@ -1,19 +1,9 @@
 import FormTwo from "../../../components/FormTwo";
 import ItemForm from "../../../components/ItemForm";
-import { CardInput, CardHelp, Content } from "../styleSteps";
-import Modal from "../../../components/Modal";
-import { useState } from "react";
-import HelpModal from "../../../components/HelpModal";
+import { CardInput, Content } from "../styleSteps";
 import Title from "../../../components/Title";
-import Table from "../../../components/Table";
-import ItemSelect from "../../../components/ItemSelect"
 
 export default function Step6(props) {
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  const [formData, setFormData] = useState({
-    mySelectField: ''
-  });
 
 
 

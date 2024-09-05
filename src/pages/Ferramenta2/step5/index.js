@@ -1,15 +1,14 @@
-import Form from "../../../components/Form";
 import FormTwo from "../../../components/FormTwo";
 import ItemForm from "../../../components/ItemForm";
 import Title from "../../../components/Title";
-import { CardInput, CardHelp, Content } from "../styleSteps";
+import { CardInput, Content } from "../styleSteps";
 import { Subtitle } from "../../../components/Subtitle/styles";
 
 export default function Step5(props) {
   return (
     <Content>
       <CardInput>
-      <Title title="Dados morfométricos e ambientais"/>
+        <Title title="Dados morfométricos e ambientais" />
 
         <FormTwo>
           <ItemForm

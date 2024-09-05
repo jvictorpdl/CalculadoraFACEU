@@ -1,13 +1,7 @@
-import FormTwo from "../../../components/FormTwo";
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
 import Title from "../../../components/Title";
-import { CardInput, Content, CardHelp } from "../styleSteps";
-import Modal from "../../../components/Modal";
-import HelpModal from "../../../components/HelpModal";
-import Table from "../../../components/Table";
-import { useState } from "react";
-import { Subtitle } from "../../../components/Subtitle/styles";
+import { CardInput, Content } from "../styleSteps";
 
 export default function Step4(props) {
 

@@ -41,8 +41,8 @@ export const Calculadora2 = (props) => {
   let ntempoVet = [];
   let kmvet = [];
   let novet = [];
-  let kmvetTwo = [];
-  let novetTwo = [];
+  // let kmvetTwo = [];
+  // let novetTwo = [];
 
 
   if (entrada.represa === false) {
