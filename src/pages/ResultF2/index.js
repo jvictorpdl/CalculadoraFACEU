@@ -25,7 +25,6 @@ export default function Result2(props) {
               <br />
               <Linechart2 novet={novet} particoesVet={particoesVet} kmvet={kmvet} />
             </div>
-
           )
         ) : (
           <CardInput>

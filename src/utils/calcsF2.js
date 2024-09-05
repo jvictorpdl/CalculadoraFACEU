@@ -74,7 +74,6 @@ export const Calculadora2 = (props) => {
     }
   } else { //CASO DE REPRESA===true
 
-
     entrada.qAfluente = entrada.qr + entrada.qe;
 
     entrada.kbt = entrada.kb * Math.pow(entrada.teta, (entrada.temperatura - 20));
@@ -93,6 +92,8 @@ export const Calculadora2 = (props) => {
     }
   }
 
+  console.log('EFICIENCIA: ' + entrada.eficiencia);
+
   let resultado2 = {};
   // apenas para testar o grafico
   // novet = [50000000, 60000000, 70000000, 80000000, 90000000, 50000000, 80000000, 60000000, 20000000, 70000000];
@@ -105,6 +106,8 @@ export const Calculadora2 = (props) => {
   resultado2.ntempoVet = ntempoVet;
   resultado2.kmvet = kmvet;
   resultado2.novet = novet;
+
+  console.log('Resultado final: ' + novet);
 
   // console.log(entrada);
   return resultado2;

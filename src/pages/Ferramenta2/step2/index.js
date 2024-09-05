@@ -142,7 +142,6 @@ export default function Step2(props) {
 
         </Form>
       </CardInput>
-
       <CardHelp>
         <Title title="Informações auxiliares" />
         <br />
