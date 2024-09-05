@@ -14,7 +14,7 @@ function formatScientific(value) {
 function formatYAxisLabel(value) {
   const exponent = Math.floor(Math.log10(value));
   // Calcula o valor base para que comece com 1.00
-  const baseValue = value / (10 ** exponent);
+  // const baseValue = value / (10 ** exponent);
   // Garante que o coeficiente é sempre 1.00
   const formattedCoefficient = '1,00';
   // Formata o expoente para garantir que o formato seja '+X' ou '-X'
@@ -24,7 +24,7 @@ function formatYAxisLabel(value) {
 
 function Linechart2({ novet, particoesVet, kmvet }) {
   // Formatar os valores para exibição no eixo y e tooltip
-  const formattedNovet = novet.map(formatScientific);
+  // const formattedNovet = novet.map(formatScientific);
 
   return (
     <div className="container-fluid mt-3 mb-3">

@@ -1,12 +1,10 @@
 import Form from "../../../components/Form";
 import ItemForm from "../../../components/ItemForm";
-import { CardInput, CardHelp, Content } from "../styleSteps";
+import { CardInput, Content } from "../styleSteps";
 import Title from "../../../components/Title";
 
 export default function Step8(props) {
-  function calculalancamentos() {
 
-  }
   return (
     <Content>
       <CardInput>
@@ -110,7 +108,7 @@ export default function Step8(props) {
             tooltip="Profundidade"
 
           />
-          
+
           <ItemForm
             title="d"
             unity={props.data.distancia + " m"}
@@ -121,7 +119,7 @@ export default function Step8(props) {
             tooltip="Distancia"
 
           />
-           <ItemForm
+          <ItemForm
             title="t"
             disabled={true}
             unity={props.data.tempo + " dia"}
@@ -153,7 +151,7 @@ export default function Step8(props) {
 
           />
 
-         
+
           <ItemForm
             title="Cs'"
             disabled={true}

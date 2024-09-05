@@ -3,6 +3,7 @@ import { Input } from "../Input";
 import { Container, Label } from "./styles";
 
 export default function ItemForm(props) {
+  // eslint-disable-next-line no-unused-vars
   const [locale, setLocale] = useState(props.locale);
 
   function updateData(value) {

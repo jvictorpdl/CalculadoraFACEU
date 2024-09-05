@@ -21,12 +21,12 @@ export default function Modal(props) {
 
                         </h2>
                     </div>
-                    <img onClick={props.closeModal} src={CloseIcon} />
+                    <img onClick={props.closeModal} src={CloseIcon} alt="Icone em forma de X" />
                 </Header>
                 <Content>
                     <ContainerChildren>
 
-                    {props.children}
+                        {props.children}
 
                     </ContainerChildren>
                 </Content>

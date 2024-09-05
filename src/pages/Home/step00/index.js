@@ -1,13 +1,8 @@
 import { Content, CardBoard } from "../styleSteps";
-import Title from "../../../components/Title";
 import Rio from "../../../assets/Rio.svg";
-import boldArrow from "../../../assets/boldArrow.svg";
-import Button from "../../../components/Button";
-import { Navigate } from "react-router-dom";
-import { useState } from "react";
 import React from "react";
 import Box from "../../../components/Box";
-import { Container, ContainerTwo, ContainerThree } from "./styles";
+import { Container, ContainerTwo } from "./styles";
 
 export default function Step0(props) {
   const handleClick = (boxname, numberStep) => {
@@ -36,7 +31,7 @@ export default function Step0(props) {
 
         </Container>
 
-        <img src={Rio} />
+        <img src={Rio} alt="imagem meramente ilustrativa de um rio" />
 
         <ContainerTwo>
           <Box boxname="Dados do rio" setStep={props.setStep} numberStep={1} handleClick={handleClick} />
