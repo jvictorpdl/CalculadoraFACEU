@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Ferramenta2 from "./pages/Ferramenta2/index";
-
+//comentario
 function App() {
   return (
     <Router>
