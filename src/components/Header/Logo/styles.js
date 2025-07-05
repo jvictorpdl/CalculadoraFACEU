@@ -5,8 +5,8 @@ align-items:center;
 display: flex;
 
 img {
-    width: 40px;
-    height: 40px;
+    width: 100px;
+    height: 20px;
 }
 
 

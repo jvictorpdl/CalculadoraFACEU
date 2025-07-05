@@ -1,13 +1,13 @@
 import React from "react";
 import { LogoImg } from "./styles";
-import icon from "../../../assets/icon.png";
+import logoFACEU from "../../../assets/logo-light-mode.svg";
 import { Link } from "react-router-dom";
 
 export default function Logo() {
   return (
     <LogoImg>
       <Link to="/">
-        <img src={icon} alt="logo" />
+        <img src={logoFACEU} alt="logo" />
       </Link>
     </LogoImg>
   );
