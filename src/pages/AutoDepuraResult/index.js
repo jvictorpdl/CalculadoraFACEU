@@ -1,6 +1,6 @@
 import alertIcon from "../../assets/alertIcon.svg";
 import Linechart from "../../components/Linechart";
-import * as calc from "../../utils/calcs";
+import * as calc from "../../utils/autoDepuraCalculation";
 import { CardInput } from "../AutoDepura/styleSteps";
 
 export default function Result(props) {

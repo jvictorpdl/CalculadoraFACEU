@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const TabsContainer = styled.div`
   background-color: #ffffff00;
   margin: 150 100px 50px
+  height: 100%;
 `;
 
 export const TabsWrapper = styled.div`
@@ -29,6 +30,7 @@ export const TabButtonStyled = styled.button`
 
 export const TabContentContainer = styled.div`
   margin: 24px 0px 0px 0px;
+  height: 100%;
 `;
 
 

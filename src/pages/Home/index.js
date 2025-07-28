@@ -4,6 +4,7 @@ import { Tab } from '../../components/Tabs/tab';
 import { Tools } from "../../core/enums";
 import PageTemplate from "../PageTemplate";
 import { Holder } from "../PageTemplate/styles";
+import { AutoDepura } from "./AutoDepura/autoDepura";
 
 import { FinishButton } from "./styles";
 
@@ -17,7 +18,7 @@ export default function Home() {
             <Holder>
                 <Tabs id='tabs'>
                     <Tab id={Tools.AutoDepura} label="Autodepura">
-                        <div>AutoDepura</div>
+                        <AutoDepura />
                     </Tab>
                     <Tab id={Tools.ColiCalc} label="Colicalc">
                         <div>Colicalc</div>

@@ -1,4 +1,7 @@
 /* eslint-disable no-lone-blocks */
+
+
+
 export const Calculadora = (props) => {
   console.log(props);
   const entrada = {
@@ -39,7 +42,6 @@ export const Calculadora = (props) => {
     lancamentos: props.lancamentos,
   };
   console.log(entrada);
-
 
 
   const particoesVet = [];
