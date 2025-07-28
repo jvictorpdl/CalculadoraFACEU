@@ -1,7 +1,7 @@
-import * as calc from "../../utils/calcs";
+import alertIcon from "../../assets/alertIcon.svg";
 import Linechart from "../../components/Linechart";
-import { CardInput } from "../Home/styleSteps";
-import alertIcon from "../../assets/alertIcon.svg"
+import * as calc from "../../utils/calcs";
+import { CardInput } from "../AutoDepura/styleSteps";
 
 export default function Result(props) {
   const { ctVet, odminVet, particoesVet, kmvet } = calc.Calculadora(props.data);

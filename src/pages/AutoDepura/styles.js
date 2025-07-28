@@ -14,7 +14,8 @@ export const TitlePage = styled.div`
   padding-left: 135px;
   margin-bottom: 10px;
   text-align: start;
-  color: #2174d4;
+  color: #4F5666;
+
 `
 
 export const TitleCard = styled.h2`
@@ -31,7 +32,7 @@ export const Progress = styled.hr`
 
 export const ButtonsSteps = styled.div`
   width: 100vw;
-  margin-top: 52px;
+  margin-top: 10px;
   padding-left: 57%;
   display: flex;
   column-gap: 20px;

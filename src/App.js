@@ -1,17 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Ferramenta2 from "./pages/Ferramenta2/index";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { ApplicationStateProvider } from "./core/providers";
+import AutoDepura from "./pages/AutoDepura/index";
+import ColiCalc from "./pages/ColiCalc/index";
+import Home from './pages/Home/index';
+
 //comentario
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/autodepura" element={<Home />} />
-        <Route path="/ferramenta2" element={<Ferramenta2 />} />
-      </Routes>
-    </Router>
+    <ApplicationStateProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/autodepura" element={<AutoDepura />} />
+          <Route path="/colicalc" element={<ColiCalc />} />
+        </Routes>
+      </Router >
+    </ApplicationStateProvider>
   );
 }
 

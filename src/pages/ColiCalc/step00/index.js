@@ -1,8 +1,7 @@
-import { Content, CardBoardFerramenta2 } from "../styleSteps";
 import { useEffect, useState } from "react";
-import React from "react";
 import Box from "../../../components/Box";
-import { Container, ContainerTwo, ContainerThree, ContainerFor } from "./styles";
+import { CardBoardColiCalc, Content } from "../styleSteps";
+import { Container, ContainerFor, ContainerThree, ContainerTwo } from "./styles";
 
 export default function Step0(props) {
   const [represa, setRepresa] = useState(props.data.represa);
@@ -31,7 +30,7 @@ export default function Step0(props) {
   }, [represa])
   return (
     <Content>
-      <CardBoardFerramenta2>
+      <CardBoardColiCalc>
         {/* <Title title="Inserção de dados:" /> */}
         <h1>INSERÇÃO DE DADOS</h1>
 
@@ -100,7 +99,7 @@ export default function Step0(props) {
 
 
 
-      </CardBoardFerramenta2>
+      </CardBoardColiCalc>
 
     </Content>
   );

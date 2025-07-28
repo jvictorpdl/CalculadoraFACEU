@@ -56,7 +56,7 @@ background: #FFF;
 padding: 32px;
 
 `;
-export const CardBoardFerramenta2 = styled.section`
+export const CardBoardColiCalc = styled.section`
 display: inline-flex;
 height: 325px;
 width: 975px;

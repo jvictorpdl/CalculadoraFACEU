@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Container, ButtonsSteps, TitlePage } from "./styles";
-import PageTemplate from "../PageTemplate";
 import Button from "../../components/Button";
+import Result2 from "../ColiCalcResult";
+import PageTemplate from "../PageTemplate";
 import Step0 from "./step00";
 import Step1 from "./step1";
 import Step2 from "./step2";
@@ -12,9 +12,9 @@ import Step6 from "./step6";
 import Step7 from "./step7";
 import Step8 from "./step8";
 import Step9 from "./step9";
-import Result2 from "../ResultF2";
+import { ButtonsSteps, Container, TitlePage } from "./styles";
 
-function Ferramenta2() {
+function ColiCalc() {
   const [step, setStep] = useState(0);
   const [, setRestartStep] = useState(false);
   const [data, setData] = useState({
@@ -75,7 +75,7 @@ function Ferramenta2() {
     <PageTemplate>
       <Container>
         <TitlePage>
-          <h1>ColiCalc</h1>
+          <h1>Calimpe-H20</h1>
         </TitlePage>
         {/* <Progress width={`${progressWidth}%`} /> */}
         {step === 0 && <Step0 data={data} setStep={setStep} setRestartStep={setRestartStep} setData={setData} />}
@@ -141,4 +141,4 @@ function Ferramenta2() {
     </PageTemplate>
   );
 }
-export default Ferramenta2;
+export default ColiCalc;

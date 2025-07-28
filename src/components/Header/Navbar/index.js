@@ -1,19 +1,17 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
-import { List, ListItem } from "./styles";
-import { Link } from "react-router-dom";
+import { List } from "./styles";
 // import AutoDepura from '../../../pages/autoDepura';
-// import Ferramenta2 from '../../../pages/ferramenta2'; 
+// import ColiCalc from '../../../pages/ColiCalc'; 
 
 export default function Navbar() {
   return (
     <List>
-      <ListItem >
+      {/* <ListItem >
         <Link to="/autodepura" className="route">AutoDepura</Link>
       </ListItem>
       <ListItem >
-        <Link to="/ferramenta2" className="route">ColiCalc</Link>
-      </ListItem>
+        <Link to="/ColiCalc" className="route">ColiCalc</Link>
+      </ListItem> */}
     </List>
   );
 }
