@@ -5,6 +5,7 @@ import { Tools } from "../../core/enums";
 import PageTemplate from "../PageTemplate";
 import { Holder } from "../PageTemplate/styles";
 import { AutoDepura } from "./AutoDepura/autoDepura";
+import { ColiCalc } from "./ColiCalc/coliCalc";
 
 import { FinishButton } from "./styles";
 
@@ -21,7 +22,7 @@ export default function Home() {
                         <AutoDepura />
                     </Tab>
                     <Tab id={Tools.ColiCalc} label="Colicalc">
-                        <div>Colicalc</div>
+                        <ColiCalc />
                     </Tab>
                     <Tab id={Tools.EuroFriza} label="EuroFriza">
                         <div>Em Breve</div>

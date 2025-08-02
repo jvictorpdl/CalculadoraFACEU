@@ -37,9 +37,6 @@ export function DadosAdicionaisStep1() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>
@@ -69,7 +66,7 @@ export function DadosAdicionaisStep2() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="" placeholder="m/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak2} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak2: val })} label="θ para K2" tooltip="" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="" placeholder="ºC" />
@@ -85,9 +82,6 @@ export function DadosAdicionaisStep2() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>
@@ -126,9 +120,6 @@ export function DadosAdicionaisStep3() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>
@@ -167,9 +158,6 @@ export function DadosAdicionaisStep4() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>

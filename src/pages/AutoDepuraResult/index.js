@@ -4,7 +4,7 @@ import * as calc from "../../utils/autoDepuraCalculation";
 import { CardInput } from "../AutoDepura/styleSteps";
 
 export default function Result(props) {
-  const { ctVet, odminVet, particoesVet, kmvet } = calc.Calculadora(props.data);
+  const { ctVet, odminVet, particoesVet, kmvet } = calc.CalculadoraAutodepura(props.data);
 
 
   return (

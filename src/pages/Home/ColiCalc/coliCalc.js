@@ -2,30 +2,53 @@ import { useContext, useEffect, useState } from 'react';
 import { Flex, Row } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
-import { PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
+import { PageDescription, PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
+import { RadioButton } from '../../../components/RadioButton/radioButton';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
 import { ActionButton, CancelButton, ToolsButton } from '../styles';
-import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
-import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
+import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
+import { DadosEsgotoStep1 } from './collection/dadosEsgoto';
+import { DadosMisturaStep1 } from './collection/dadosMistura';
+import { DadosRepresaStep1 } from './collection/dadosRepresa';
 import { DadosRioStep1 } from './collection/dadosRio';
 
 
-export function AutoDepura() {
+export function ColiCalc() {
     const { state, dispatch } = useContext(ApplicationContext);
     const [step, setStep] = useState(0);
     const [selectedCollection, setSelectedCollection] = useState('Dados do rio');
+    const [radioState, setRadioState] = useState('Dados do rio');
+
+    function updateStateWithColiCalcData(inputs) {
+        dispatch({
+            ...state,
+            data: {
+                ...state.data,
+                colicalc: {
+                    ...state.data.colicalc,
+                    ...inputs
+                },
+            }
+        })
+    }
+
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
+
+    useEffect(() => {
+
+
+    }, [radioState]);
 
     function saveResult(result) {
         dispatch({
             ...state,
             output: {
                 ...state.output,
-                autodepura: {
-                    ...state.output.autodepura,
+                colicalc: {
+                    ...state.output.colicalc,
                     ...result
                 }
             }
@@ -36,17 +59,24 @@ export function AutoDepura() {
         'Dados do rio': [
             <DadosRioStep1 />
         ],
+        'Dados da represa': [
+            <DadosRepresaStep1 />
+        ],
         'Dados do esgoto': [
-            <DadoEsgotoStep1 />,
-            <DadoEsgotoStep2 />,
+            <DadosEsgotoStep1 />
+        ],
+        'Dados da mistura': [
+            <DadosMisturaStep1 />
         ],
         'Dados adicionais': [
-            <DadosAdicionaisStep1 />,
-            <DadosAdicionaisStep2 />,
-            <DadosAdicionaisStep3 />,
-            <DadosAdicionaisStep4 />,
+            <DadosAdicionaisStep1 />
         ]
     }
+
+    const disableClicksForCollections = [
+        'Dados do rio',
+        'Dados da represa'
+    ]
 
 
     const renderStep = (step) => {
@@ -59,15 +89,40 @@ export function AutoDepura() {
 
     return (
         <div style={{ height: 'inherit' }}>
-            <PageTitle style={{ marginBottom: '8px' }}>AutoDepura</PageTitle>
-            <PageSubtitle style={{ marginBottom: '8px' }}>subtitle aqui</PageSubtitle>
+            <PageTitle style={{ marginBottom: '8px' }}>ColiCalc</PageTitle>
+            <PageSubtitle style={{ marginBottom: '8px' }}>Calculadora de Coliformes</PageSubtitle>
+            <Row style={{ marginBottom: '8px' }}>
+                <PageDescription>Esse cálculo será feito para um </PageDescription>
+                <RadioButton
+                    name="colecao"
+                    value="dadosDoRio"
+                    label="Rio"
+                    checked={radioState === 'Dados do rio'}
+                    onChange={() => {
+                        setRadioState('Dados do rio');
+                        setSelectedCollection('Dados do rio');
+                    }}
+                />
+
+                <RadioButton
+                    name="colecao"
+                    value="dadosDoEsgoto"
+                    label="Represa"
+                    checked={radioState === 'Dados da represa'}
+                    onChange={() => {
+                        setRadioState('Dados da represa');
+                        setSelectedCollection('Dados da represa');
+                    }}
+                />
+            </Row>
+
             <Row>
                 {Object.entries(collection).map(([collectionName, steps],) => {
                     console.log(`Key: ${collectionName}, Value: ${steps}`);
                     return <ToolsButton
-                        key={collection}
+                        key={collectionName}
                         selected={selectedCollection === collectionName}
-                        disabled={selectedCollection === collectionName}
+                        disabled={selectedCollection === collectionName || disableClicksForCollections.includes(collectionName)}
                         onClick={() => setSelectedCollection(collectionName)}>
                         {collectionName}
                     </ToolsButton>
@@ -93,7 +148,7 @@ export function AutoDepura() {
                 {step > 0 && <CancelButton onClick={() => setStep(step - 1)}>Voltar</CancelButton>}
 
                 {step !== collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => setStep(step + 1)}>Próximo</ActionButton>}
-                {step === collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => saveResult(CalculadoraAutodepura(state.data.autodepura))}>Finalizar</ActionButton>}
+                {step === collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => saveResult(CalculadoraAutodepura(state.data.colicalc))}>Finalizar</ActionButton>}
             </Row>
         </div >
     );

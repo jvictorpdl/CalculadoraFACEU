@@ -46,14 +46,17 @@ export default function TextFieldWithTooltip({
         <FieldWrapper>
             <LabelWrapper>
                 <span style={{ fontWeight: 600, color: "#374151" }}>{label}</span>
-                <Tooltip.Provider>
+                <Tooltip.Provider delayDuration={100}>
                     <Tooltip.Root>
                         <Tooltip.Trigger asChild>
-                            <Info size={16} style={{ cursor: 'pointer' }} />
+                            <span style={{ display: "inline-flex", cursor: "pointer" }}>
+                                <Info size={16} />
+                            </span>
                         </Tooltip.Trigger>
                         <Tooltip.Portal>
                             <TooltipContentStyled side="top" sideOffset={4}>
                                 {tooltip}
+                                <Tooltip.Arrow />
                             </TooltipContentStyled>
                         </Tooltip.Portal>
                     </Tooltip.Root>

@@ -2,7 +2,7 @@
 
 
 
-export const Calculadora = (props) => {
+export const CalculadoraAutodepura = (props) => {
   console.log(props);
   const entrada = {
     qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
@@ -30,6 +30,7 @@ export const Calculadora = (props) => {
     e: Number(String(props.e).replaceAll('.', '').replace(',', '.')),
     altitude: Number(String(props.altitude).replaceAll('.', '').replace(',', '.')),
     //saída//
+    lancamentos: props.lancamentos,
     co: 0,
     do: 0,
     dbo5: 0,
@@ -39,7 +40,6 @@ export const Calculadora = (props) => {
     deficitc: 0,
     odc: 0,
     ct: 0,
-    lancamentos: props.lancamentos,
   };
   console.log(entrada);
 

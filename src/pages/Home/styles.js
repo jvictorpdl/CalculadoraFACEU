@@ -28,7 +28,7 @@ export const ToolsButton = styled.button`
     color: ${(props) => (props.selected ? '#2BA3AB' : '#D1D5DB')};
     padding: 4px 12px;
     font-weight: 600;
-    cursor: ${(props) => (props.selected ? 'auto' : 'pointer')};
+    cursor: ${(props) => (props.disabled ? 'auto' : props.selected ? 'auto' : 'pointer')};
 `
 
 export const ActionButton = styled.button`

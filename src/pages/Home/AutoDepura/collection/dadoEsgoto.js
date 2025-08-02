@@ -28,7 +28,7 @@ export function DadoEsgotoStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Passo 1" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.qe} onBlurValue={(val) => updateStateWithAutodepuraData({ qr: val })} label="Qe" tooltip="Vazão." placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.ode} onBlurValue={(val) => updateStateWithAutodepuraData({ ode: val })} label="ODe" tooltip="Oxigênio dissolvido." placeholder="mg/L" />
                     </Grid>
@@ -36,9 +36,6 @@ export function DadoEsgotoStep1() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>
@@ -70,7 +67,7 @@ export function DadoEsgotoStep2() {
             <Row>
                 <Column>
                     <FormTitle title="Passo 2" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="" placeholder="%" />
                         <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="" placeholder="mg/L" />
 
@@ -80,9 +77,6 @@ export function DadoEsgotoStep2() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>

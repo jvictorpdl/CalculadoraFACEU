@@ -27,7 +27,7 @@ export function DadosRioStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Passo 1" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.qr} onBlurValue={(val) => updateStateWithAutodepuraData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.odr} onBlurValue={(val) => updateStateWithAutodepuraData({ odr: val })} label="Odr" tooltip="Oxigênio dissolvido." placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.dbor} onBlurValue={(val) => updateStateWithAutodepuraData({ dbor: val })} label="DBOr" tooltip="Demanda bioquimíca de oxigênio." placeholder="mg/L" />
@@ -37,9 +37,6 @@ export function DadosRioStep1() {
                 <VerticalSplitter />
                 <Column>
                     <span>Informações adicionais</span>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href=''>Clique aqui para Auxilio em Qr</a>
-                    <a href='' >Clique aqui para Auxilio em Qr</a>
                 </Column>
             </Row>
         </div>

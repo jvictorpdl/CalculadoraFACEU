@@ -32,6 +32,7 @@ export let defaultState = {
             dboefl: null,
             e: null,
             altitude: null,
+            lancamentos: null,
         },
         colicalc: {
             qr: null,
@@ -63,23 +64,17 @@ export let defaultState = {
     },
     output: {
         autodepura: {
-            co: 0,
-            do: 0,
-            dbo5: 0,
-            kt: 0,
-            tc: 0,
-            distanciac: 0,
-            deficitc: 0,
-            odc: 0,
-            ct: 0,
-            lancamentos: 0,
+            ctVet: null,
+            odminVet: null,
+            particoesVet: null,
+            kmvet: null,
         },
         colicalc: {
-            eficiencia: 0.0,
-            particoesVet: 0.0,
-            ntempoVet: 0.0,
-            kmvet: 0.0,
-            novet: 0.0,
+            eficiencia: null,
+            particoesVet: null,
+            ntempoVet: null,
+            kmvet: null,
+            novet: null,
         }
     }
 }
