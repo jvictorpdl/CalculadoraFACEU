@@ -124,24 +124,26 @@ export default function ColicalcValuesPreview() {
             {/* 'Dados do rio' column */}
             <Column title="Dados do rio">
                 <Grid>
-
                     <InputGroup>
                         <Label>Qr <InfoIcon /></Label>
                         <Input placeholder="m³/s" value={state.data.autodepura.qr} />
                     </InputGroup>
                     <InputGroup>
                         <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="org/100ml" value={state.data.autodepura.odr} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="org/100ml" value={state.data.autodepura.dbor} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="org/100ml" value={state.data.autodepura.odmin} />
+                        <Input placeholder="NPM/100ml" value={state.data.autodepura.nr} />
                     </InputGroup>
                 </Grid>
+            </Column>
+
+            <Column title="Dados da represa">
+                <InputGroup>
+                    <Label>Qe <InfoIcon /></Label>
+                    <Input placeholder="m³/s" />
+                </InputGroup>
+                <InputGroup>
+                    <Label>Ne <InfoIcon /></Label>
+                    <Input placeholder="org/100ml" />
+                </InputGroup>
             </Column>
 
             {/* 'Dados do esgoto' column */}
@@ -156,40 +158,39 @@ export default function ColicalcValuesPreview() {
                 </InputGroup>
             </Column>
 
+            <Column title="Dados da Mistura">
+                <InputGroup>
+                    <Label>Nop <InfoIcon /></Label>
+                    <Input placeholder="org/100ml" />
+                </InputGroup>
+            </Column>
+
             {/* 'Dados morfométricos e ambientais' column */}
-            <Column title="Dados morfométricos e ambientais">
+            <Column title="Dados adicionais">
                 <Grid>
                     <InputGroup>
-                        <Label>V <InfoIcon /></Label>
+                        <Label>T <InfoIcon /></Label>
                         <Input placeholder="°C" />
                     </InputGroup>
                     <InputGroup>
-                        <Label>H <InfoIcon /></Label>
+                        <Label>d <InfoIcon /></Label>
                         <Input placeholder="m" />
                     </InputGroup>
                     <InputGroup>
-                        <Label>d <InfoIcon /></Label>
+                        <Label>v <InfoIcon /></Label>
                         <Input placeholder="m/s" />
                     </InputGroup>
                     <InputGroup>
-                        <Label>t <InfoIcon /></Label>
+                        <Label>Kb <InfoIcon /></Label>
                         <Input placeholder="1/dia" />
                     </InputGroup>
                     <InputGroup>
-                        <Label>K1T <InfoIcon /></Label>
-                        <Input placeholder="m/s" />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>K2T <InfoIcon /></Label>
+                        <Label>θ para Kb <InfoIcon /></Label>
                         <Input placeholder="1/dia" />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Cs' <InfoIcon /></Label>
-                        <Input placeholder="m/s" />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>ODDmin <InfoIcon /></Label>
-                        <Input placeholder="1/dia" />
+                        <Label>N° trechos <InfoIcon /></Label>
+                        <Input placeholder="Quantidade" />
                     </InputGroup>
                 </Grid>
             </Column>

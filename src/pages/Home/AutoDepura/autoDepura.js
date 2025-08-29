@@ -6,6 +6,7 @@ import { PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
+import AutodepuraChart from '../../AutoDepuraResult';
 import { ActionButton, CancelButton, ToolsButton } from '../styles';
 import AutodepuraValuesPreview from './autodepuraValuesPreview';
 import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
@@ -75,7 +76,11 @@ export function AutoDepura() {
         ],
         'Resumo': [
             <AutodepuraValuesPreview />
-        ]
+        ],
+        'Gráfico': [
+            <AutodepuraChart data={state.data.colicalc} />
+
+        ],
     }
 
     const renderStep = (step) => {
@@ -85,6 +90,8 @@ export function AutoDepura() {
     }
 
     var collectionKeys = Object.keys(collection)
+    // remove grafico
+    collectionKeys.pop()
     const currentCollectionIndex = collectionKeys.indexOf(selectedCollection);
     const isFirstCollection = currentCollectionIndex === 0;
     const isLastCollection = currentCollectionIndex === collectionKeys.length - 1;
@@ -127,7 +134,7 @@ export function AutoDepura() {
                     return <ToolsButton
                         key={collection}
                         selected={selectedCollection === collectionName}
-                        disabled={selectedCollection === collectionName}
+                        disabled={selectedCollection === collectionName || collectionName === 'Gráfico'}
                         onClick={() => setSelectedCollection(collectionName)}>
                         {collectionName}
                     </ToolsButton>
@@ -148,7 +155,7 @@ export function AutoDepura() {
 
             <Flex />
 
-            <Row style={{ justifyContent: 'space-between' }}>
+            <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
                 <CancelButton onClick={handleBack}>
                     {isFirstStep && isFirstCollection ? 'Cancelar' : 'Voltar'}
                 </CancelButton>

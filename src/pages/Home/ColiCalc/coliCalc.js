@@ -7,6 +7,7 @@ import { RadioButton } from '../../../components/RadioButton/radioButton';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraColicalc } from '../../../utils/coliCalcCalculation';
+import ColicalcChart from '../../ColiCalcResult';
 import { ActionButton, CancelButton, ToolsButton } from '../styles';
 import ColicalcValuesPreview from './colicalcValuesPreview';
 import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
@@ -70,12 +71,16 @@ export function ColiCalc() {
         ],
         'Resumo': [
             <ColicalcValuesPreview />
+        ],
+        'Gráfico': [
+            <ColicalcChart data={state.data.colicalc} />
         ]
     }
 
     const disableClicksForCollections = [
         'Dados do rio',
-        'Dados da represa'
+        'Dados da represa',
+        'Gráfico'
     ]
 
 
@@ -86,6 +91,8 @@ export function ColiCalc() {
     }
 
     var collectionKeys = Object.keys(collection)
+    // remove grafico
+    collectionKeys.pop()
     const currentCollectionIndex = collectionKeys.indexOf(selectedCollection);
     const isFirstCollection = currentCollectionIndex === 0;
     const isLastCollection = currentCollectionIndex === collectionKeys.length - 1;
@@ -176,7 +183,7 @@ export function ColiCalc() {
 
             <Flex />
 
-            <Row style={{ justifyContent: 'space-between' }}>
+            <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
                 <CancelButton onClick={handleBack}>
                     {isFirstStep && isFirstCollection ? 'Cancelar' : 'Voltar'}
                 </CancelButton>

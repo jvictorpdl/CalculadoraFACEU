@@ -3,7 +3,7 @@ import Linechart from "../../components/Linechart";
 import * as calc from "../../utils/autoDepuraCalculation";
 import { CardInput } from "../AutoDepura/styleSteps";
 
-export default function Result(props) {
+export default function AutodepuraChart(props) {
   const { ctVet, odminVet, particoesVet, kmvet } = calc.CalculadoraAutodepura(props.data);
 
 

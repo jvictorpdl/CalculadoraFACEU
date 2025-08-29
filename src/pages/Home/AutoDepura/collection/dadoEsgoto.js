@@ -29,7 +29,7 @@ export function DadoEsgotoStep1() {
                 <Column>
                     <FormTitle title="Passo 1" />
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.autodepura.qe} onBlurValue={(val) => updateStateWithAutodepuraData({ qr: val })} label="Qe" tooltip="Vazão." placeholder="m³/s" />
+                        <TextFieldWithTooltip value={state.data.autodepura.qe} onBlurValue={(val) => updateStateWithAutodepuraData({ qe: val })} label="Qe" tooltip="Vazão." placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.ode} onBlurValue={(val) => updateStateWithAutodepuraData({ ode: val })} label="ODe" tooltip="Oxigênio dissolvido." placeholder="mg/L" />
                     </Grid>
                 </Column>
@@ -71,7 +71,7 @@ export function DadoEsgotoStep2() {
                         <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="" placeholder="%" />
                         <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="" placeholder="mg/L" />
 
-                        <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="" placeholder="mg/L" />
+                        <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="" placeholder="mg/L" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />

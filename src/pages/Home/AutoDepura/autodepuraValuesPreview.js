@@ -132,16 +132,16 @@ export default function AutodepuraValuesPreview() {
                         <Input placeholder="m³/s" value={state.data.autodepura.qr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="org/100ml" value={state.data.autodepura.odr} />
+                        <Label>ODr <InfoIcon /></Label>
+                        <Input placeholder="mg/L" value={state.data.autodepura.odr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="org/100ml" value={state.data.autodepura.dbor} />
+                        <Label>DBOr <InfoIcon /></Label>
+                        <Input placeholder="mg/L" value={state.data.autodepura.dbor} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="org/100ml" value={state.data.autodepura.odmin} />
+                        <Label>ODmín <InfoIcon /></Label>
+                        <Input placeholder="mg/L" value={state.data.autodepura.odmin} />
                     </InputGroup>
                 </Grid>
             </Column>
@@ -150,11 +150,11 @@ export default function AutodepuraValuesPreview() {
             <Column title="Dados do esgoto">
                 <InputGroup>
                     <Label>Qe <InfoIcon /></Label>
-                    <Input placeholder="m³/s" />
+                    <Input placeholder="m³/s" value={state.data.autodepura.qe} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>Ne <InfoIcon /></Label>
-                    <Input placeholder="org/100ml" />
+                    <Label>ODe <InfoIcon /></Label>
+                    <Input placeholder="mg/L" value={state.data.autodepura.ode} />
                 </InputGroup>
             </Column>
 
@@ -162,36 +162,20 @@ export default function AutodepuraValuesPreview() {
             <Column title="Dados morfométricos e ambientais">
                 <Grid>
                     <InputGroup>
-                        <Label>V <InfoIcon /></Label>
-                        <Input placeholder="°C" />
+                        <Label>k1(20°C) <InfoIcon /></Label>
+                        <Input placeholder="1/dia" value={state.data.autodepura.k120c} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>H <InfoIcon /></Label>
-                        <Input placeholder="m" />
+                        <Label>θ para K1 <InfoIcon /></Label>
+                        <Input placeholder="ad." value={state.data.autodepura.tetak1} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>d <InfoIcon /></Label>
-                        <Input placeholder="m/s" />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>t <InfoIcon /></Label>
-                        <Input placeholder="1/dia" />
+                        <Label>T <InfoIcon /></Label>
+                        <Input placeholder="°C" value={state.data.autodepura.temperatura} />
                     </InputGroup>
                     <InputGroup>
                         <Label>K1T <InfoIcon /></Label>
-                        <Input placeholder="m/s" />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>K2T <InfoIcon /></Label>
-                        <Input placeholder="1/dia" />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>Cs' <InfoIcon /></Label>
-                        <Input placeholder="m/s" />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>ODDmin <InfoIcon /></Label>
-                        <Input placeholder="1/dia" />
+                        <Input placeholder="1/dia" value={state.data.autodepura.k1t} />
                     </InputGroup>
                 </Grid>
             </Column>

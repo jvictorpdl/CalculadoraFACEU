@@ -3,8 +3,8 @@ import Linechart2 from "../../components/Linechart2";
 import * as calc from "../../utils/coliCalcCalculation";
 import { CardInput } from "../AutoDepura/styleSteps";
 
-export default function Result2(props) {
-  const result = calc.Calculadora2(props.data);
+export default function ColicalcChart(props) {
+  const result = calc.CalculadoraColicalc(props.data);
 
   const novet = result.novet || [];
   const particoesVet = result.particoesVet || [];
