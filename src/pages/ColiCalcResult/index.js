@@ -4,7 +4,7 @@ import * as calc from "../../utils/coliCalcCalculation";
 import { CardInput } from "../AutoDepura/styleSteps";
 
 export default function Result2(props) {
-  const result = calc.Calculadora2(props.data);
+  const result = calc.CalculadoraColicalc(props.data);
 
   const novet = result.novet || [];
   const particoesVet = result.particoesVet || [];
