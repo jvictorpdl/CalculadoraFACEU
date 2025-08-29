@@ -78,7 +78,7 @@ export function AutoDepura() {
             <AutodepuraValuesPreview />
         ],
         'Gráfico': [
-            <AutodepuraChart data={state.data.colicalc} />
+            <AutodepuraChart data={state.data.autodepura} />
 
         ],
     }
@@ -91,7 +91,7 @@ export function AutoDepura() {
 
     var collectionKeys = Object.keys(collection)
     // remove grafico
-    collectionKeys.pop()
+    //collectionKeys.pop()
     const currentCollectionIndex = collectionKeys.indexOf(selectedCollection);
     const isFirstCollection = currentCollectionIndex === 0;
     const isLastCollection = currentCollectionIndex === collectionKeys.length - 1;
