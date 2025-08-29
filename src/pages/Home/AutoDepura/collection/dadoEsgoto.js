@@ -68,8 +68,8 @@ export function DadoEsgotoStep2() {
                 <Column>
                     <FormTitle title="Passo 2" />
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="" placeholder="%" />
-                        <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="" placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="Eficiência do tratamento na remoção de DBO" placeholder="%" />
+                        <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio" placeholder="mg/L" />
 
                         <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="" placeholder="mg/L" />
                     </Grid>

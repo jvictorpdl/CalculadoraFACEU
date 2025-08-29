@@ -26,14 +26,14 @@ export function DadosAdicionaisStep1() {
         <div>
             <Row>
                 <Column>
-                    <FormTitle title="Dados Adicionais" />
+                    <FormTitle title="Dados morfométricos e ambientais" />
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.colicalc.temperatura} onBlurValue={(val) => updateStateWithColiCalcData({ temperatura: val })} label="T" tooltip="Vazão do esgoto" placeholder="ºC" />
-                        <TextFieldWithTooltip value={state.data.colicalc.distancia} onBlurValue={(val) => updateStateWithColiCalcData({ distancia: val })} label="d" tooltip="Vazão do esgoto" placeholder="m" />
-                        <TextFieldWithTooltip value={state.data.colicalc.velocidade} onBlurValue={(val) => updateStateWithColiCalcData({ velocidade: val })} label="v" tooltip="Vazão do esgoto" placeholder="m/s" />
-                        <TextFieldWithTooltip value={state.data.colicalc.kb} onBlurValue={(val) => updateStateWithColiCalcData({ kb: val })} label="Kb" tooltip="Vazão do esgoto" placeholder="1/dia" />
-                        <TextFieldWithTooltip value={state.data.colicalc.teta} onBlurValue={(val) => updateStateWithColiCalcData({ teta: val })} label="θ para Kb" tooltip="Vazão do esgoto" placeholder="1/dia" />
-                        <TextFieldWithTooltip value={state.data.colicalc.particoes} onBlurValue={(val) => updateStateWithColiCalcData({ particoes: val })} label="Nº trechos" tooltip="Concentração de coliformes no esgoto" placeholder="Quantidade" />
+                        <TextFieldWithTooltip value={state.data.colicalc.temperatura} onBlurValue={(val) => updateStateWithColiCalcData({ temperatura: val })} label="T" tooltip="Temperatura do líquido" placeholder="ºC" />
+                        <TextFieldWithTooltip value={state.data.colicalc.distancia} onBlurValue={(val) => updateStateWithColiCalcData({ distancia: val })} label="d" tooltip="Distância do percurso" placeholder="m" />
+                        <TextFieldWithTooltip value={state.data.colicalc.velocidade} onBlurValue={(val) => updateStateWithColiCalcData({ velocidade: val })} label="v" tooltip="Velocidade do curso d'água" placeholder="m/s" />
+                        <TextFieldWithTooltip value={state.data.colicalc.kb} onBlurValue={(val) => updateStateWithColiCalcData({ kb: val })} label="Kb" tooltip="Coeficiente de decaimento bacteriano" placeholder="1/dia" />
+                        <TextFieldWithTooltip value={state.data.colicalc.teta} onBlurValue={(val) => updateStateWithColiCalcData({ teta: val })} label="θ para Kb" tooltip="Coeficiente de temperatura" placeholder="1/dia" />
+                        <TextFieldWithTooltip value={state.data.colicalc.particoes} onBlurValue={(val) => updateStateWithColiCalcData({ particoes: val })} label="Nº trechos" tooltip="Quantidade de segmentos" placeholder="Quantidade" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />

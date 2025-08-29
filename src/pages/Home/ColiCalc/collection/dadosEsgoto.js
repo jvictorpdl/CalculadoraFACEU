@@ -28,7 +28,7 @@ export function DadosEsgotoStep1() {
                 <Column>
                     <FormTitle title="Dados da Esgoto" />
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.colicalc.qe} onBlurValue={(val) => updateStateWithColiCalcData({ qe: val })} label="Qe" tooltip="Vazão do esgoto" placeholder="org/100ml" />
+                        <TextFieldWithTooltip value={state.data.colicalc.qe} onBlurValue={(val) => updateStateWithColiCalcData({ qe: val })} label="Qe" tooltip="Vazão do esgoto" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.colicalc.ne} onBlurValue={(val) => updateStateWithColiCalcData({ ne: val })} label="Ne" tooltip="Concentração de coliformes no esgoto" placeholder="org/100ml" />
                     </Grid>
                 </Column>
