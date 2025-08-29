@@ -33,8 +33,8 @@ export const ToolsButton = styled.button`
 
 export const ActionButton = styled.button`
     border-radius: var(--Border-Radius-radius-8, 8px);
-    border: 1px solid #2BA3AB;
-    color: #2BA3AB;
+    border: 1px solid ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
+    color: ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
     background: var(--BG-color-background, #FFF);
     padding: 12px 16px;
     cursor: pointer;

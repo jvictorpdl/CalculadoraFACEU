@@ -27,7 +27,7 @@ export function DadosAdicionaisStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.k120c} onBlurValue={(val) => updateStateWithAutodepuraData({ k120c: val })} label="K1(20ºC)" tooltip="Vazão do rio." placeholder="1/dia" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak1} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak1: val })} label="θ para K1" tooltip="Oxigênio dissolvido." placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Demanda bioquimíca de oxigênio." placeholder="ºC" />
@@ -111,7 +111,7 @@ export function DadosAdicionaisStep3() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.distancia} onBlurValue={(val) => updateStateWithAutodepuraData({ distancia: val })} label="d" tooltip="" placeholder="m" />
                         <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="" placeholder="m/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="" placeholder="Quantidade" />
@@ -149,7 +149,7 @@ export function DadosAdicionaisStep4() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.h} onBlurValue={(val) => updateStateWithAutodepuraData({ h: val })} label="h" tooltip="" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.cslinha} onBlurValue={(val) => updateStateWithAutodepuraData({ cslinha: val })} label="Cs'" tooltip="" placeholder="mg/L" />

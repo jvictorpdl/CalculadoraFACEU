@@ -1,4 +1,4 @@
-export const Calculadora2 = (props) => {
+export const CalculadoraColicalc = (props) => {
   // console.log(props);
   function convertToPercentage(value) {
     // Multiplica o valor por 100 para converter para porcentagem

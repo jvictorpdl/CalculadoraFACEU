@@ -7,6 +7,7 @@ import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
 import { ActionButton, CancelButton, ToolsButton } from '../styles';
+import AutodepuraValuesPreview from './autodepuraValuesPreview';
 import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
 import { DadosRioStep1 } from './collection/dadosRio';
@@ -16,6 +17,21 @@ export function AutoDepura() {
     const { state, dispatch } = useContext(ApplicationContext);
     const [step, setStep] = useState(0);
     const [selectedCollection, setSelectedCollection] = useState('Dados do rio');
+    const [validStepStates, setValidStepStates] = useState({
+        'Dados do rio': [
+            false
+        ],
+        'Dados do esgoto': [
+            false,
+            false,
+        ],
+        'Dados adicionais': [
+            false,
+            false,
+            false,
+            false
+        ]
+    })
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
 
@@ -32,9 +48,20 @@ export function AutoDepura() {
         });
     }
 
+    // Function to handle the validity change from a child component
+    const handleStepValidityChange = (isValid) => {
+        console.log('handleee')
+        var collec = collection[selectedCollection]
+        collec[step] = isValid
+        setValidStepStates({
+            ...validStepStates,
+            selectedCollection: collec
+        });
+    };
+
     const collection = {
         'Dados do rio': [
-            <DadosRioStep1 />
+            <DadosRioStep1 onValidityChange={handleStepValidityChange} />
         ],
         'Dados do esgoto': [
             <DadoEsgotoStep1 />,
@@ -45,9 +72,11 @@ export function AutoDepura() {
             <DadosAdicionaisStep2 />,
             <DadosAdicionaisStep3 />,
             <DadosAdicionaisStep4 />,
+        ],
+        'Resumo': [
+            <AutodepuraValuesPreview />
         ]
     }
-
 
     const renderStep = (step) => {
         console.log('selectedCollection', selectedCollection)
@@ -55,15 +84,46 @@ export function AutoDepura() {
         return collection[selectedCollection][step]
     }
 
+    var collectionKeys = Object.keys(collection)
+    const currentCollectionIndex = collectionKeys.indexOf(selectedCollection);
+    const isFirstCollection = currentCollectionIndex === 0;
+    const isLastCollection = currentCollectionIndex === collectionKeys.length - 1;
+    const isFirstStep = step === 0;
+    const isLastStep = step === collection[selectedCollection]?.length - 1;
 
+    const handleBack = () => {
+        if (isFirstStep) {
+            if (!isFirstCollection) {
+                setSelectedCollection(collectionKeys[currentCollectionIndex - 1]);
+                setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+            }
+        } else {
+            console.log(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1)
+            setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+        }
+    };
+
+
+    // Handles moving to the next step or collection, or finalizing
+    const handleNext = () => {
+        if (isLastStep) {
+            if (isLastCollection) {
+                saveResult(CalculadoraAutodepura(state.data.autodepura));
+            } else {
+                setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
+                setStep(0); // Reset step when changing collections
+            }
+        } else {
+            setStep(step + 1);
+        }
+    };
 
     return (
         <div style={{ height: 'inherit' }}>
             <PageTitle style={{ marginBottom: '8px' }}>AutoDepura</PageTitle>
-            <PageSubtitle style={{ marginBottom: '8px' }}>subtitle aqui</PageSubtitle>
+            <PageSubtitle style={{ marginBottom: '8px' }}>Aqui entra a descrição do que o autodepura faz</PageSubtitle>
             <Row>
                 {Object.entries(collection).map(([collectionName, steps],) => {
-                    console.log(`Key: ${collectionName}, Value: ${steps}`);
                     return <ToolsButton
                         key={collection}
                         selected={selectedCollection === collectionName}
@@ -89,11 +149,14 @@ export function AutoDepura() {
             <Flex />
 
             <Row style={{ justifyContent: 'space-between' }}>
-                {step === 0 && <CancelButton>Cancelar</CancelButton>}
-                {step > 0 && <CancelButton onClick={() => setStep(step - 1)}>Voltar</CancelButton>}
+                <CancelButton onClick={handleBack}>
+                    {isFirstStep && isFirstCollection ? 'Cancelar' : 'Voltar'}
+                </CancelButton>
 
-                {step !== collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => setStep(step + 1)}>Próximo</ActionButton>}
-                {step === collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => saveResult(CalculadoraAutodepura(state.data.autodepura))}>Finalizar</ActionButton>}
+
+                <ActionButton onClick={handleNext}>
+                    {isLastStep && isLastCollection ? 'Calcular' : 'Próximo'}
+                </ActionButton>
             </Row>
         </div >
     );

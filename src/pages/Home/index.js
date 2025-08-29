@@ -7,7 +7,6 @@ import { Holder } from "../PageTemplate/styles";
 import { AutoDepura } from "./AutoDepura/autoDepura";
 import { ColiCalc } from "./ColiCalc/coliCalc";
 
-import { FinishButton } from "./styles";
 
 
 export default function Home() {
@@ -28,11 +27,6 @@ export default function Home() {
                         <div>Em Breve</div>
                     </Tab>
                 </Tabs>
-                <div style={{ display: 'flex', justifyContent: 'end', marginTop: '24px' }}>
-                    <FinishButton onClick={() => console.log('Finish')}>
-                        Finalizar
-                    </FinishButton>
-                </div>
             </Holder>
         </PageTemplate>
     );

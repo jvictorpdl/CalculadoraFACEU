@@ -6,8 +6,9 @@ import { PageDescription, PageSubtitle, PageTitle } from '../../../components/Pa
 import { RadioButton } from '../../../components/RadioButton/radioButton';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
-import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
+import { CalculadoraColicalc } from '../../../utils/coliCalcCalculation';
 import { ActionButton, CancelButton, ToolsButton } from '../styles';
+import ColicalcValuesPreview from './colicalcValuesPreview';
 import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
 import { DadosEsgotoStep1 } from './collection/dadosEsgoto';
 import { DadosMisturaStep1 } from './collection/dadosMistura';
@@ -37,10 +38,6 @@ export function ColiCalc() {
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
 
-    useEffect(() => {
-
-
-    }, [radioState]);
 
     function saveResult(result) {
         dispatch({
@@ -70,6 +67,9 @@ export function ColiCalc() {
         ],
         'Dados adicionais': [
             <DadosAdicionaisStep1 />
+        ],
+        'Resumo': [
+            <ColicalcValuesPreview />
         ]
     }
 
@@ -85,6 +85,39 @@ export function ColiCalc() {
         return collection[selectedCollection][step]
     }
 
+    var collectionKeys = Object.keys(collection)
+    const currentCollectionIndex = collectionKeys.indexOf(selectedCollection);
+    const isFirstCollection = currentCollectionIndex === 0;
+    const isLastCollection = currentCollectionIndex === collectionKeys.length - 1;
+    const isFirstStep = step === 0;
+    const isLastStep = step === collection[selectedCollection]?.length - 1;
+
+    const handleBack = () => {
+        if (isFirstStep) {
+            if (!isFirstCollection) {
+                setSelectedCollection(collectionKeys[currentCollectionIndex - 1]);
+                setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+            }
+        } else {
+            console.log(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1)
+            setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+        }
+    };
+
+
+    // Handles moving to the next step or collection, or finalizing
+    const handleNext = () => {
+        if (isLastStep) {
+            if (isLastCollection) {
+                saveResult(CalculadoraColicalc(state.data.colicalc));
+            } else {
+                setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
+                setStep(0); // Reset step when changing collections
+            }
+        } else {
+            setStep(step + 1);
+        }
+    };
 
 
     return (
@@ -144,11 +177,14 @@ export function ColiCalc() {
             <Flex />
 
             <Row style={{ justifyContent: 'space-between' }}>
-                {step === 0 && <CancelButton>Cancelar</CancelButton>}
-                {step > 0 && <CancelButton onClick={() => setStep(step - 1)}>Voltar</CancelButton>}
+                <CancelButton onClick={handleBack}>
+                    {isFirstStep && isFirstCollection ? 'Cancelar' : 'Voltar'}
+                </CancelButton>
 
-                {step !== collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => setStep(step + 1)}>Próximo</ActionButton>}
-                {step === collection[selectedCollection]?.length - 1 && <ActionButton onClick={() => saveResult(CalculadoraAutodepura(state.data.colicalc))}>Finalizar</ActionButton>}
+
+                <ActionButton onClick={handleNext}>
+                    {isLastStep && isLastCollection ? 'Calcular' : 'Próximo'}
+                </ActionButton>
             </Row>
         </div >
     );

@@ -16,3 +16,4 @@ export function ApplicationStateProvider({ children }) {
         </ApplicationContext.Provider>
     )
 }
+

@@ -1,12 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import FormTitle from "../../../../components/FormTitle/formTitle";
 import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 
-export function DadosRioStep1() {
+export function DadosRioStep1({ onValidityChange }) {
     const { state, dispatch } = useContext(ApplicationContext);
+    // eslint-disable-next-line no-unused-vars
+    useEffect(() => {
+        const requiredFields = ['qr', 'odr', 'dbor', 'odmin'];
+        const areAllInputsFilled = requiredFields.every(field => state.data[field] && state.data[field].length > 0);
+        onValidityChange(areAllInputsFilled);
+    }, [state]);
+
 
     function updateStateWithAutodepuraData(inputs) {
         dispatch({
