@@ -29,8 +29,8 @@ export function DadoEsgotoStep1() {
                 <Column>
                     <FormTitle title="Passo 1" />
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.autodepura.qe} onBlurValue={(val) => updateStateWithAutodepuraData({ qe: val })} label="Qe" tooltip="Vazão." placeholder="m³/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.ode} onBlurValue={(val) => updateStateWithAutodepuraData({ ode: val })} label="ODe" tooltip="Oxigênio dissolvido." placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.qe} onBlurValue={(val) => updateStateWithAutodepuraData({ qe: val })} label="Qe" tooltip="Vazão do esgoto" placeholder="m³/s" />
+                        <TextFieldWithTooltip value={state.data.autodepura.ode} onBlurValue={(val) => updateStateWithAutodepuraData({ ode: val })} label="ODe" tooltip="Oxigênio dissolvido no esgoto." placeholder="mg/L" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
@@ -70,8 +70,9 @@ export function DadoEsgotoStep2() {
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="Eficiência do tratamento na remoção de DBO" placeholder="%" />
                         <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio" placeholder="mg/L" />
-
-                        <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="" placeholder="mg/L" />
+                        {/* E e DBOe ou DBOefl */}
+                        {/*  */}
+                        <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="DBO do efluente tratado" placeholder="mg/L" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
