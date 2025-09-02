@@ -1,4 +1,7 @@
+import * as Tooltip from '@radix-ui/react-tooltip';
+import { Info } from 'lucide-react';
 import { useContext } from 'react';
+import { TooltipContentStyled } from '../../../components/TextFieldWithTooltip/style';
 import { ApplicationContext } from '../../../core/providers';
 // The styled-components library is not available, so we are creating our own components with inline styles
 // and a functional approach to replicate the styling.
@@ -115,6 +118,25 @@ const Grid = ({ children }) => (
     </div>
 );
 
+
+export const TooltipInfo = ({ info }) => (
+    <Tooltip.Provider delayDuration={100}>
+        <Tooltip.Root>
+            <Tooltip.Trigger asChild>
+                <span style={{ display: "inline-flex", cursor: "pointer" }}>
+                    <Info size={16} />
+                </span>
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+                <TooltipContentStyled side="top" sideOffset={4}>
+                    {info}
+                    <Tooltip.Arrow />
+                </TooltipContentStyled>
+            </Tooltip.Portal>
+        </Tooltip.Root>
+    </Tooltip.Provider>
+);
+
 export default function ColicalcValuesPreview() {
     const { state } = useContext(ApplicationContext);
 
@@ -125,43 +147,43 @@ export default function ColicalcValuesPreview() {
             <Column title="Dados do rio">
                 <Grid>
                     <InputGroup>
-                        <Label>Qr <InfoIcon /></Label>
-                        <Input placeholder="m³/s" value={state.data.autodepura.qr} />
+                        <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
+                        <Input placeholder="m³/s" value={state.data.colicalc.qr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Nr <InfoIcon /></Label>
-                        <Input placeholder="NPM/100ml" value={state.data.autodepura.nr} />
+                        <Label>Nr <TooltipInfo info={'Concentração de coliformes no rio, a montante do lançamento'} /></Label>
+                        <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
                     </InputGroup>
                 </Grid>
             </Column>
 
             <Column title="Dados da represa">
                 <InputGroup>
-                    <Label>Qe <InfoIcon /></Label>
-                    <Input placeholder="m³/s" />
+                    <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
+                    <Input placeholder="m³/s" value={state.data.colicalc.qr} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>Ne <InfoIcon /></Label>
-                    <Input placeholder="org/100ml" />
+                    <Label>Nr <TooltipInfo info={'Concentração de coliformes no rio, a montante do lançamento'} /></Label>
+                    <Input placeholder="org/100ml" value={state.data.colicalc.nr} />
                 </InputGroup>
             </Column>
 
             {/* 'Dados do esgoto' column */}
             <Column title="Dados do esgoto">
                 <InputGroup>
-                    <Label>Qe <InfoIcon /></Label>
-                    <Input placeholder="m³/s" />
+                    <Label>Qe <TooltipInfo info={'Vazão do esgoto.'} /></Label>
+                    <Input placeholder="m³/s" value={state.data.colicalc.qe} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>Ne <InfoIcon /></Label>
-                    <Input placeholder="org/100ml" />
+                    <Label>Ne <TooltipInfo info={'Concentração de coliformes no esgoto.'} /></Label>
+                    <Input placeholder="org/100ml" value={state.data.colicalc.ne} />
                 </InputGroup>
             </Column>
 
             <Column title="Dados da Mistura">
                 <InputGroup>
-                    <Label>Nop <InfoIcon /></Label>
-                    <Input placeholder="org/100ml" />
+                    <Label>Nop <TooltipInfo info={'Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental'} /></Label>
+                    <Input placeholder="org/100ml" value={state.data.colicalc.nop} />
                 </InputGroup>
             </Column>
 
@@ -169,28 +191,28 @@ export default function ColicalcValuesPreview() {
             <Column title="Dados adicionais">
                 <Grid>
                     <InputGroup>
-                        <Label>T <InfoIcon /></Label>
-                        <Input placeholder="°C" />
+                        <Label>T <TooltipInfo info={'Temperatura do líquido'} /></Label>
+                        <Input placeholder="°C" value={state.data.colicalc.t} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>d <InfoIcon /></Label>
-                        <Input placeholder="m" />
+                        <Label>d <TooltipInfo info={'Distância do percurso'} /></Label>
+                        <Input placeholder="m" value={state.data.colicalc.d} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>v <InfoIcon /></Label>
-                        <Input placeholder="m/s" />
+                        <Label>v <TooltipInfo info={"Velocidade do curso d'água"} /></Label>
+                        <Input placeholder="m/s" value={state.data.colicalc.v} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Kb <InfoIcon /></Label>
-                        <Input placeholder="1/dia" />
+                        <Label>Kb <TooltipInfo info={'Coeficiente de decaimento bacteriano'} /></Label>
+                        <Input placeholder="1/dia" value={state.data.colicalc.kb} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>θ para Kb <InfoIcon /></Label>
-                        <Input placeholder="1/dia" />
+                        <Label>θ para Kb <TooltipInfo info={'Coeficiente de temperatura'} /></Label>
+                        <Input placeholder="1/dia" value={state.data.colicalc.teta} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>N° trechos <InfoIcon /></Label>
-                        <Input placeholder="Quantidade" />
+                        <Label>N° trechos <TooltipInfo info={'Quantidade de segmentos'} /></Label>
+                        <Input placeholder="Quantidade" value={state.data.colicalc.particoes} />
                     </InputGroup>
                 </Grid>
             </Column>

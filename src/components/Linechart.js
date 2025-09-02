@@ -2,33 +2,32 @@ import React from "react"
 import Chart from "react-apexcharts"
 
 
-function Linechart(props)
-{
-    return(<React.Fragment>
-        <div className="container-fluid mt-3 mb-3">
-            {/* <h2>Perfil de OD</h2> */}
-            
-    <Chart type = 'line'
-    width = {1100}
-    height = {550}
-    
-    series = {[
-      {
-        name:"ODmin",
-        data: props.odminVet
-      },
-      {
-        name: "OD",
-        data: props.ctVet
-      }
-    ]}
-    options = {{
-        title: {
+function Linechart(props) {
+  return (<React.Fragment>
+    <div className="container-fluid mt-3 mb-3">
+      {/* <h2>Perfil de OD</h2> */}
+
+      <Chart type='line'
+        width={1100}
+        height={550}
+
+        series={[
+          {
+            name: "ODmin",
+            data: props.odminVet
+          },
+          {
+            name: "OD",
+            data: props.ctVet
+          }
+        ]}
+        options={{
+          title: {
             text: 'Perfil de OD (mg/L)',
             // align: 'left'
           },
           legend: {
-            tooltipHoverFormatter: function(val, opts) {
+            tooltipHoverFormatter: function (val, opts) {
               return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
             }
           },
@@ -46,9 +45,10 @@ function Linechart(props)
                   formatter: function (val) {
                     return val + " mg/L"
                   }
-                }}
-              ]
-              },
+                }
+              }
+            ]
+          },
           // markers: {
           //   // size: 0,
           //   hover: {
@@ -56,21 +56,21 @@ function Linechart(props)
           //   }
           // },
 
-      xaxis:{
-        title: {text: 'Distância (Km)'},
-        categories: props.kmvet
-    },
-    yaxis:{
-          title:{ text: "OD"}
+          xaxis: {
+            title: { text: 'Distância (km)' },
+            categories: props.kmvet
+          },
+          yaxis: {
+            title: { text: "OD (mg/L)" }
 
-      }
-    }}
-    >
+          }
+        }}
+      >
 
-    </Chart>
+      </Chart>
 
-        </div>
-        </ React.Fragment>)
+    </div>
+  </ React.Fragment>)
 }
 
 export default Linechart;

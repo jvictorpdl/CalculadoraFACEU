@@ -1,4 +1,7 @@
+import * as Tooltip from '@radix-ui/react-tooltip';
+import { Info } from 'lucide-react';
 import { useContext } from 'react';
+import { TooltipContentStyled } from '../../../components/TextFieldWithTooltip/style';
 import { ApplicationContext } from '../../../core/providers';
 // The styled-components library is not available, so we are creating our own components with inline styles
 // and a functional approach to replicate the styling.
@@ -74,16 +77,6 @@ const Label = ({ children }) => (
     </label>
 );
 
-const InfoIcon = () => (
-    <span style={{
-        fontSize: '1rem',
-        color: '#6c757d',
-        cursor: 'pointer',
-    }}>
-        ⓘ
-    </span>
-);
-
 const Input = ({ placeholder, value }) => (
     <input
         type="text"
@@ -117,6 +110,24 @@ const Grid = ({ children }) => (
     </div>
 );
 
+export const TooltipInfo = ({ info }) => (
+    <Tooltip.Provider delayDuration={100}>
+        <Tooltip.Root>
+            <Tooltip.Trigger asChild>
+                <span style={{ display: "inline-flex", cursor: "pointer" }}>
+                    <Info size={16} />
+                </span>
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+                <TooltipContentStyled side="top" sideOffset={4}>
+                    {info}
+                    <Tooltip.Arrow />
+                </TooltipContentStyled>
+            </Tooltip.Portal>
+        </Tooltip.Root>
+    </Tooltip.Provider>
+);
+
 export default function AutodepuraValuesPreview() {
     const { state } = useContext(ApplicationContext);
 
@@ -128,19 +139,19 @@ export default function AutodepuraValuesPreview() {
                 <Grid>
 
                     <InputGroup>
-                        <Label>Qr <InfoIcon /></Label>
+                        <Label>Qr <TooltipInfo info={'Vazão do rio.'}> </TooltipInfo></Label>
                         <Input placeholder="m³/s" value={state.data.autodepura.qr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>ODr <InfoIcon /></Label>
+                        <Label>ODr <TooltipInfo info={'Oxigênio dissolvido.'}> </TooltipInfo></Label>
                         <Input placeholder="mg/L" value={state.data.autodepura.odr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>DBOr <InfoIcon /></Label>
+                        <Label>DBOr <TooltipInfo info={'Demanda bioquimíca de oxigênio.'}> </TooltipInfo></Label>
                         <Input placeholder="mg/L" value={state.data.autodepura.dbor} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>ODmín <InfoIcon /></Label>
+                        <Label>ODmín <TooltipInfo info={'Oxigênio dissolvido mínimo'}> </TooltipInfo></Label>
                         <Input placeholder="mg/L" value={state.data.autodepura.odmin} />
                     </InputGroup>
                 </Grid>
@@ -149,12 +160,24 @@ export default function AutodepuraValuesPreview() {
             {/* 'Dados do esgoto' column */}
             <Column title="Dados do esgoto">
                 <InputGroup>
-                    <Label>Qe <InfoIcon /></Label>
+                    <Label>Qe <TooltipInfo info={'Vazão do esgoto'}> </TooltipInfo></Label>
                     <Input placeholder="m³/s" value={state.data.autodepura.qe} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>ODe <InfoIcon /></Label>
+                    <Label>ODe <TooltipInfo info={'Oxigênio dissolvido no esgoto.'}> </TooltipInfo></Label>
                     <Input placeholder="mg/L" value={state.data.autodepura.ode} />
+                </InputGroup>
+                <InputGroup>
+                    <Label>E <TooltipInfo info={'Eficiência do tratamento na remoção de DBO'}> </TooltipInfo></Label>
+                    <Input placeholder="%" value={state.data.autodepura.e} />
+                </InputGroup>
+                <InputGroup>
+                    <Label>DBOe <TooltipInfo info={'Demanda bioquimíca de oxigênio no esgoto.'}> </TooltipInfo></Label>
+                    <Input placeholder="mg/L" value={state.data.autodepura.dboe} />
+                </InputGroup>
+                <InputGroup>
+                    <Label>DBOefl <TooltipInfo info={'DBO do efluente tratado'}> </TooltipInfo></Label>
+                    <Input placeholder="mg/L" value={state.data.autodepura.dboefl} />
                 </InputGroup>
             </Column>
 
@@ -162,21 +185,56 @@ export default function AutodepuraValuesPreview() {
             <Column title="Dados morfométricos e ambientais">
                 <Grid>
                     <InputGroup>
-                        <Label>k1(20°C) <InfoIcon /></Label>
+                        <Label>k1(20°C) <TooltipInfo info={'Coeficiente de desoxigenação(20ºC).'}> </TooltipInfo></Label>
                         <Input placeholder="1/dia" value={state.data.autodepura.k120c} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>θ para K1 <InfoIcon /></Label>
+                        <Label>θ para K1 <TooltipInfo info={'Coeficiente de temperatura'}> </TooltipInfo></Label>
                         <Input placeholder="ad." value={state.data.autodepura.tetak1} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>T <InfoIcon /></Label>
+                        <Label>T <TooltipInfo info={'Temperatura do líquido.'}> </TooltipInfo></Label>
                         <Input placeholder="°C" value={state.data.autodepura.temperatura} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>K1T <InfoIcon /></Label>
+                        <Label>K1T <TooltipInfo info={'Coeficiente de desoxigenação a uma temperatura(T)'}> </TooltipInfo></Label>
                         <Input placeholder="1/dia" value={state.data.autodepura.k1t} />
                     </InputGroup>
+
+                    <InputGroup>
+                        <Label>V <TooltipInfo info={'Velocidade'}> </TooltipInfo></Label>
+                        <Input placeholder="m/s" value={state.data.autodepura.velocidade} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>θ para K2 <TooltipInfo info={'Coeficiente de temperatura'}> </TooltipInfo></Label>
+                        <Input placeholder="ad." value={state.data.autodepura.tetak2} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>H <TooltipInfo info={'Profundidade'}> </TooltipInfo></Label>
+                        <Input placeholder="m" value={state.data.autodepura.profundidade} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>K2 (20ºC) <TooltipInfo info={'Coeficiente de reaeração(20ºC)'}> </TooltipInfo></Label>
+                        <Input placeholder="1/dia" value={state.data.autodepura.k220c} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>K2T <TooltipInfo info={'Coeficiente de reaeração a temperatura'}> </TooltipInfo></Label>
+                        <Input placeholder="1/dia" value={state.data.autodepura.k2t} />
+                    </InputGroup>
+
+                    <InputGroup>
+                        <Label>d <TooltipInfo info={'Distância'}> </TooltipInfo></Label>
+                        <Input placeholder="m" value={state.data.autodepura.distancia} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>Nº <TooltipInfo info={'Quantidade de segmentos'}> </TooltipInfo></Label>
+                        <Input placeholder="Quantidade" value={state.data.autodepura.particoes} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>Cs' <TooltipInfo info={'Concentração de saturação na altitude(h)'}> </TooltipInfo></Label>
+                        <Input placeholder="mg/L" value={state.data.autodepura.cslinha} />
+                    </InputGroup>
+
                 </Grid>
             </Column>
         </ColumnWrapper>
