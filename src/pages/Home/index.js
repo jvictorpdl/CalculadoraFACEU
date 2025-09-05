@@ -23,7 +23,7 @@ export default function Home() {
                     <Tab id={Tools.ColiCalc} label="Colicalc">
                         <ColiCalc />
                     </Tab>
-                    <Tab id={Tools.EuroFriza} label="EuroFriza">
+                    <Tab id={Tools.EutroFriza} label="EutroFriza">
                         <div>Em Breve</div>
                     </Tab>
                 </Tabs>

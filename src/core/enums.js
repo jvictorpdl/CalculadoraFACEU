@@ -2,7 +2,7 @@
 export const Tools = {
     "AutoDepura": "AutoDepura",
     "ColiCalc": "ColiCalc",
-    "EuroFriza": "EuroFriza",
+    "EutroFriza": "EutroFriza",
 }
 
 export const CalculationState = {
