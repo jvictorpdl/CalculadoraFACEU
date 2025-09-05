@@ -123,7 +123,10 @@ export function ColiCalc() {
                 setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
                 setStep(0); // Reset step when changing collections
             }
-        } else {
+        } else if (selectedCollection === 'Dados do rio' && radioState === 'Dados do rio') {
+            setStep(step + 2);
+        }
+        else {
             setStep(step + 1);
         }
     };
