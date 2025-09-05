@@ -23,19 +23,6 @@ export function ColiCalc() {
     const [selectedCollection, setSelectedCollection] = useState('Dados do rio');
     const [radioState, setRadioState] = useState('Dados do rio');
 
-    function updateStateWithColiCalcData(inputs) {
-        dispatch({
-            ...state,
-            data: {
-                ...state.data,
-                colicalc: {
-                    ...state.data.colicalc,
-                    ...inputs
-                },
-            }
-        })
-    }
-
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
 
@@ -101,32 +88,38 @@ export function ColiCalc() {
     const isLastStep = step === collection[selectedCollection]?.length - 1;
 
     const handleBack = () => {
-        if (isFirstStep) {
+        if (radioState === 'Dados do rio' && collectionKeys[currentCollectionIndex - 1] === 'Dados da represa') {
+            setSelectedCollection('Dados do rio');
+        } else if (radioState === 'Dados da represa' && collectionKeys[currentCollectionIndex - 1] === 'Dados do rio') {
+            setSelectedCollection('Dados da represa');
+        } else if (isFirstStep) {
             if (!isFirstCollection) {
                 setSelectedCollection(collectionKeys[currentCollectionIndex - 1]);
-                setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+                setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1);
             }
         } else {
-            console.log(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1)
-            setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+            setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1);
         }
     };
 
 
     // Handles moving to the next step or collection, or finalizing
     const handleNext = () => {
-        if (isLastStep) {
+        if (selectedCollection === 'Dados do rio' && radioState === 'Dados do rio') {
+            // skip "represa"
+            setSelectedCollection(collectionKeys[currentCollectionIndex + 2]);
+        } else if (selectedCollection === 'Dados da represa' && radioState === 'Dados da represa') {
+            // skip "rio"
+            setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
+        } else if (isLastStep) {
             if (isLastCollection) {
                 setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
                 saveResult(CalculadoraColicalc(state.data.colicalc));
             } else {
                 setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
-                setStep(0); // Reset step when changing collections
+                setStep(0);
             }
-        } else if (selectedCollection === 'Dados do rio' && radioState === 'Dados do rio') {
-            setStep(step + 2);
-        }
-        else {
+        } else {
             setStep(step + 1);
         }
     };
