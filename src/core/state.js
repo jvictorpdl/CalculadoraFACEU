@@ -1,6 +1,6 @@
 import { CalculationState, Tools } from "./enums";
 
-export let defaultState = {
+export let testState = {
     selectedTool: Tools.AutoDepura,
     calculationState: {
         autodepura: CalculationState.WaitingData,
@@ -80,30 +80,81 @@ export let defaultState = {
 }
 
 
-// colicalc: {
-//             qr: 0.651,
-//             qe: 0.114,
-//             temperatura: 23,
-//             no: 7450000,
-//             nop: null,
-//             nr: 10,
-//             ne: 50000000,
-//             ntempo: null,
-//             nep: null,
-//             kb: 1,
-//             kbt: null,
-//             teta: 1.07,
-//             eficiencia: null,
-//             tempo: null,
-//             velocidade: 0.35,
-//             distancia: 50000,
-//             particoes: 10,
-//             classLimit: null,
-//             represa: null,
-//             tRepresa: null,
-//             tDentencao: null,
-//             volume: null,
-//             qAfluente: null,
-//             nRepresa: null,
-//             nRepresaMax: null,
-//         }
+export let defaultState = {
+    selectedTool: Tools.AutoDepura,
+    calculationState: {
+        autodepura: CalculationState.WaitingData,
+        colicalc: CalculationState.WaitingData,
+    },
+    data: {
+        autodepura: {
+            qr: null,
+            odr: null,
+            dbor: null,
+            odmin: null,
+            k120c: null,
+            tetak1: null,
+            temperatura: null,
+            k1t: null,
+            tetak2: null,
+            h: null,
+            k220c: null,
+            k2t: null,
+            distancia: null,
+            velocidade: null,
+            particoes: null,
+            tempo: null,
+            cs: null,
+            cslinha: null,
+            qe: null,
+            ode: null,
+            dboe: null,
+            dboefl: null,
+            e: null,
+            altitude: null,
+            lancamentos: null,
+        },
+        colicalc: {
+            qr: null,
+            nr: null,
+            volume: null,
+            qe: null,
+            ne: null,
+            nop: null,
+            temperatura: null,
+            distancia: null,
+            velocidade: null,
+            kb: null,
+            teta: null,
+            particoes: null,
+            no: null,
+            ntempo: null,
+            nep: null,
+            kbt: null,
+            eficiencia: null,
+            tempo: null,
+            classLimit: null,
+            represa: null,
+            tRepresa: null,
+            tDentencao: null,
+            qAfluente: null,
+            nRepresa: null,
+            nRepresaMax: null,
+        }
+    },
+    output: {
+        autodepura: {
+            ctVet: null,
+            odminVet: null,
+            particoesVet: null,
+            kmvet: null,
+        },
+        colicalc: {
+            eficiencia: null,
+            particoesVet: null,
+            ntempoVet: null,
+            kmvet: null,
+            novet: null,
+        }
+    }
+}
