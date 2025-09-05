@@ -154,7 +154,10 @@ export function DadosAdicionaisStep4() {
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura" placeholder="m³/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.h} onBlurValue={(val) => updateStateWithAutodepuraData({ h: val })} label="h" tooltip="Altitude" placeholder="m" />
+                        <TextFieldWithTooltip value={state.data.autodepura.altitude} onBlurValue={(val) => {
+                            console.log('altitude val', val)
+                            updateStateWithAutodepuraData({ altitude: val })
+                        }} label="h" tooltip="Altitude" placeholder="m" />
                         {/* Ou Cs' */}
                         <TextFieldWithTooltip value={state.data.autodepura.cslinha} onBlurValue={(val) => updateStateWithAutodepuraData({ cslinha: val })} label="Cs'" tooltip="Concentração de saturação na altitude(h)" placeholder="mg/L" />
                     </Grid>

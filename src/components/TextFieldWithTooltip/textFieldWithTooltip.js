@@ -30,7 +30,7 @@ export default function TextFieldWithTooltip({
     };
 
     const handleBlur = () => {
-        if (onBlurValue && currentValue !== '') {
+        if (onBlurValue && currentValue !== '' && currentValue !== null && currentValue !== undefined) {
             const parsed = parseFloat(currentValue.replaceAll(',', '.'));
             if (!isNaN(parsed)) {
                 // Optionally round to 5 decimals for consistency
@@ -38,6 +38,9 @@ export default function TextFieldWithTooltip({
                 setValue(rounded.toString());
                 onBlurValue(rounded);
             }
+        } else {
+            setValue(null);
+            onBlurValue(null);
         }
     };
 
@@ -67,7 +70,7 @@ export default function TextFieldWithTooltip({
                 inputMode="decimal"
                 placeholder={placeholder}
                 disabled={disabled}
-                value={currentValue.replaceAll('.', ',')}
+                value={currentValue?.replaceAll('.', ',')}
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

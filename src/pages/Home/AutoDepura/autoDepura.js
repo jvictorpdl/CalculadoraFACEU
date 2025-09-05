@@ -77,24 +77,24 @@ export function AutoDepura() {
         'Resumo': [
             <AutodepuraValuesPreview />
         ],
-        'Gráfico': [
-            <AutodepuraChart data={state.data.autodepura} />
-
-        ],
+        'Gráfico': [],
     }
 
     const renderStep = (step) => {
         console.log('selectedCollection', selectedCollection)
         if (selectedCollection === null || selectedCollection.length === 0) return collection[selectedCollection][0];
+        if (selectedCollection === 'Gráfico') {
+            return <AutodepuraChart data={state.data.autodepura} />
+        }
         return collection[selectedCollection][step]
     }
 
     var collectionKeys = Object.keys(collection)
     // remove grafico
-    //collectionKeys.pop()
+    // collectionKeys.pop()
     const currentCollectionIndex = collectionKeys.indexOf(selectedCollection);
     const isFirstCollection = currentCollectionIndex === 0;
-    const isLastCollection = currentCollectionIndex === collectionKeys.length - 1;
+    const isLastCollection = currentCollectionIndex === collectionKeys.length - 2;
     const isFirstStep = step === 0;
     const isLastStep = step === collection[selectedCollection]?.length - 1;
 
@@ -116,6 +116,7 @@ export function AutoDepura() {
         if (isLastStep) {
             if (isLastCollection) {
                 saveResult(CalculadoraAutodepura(state.data.autodepura));
+                setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
             } else {
                 setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
                 setStep(0); // Reset step when changing collections
@@ -161,9 +162,9 @@ export function AutoDepura() {
                 </CancelButton>
 
 
-                <ActionButton onClick={handleNext}>
+                {selectedCollection !== 'Gráfico' && <ActionButton onClick={handleNext}>
                     {isLastStep && isLastCollection ? 'Calcular' : 'Próximo'}
-                </ActionButton>
+                </ActionButton>}
             </Row>
         </div >
     );
