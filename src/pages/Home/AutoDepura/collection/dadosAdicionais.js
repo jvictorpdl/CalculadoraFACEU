@@ -115,9 +115,9 @@ export function DadosAdicionaisStep3() {
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.autodepura.distancia} onBlurValue={(val) => updateStateWithAutodepuraData({ distancia: val })} label="d" tooltip="Distância" placeholder="m" />
-                        <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="Velocidade" placeholder="m/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Quantidade de segmentos" placeholder="Quantidade" />
+                        <TextFieldWithTooltip value={state.data.autodepura.distancia} onBlurValue={(val) => updateStateWithAutodepuraData({ distancia: val })} label="d" tooltip="Distância do rio" placeholder="m" />
+                        <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="Velocidade do rio" placeholder="m/s" />
+                        <TextFieldWithTooltip value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Número de partições do rio" placeholder="Quantidade" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
@@ -153,13 +153,18 @@ export function DadosAdicionaisStep4() {
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Grid columns={4}>
+<<<<<<< Updated upstream
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.altitude} onBlurValue={(val) => {
                             console.log('altitude val', val)
                             updateStateWithAutodepuraData({ altitude: val })
                         }} label="h" tooltip="Altitude" placeholder="m" />
+=======
+                        <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura da água do rio" placeholder="m³/s" />
+                        <TextFieldWithTooltip value={state.data.autodepura.h} onBlurValue={(val) => updateStateWithAutodepuraData({ h: val })} label="h" tooltip="Altitude" placeholder="m" />
+>>>>>>> Stashed changes
                         {/* Ou Cs' */}
-                        <TextFieldWithTooltip value={state.data.autodepura.cslinha} onBlurValue={(val) => updateStateWithAutodepuraData({ cslinha: val })} label="Cs'" tooltip="Concentração de saturação na altitude(h)" placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.cslinha} onBlurValue={(val) => updateStateWithAutodepuraData({ cslinha: val })} label="Cs'" tooltip="Concentração de saturação de oxigênio dissolvido no rio" placeholder="mg/L" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
