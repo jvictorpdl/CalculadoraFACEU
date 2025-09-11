@@ -191,17 +191,21 @@ export default function ColicalcValuesPreview() {
             <Column title="Dados adicionais">
                 <Grid>
                     <InputGroup>
-                        <Label>T <TooltipInfo info={'Temperatura do líquido'} /></Label>
+                        <Label>T <TooltipInfo info={'Temperatura do Rio'} /></Label>
                         <Input placeholder="°C" value={state.data.colicalc.t} />
                     </InputGroup>
-                    <InputGroup>
+                    {state.data.colicalc.v === null && <InputGroup>
                         <Label>d <TooltipInfo info={'Distância do percurso'} /></Label>
                         <Input placeholder="m" value={state.data.colicalc.d} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>v <TooltipInfo info={"Velocidade do curso d'água"} /></Label>
+                    </InputGroup>}
+                    {state.data.colicalc.v === null && <InputGroup>
+                        <Label>N° trechos <TooltipInfo info={'Número de partições do rio'} /></Label>
+                        <Input placeholder="Quantidade" value={state.data.colicalc.particoes} />
+                    </InputGroup>}
+                    {state.data.colicalc.v === null && <InputGroup>
+                        <Label>v <TooltipInfo info={"Velocidade do Rio"} /></Label>
                         <Input placeholder="m/s" value={state.data.colicalc.v} />
-                    </InputGroup>
+                    </InputGroup>}
                     <InputGroup>
                         <Label>Kb <TooltipInfo info={'Coeficiente de decaimento bacteriano'} /></Label>
                         <Input placeholder="1/dia" value={state.data.colicalc.kb} />
@@ -210,10 +214,7 @@ export default function ColicalcValuesPreview() {
                         <Label>θ para Kb <TooltipInfo info={'Coeficiente de temperatura'} /></Label>
                         <Input placeholder="1/dia" value={state.data.colicalc.teta} />
                     </InputGroup>
-                    <InputGroup>
-                        <Label>N° trechos <TooltipInfo info={'Quantidade de segmentos'} /></Label>
-                        <Input placeholder="Quantidade" value={state.data.colicalc.particoes} />
-                    </InputGroup>
+
                 </Grid>
             </Column>
         </ColumnWrapper>

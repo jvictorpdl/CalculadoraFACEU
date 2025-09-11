@@ -36,9 +36,9 @@ export function DadosRioStep1({ onValidityChange }) {
                     <FormTitle title="Passo 1" />
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.qr} onBlurValue={(val) => updateStateWithAutodepuraData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.odr} onBlurValue={(val) => updateStateWithAutodepuraData({ odr: val })} label="ODr" tooltip="Oxigênio dissolvido no rio." placeholder="mg/L" />
-                        <TextFieldWithTooltip value={state.data.autodepura.dbor} onBlurValue={(val) => updateStateWithAutodepuraData({ dbor: val })} label="DBOr" tooltip="Demanda bioquimíca de oxigênio no rio." placeholder="mg/L" />
-                        <TextFieldWithTooltip value={state.data.autodepura.odmin} onBlurValue={(val) => updateStateWithAutodepuraData({ odmin: val })} label="ODmín" tooltip="Oxigênio dissolvido mínimo no rio." placeholder="mg/L " />
+                        <TextFieldWithTooltip value={state.data.autodepura.odr} onBlurValue={(val) => updateStateWithAutodepuraData({ odr: val })} label="ODr" tooltip="Oxigênio dissolvido do rio." placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.dbor} onBlurValue={(val) => updateStateWithAutodepuraData({ dbor: val })} label="DBOr" tooltip="Demanda bioquimíca de oxigênio do rio." placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.odmin} onBlurValue={(val) => updateStateWithAutodepuraData({ odmin: val })} label="ODmín" tooltip="Oxigênio dissolvido mínimo do rio." placeholder="mg/L " />
                     </Grid>
                 </Column>
                 <VerticalSplitter />

@@ -25,6 +25,11 @@ export function ColiCalc() {
 
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
+    useEffect(() => {
+        if (radioState == 'Dados do rio' && state.data.colicalc.v !== null) {
+            state.data.colicalc.v = null
+        }
+    }, [radioState]);
 
 
     function saveResult(result) {
