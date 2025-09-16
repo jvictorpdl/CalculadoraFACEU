@@ -137,14 +137,37 @@ export const TooltipInfo = ({ info }) => (
     </Tooltip.Provider>
 );
 
-export default function ColicalcValuesPreview() {
+export default function ColicalcValuesPreview({ isRio }) {
     const { state } = useContext(ApplicationContext);
 
 
     return (
         <ColumnWrapper>
             {/* 'Dados do rio' column */}
-            <Column title="Dados do rio">
+
+  {/* Apenas quando RIO estiver selecionado */}
+  {isRio && (
+    <Column title="Dados do rio">
+      <Grid>
+        <InputGroup>
+          <Label>
+            Qr <TooltipInfo info="Vazão do rio." />
+          </Label>
+          <Input placeholder="m³/s" value={state.data.colicalc.qr} />
+        </InputGroup>
+
+        <InputGroup>
+          <Label>
+            Nr <TooltipInfo info="Concentração de coliformes no rio, a montante do lançamento" />
+          </Label>
+          <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
+        </InputGroup>
+      </Grid>
+    </Column>
+  )}
+
+  {/* ...demais colunas permanecem como estão */}
+            {/* <Column title="Dados do rio">
                 <Grid>
                     <InputGroup>
                         <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
@@ -155,8 +178,8 @@ export default function ColicalcValuesPreview() {
                         <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
                     </InputGroup>
                 </Grid>
-            </Column>
-
+            </Column> */}
+ {!isRio && (
             <Column title="Dados da represa">
                 <InputGroup>
                     <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
@@ -166,8 +189,11 @@ export default function ColicalcValuesPreview() {
                     <Label>Nr <TooltipInfo info={'Concentração de coliformes no rio, a montante do lançamento'} /></Label>
                     <Input placeholder="org/100ml" value={state.data.colicalc.nr} />
                 </InputGroup>
+                {/* Adicionar INPUT GROUP REFERENTE A VOLUME DA REPRESA */}
+                {/* Adicionar INPUT GROUP REFERENTE A VOLUME DA REPRESA */}
+                {/* Adicionar INPUT GROUP REFERENTE A VOLUME DA REPRESA */}
             </Column>
-
+  )}
             {/* 'Dados do esgoto' column */}
             <Column title="Dados do esgoto">
                 <InputGroup>

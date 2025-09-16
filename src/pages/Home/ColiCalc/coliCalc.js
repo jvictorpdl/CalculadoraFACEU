@@ -62,7 +62,8 @@ export function ColiCalc() {
             <DadosAdicionaisStep1 />
         ],
         'Resumo': [
-            <ColicalcValuesPreview />
+            <ColicalcValuesPreview isRio={radioState === 'Dados do rio'} />
+            // <ColicalcValuesPreview />
         ],
         'Gráfico': []
     }
