@@ -164,7 +164,9 @@ export function DadosAdicionaisStep4() {
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura da água do rio" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.h} onBlurValue={(val) => updateStateWithAutodepuraData({ h: val })} label="h" tooltip="Altitude" placeholder="m" />
-                        <Ordivider />
+                    </Grid>
+                    <Ordivider />
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.cslinha} onBlurValue={(val) => updateStateWithAutodepuraData({ cslinha: val })} label="Cs'" tooltip="Concentração de saturação de oxigênio dissolvido no rio" placeholder="mg/L" />
                     </Grid>
                 </Column>

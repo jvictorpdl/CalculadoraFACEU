@@ -145,28 +145,28 @@ export default function ColicalcValuesPreview({ isRio }) {
         <ColumnWrapper>
             {/* 'Dados do rio' column */}
 
-  {/* Apenas quando RIO estiver selecionado */}
-  {isRio && (
-    <Column title="Dados do rio">
-      <Grid>
-        <InputGroup>
-          <Label>
-            Qr <TooltipInfo info="Vazão do rio." />
-          </Label>
-          <Input placeholder="m³/s" value={state.data.colicalc.qr} />
-        </InputGroup>
+            {/* Apenas quando RIO estiver selecionado */}
+            {isRio && (
+                <Column title="Dados do rio">
+                    <Grid>
+                        <InputGroup>
+                            <Label>
+                                Qr <TooltipInfo info="Vazão do rio." />
+                            </Label>
+                            <Input placeholder="m³/s" value={state.data.colicalc.qr} />
+                        </InputGroup>
 
-        <InputGroup>
-          <Label>
-            Nr <TooltipInfo info="Concentração de coliformes no rio, a montante do lançamento" />
-          </Label>
-          <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
-        </InputGroup>
-      </Grid>
-    </Column>
-  )}
+                        <InputGroup>
+                            <Label>
+                                Nr <TooltipInfo info="Concentração de coliformes no rio, a montante do lançamento" />
+                            </Label>
+                            <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
+                        </InputGroup>
+                    </Grid>
+                </Column>
+            )}
 
-  {/* ...demais colunas permanecem como estão */}
+            {/* ...demais colunas permanecem como estão */}
             {/* <Column title="Dados do rio">
                 <Grid>
                     <InputGroup>
@@ -179,21 +179,22 @@ export default function ColicalcValuesPreview({ isRio }) {
                     </InputGroup>
                 </Grid>
             </Column> */}
- {!isRio && (
-            <Column title="Dados da represa">
-                <InputGroup>
-                    <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
-                    <Input placeholder="m³/s" value={state.data.colicalc.qr} />
-                </InputGroup>
-                <InputGroup>
-                    <Label>Nr <TooltipInfo info={'Concentração de coliformes no rio, a montante do lançamento'} /></Label>
-                    <Input placeholder="org/100ml" value={state.data.colicalc.nr} />
-                </InputGroup>
-                {/* Adicionar INPUT GROUP REFERENTE A VOLUME DA REPRESA */}
-                {/* Adicionar INPUT GROUP REFERENTE A VOLUME DA REPRESA */}
-                {/* Adicionar INPUT GROUP REFERENTE A VOLUME DA REPRESA */}
-            </Column>
-  )}
+            {!isRio && (
+                <Column title="Dados da represa">
+                    <InputGroup>
+                        <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
+                        <Input placeholder="m³/s" value={state.data.colicalc.qr} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>Nr <TooltipInfo info={'Concentração de coliformes no rio, a montante do lançamento'} /></Label>
+                        <Input placeholder="org/100ml" value={state.data.colicalc.nr} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>V <TooltipInfo info={'Volume da represa'} /></Label>
+                        <Input placeholder="m³" value={state.data.colicalc.v} />
+                    </InputGroup>
+                </Column>
+            )}
             {/* 'Dados do esgoto' column */}
             <Column title="Dados do esgoto">
                 <InputGroup>
