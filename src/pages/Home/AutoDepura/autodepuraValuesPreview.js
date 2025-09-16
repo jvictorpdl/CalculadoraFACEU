@@ -211,10 +211,10 @@ export default function AutodepuraValuesPreview() {
                     </InputGroup>
                     <InputGroup>
                         <Label>H (m)<TooltipInfo info={'Profundidade do Rio'}> </TooltipInfo></Label>
-                        <Input placeholder="m" value={state.data.autodepura.profundidade} />
+                        <Input placeholder="m" value={state.data.autodepura.h} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>h (m)<TooltipInfo info={'Altitude'}> </TooltipInfo></Label>
+                        <Label>Altitude (m)<TooltipInfo info={'Altitude'}> </TooltipInfo></Label>
                         <Input placeholder="m" value={state.data.autodepura.altitude} />
                     </InputGroup>
                     <InputGroup>
