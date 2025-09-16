@@ -4,7 +4,7 @@ import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
-
+import Ordivider from "../../../../components/OrDivider";
 
 export function DadoEsgotoStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -67,11 +67,12 @@ export function DadoEsgotoStep2() {
             <Row>
                 <Column>
                     <FormTitle title="Passo 2" />
-                    <Grid columns={4}>
+                    <Grid columns={2}>
                         <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="Eficiência do tratamento de esgoto na remoção de DBO" placeholder="%" />
                         <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio" placeholder="mg/L" />
-                        {/* E e DBOe ou DBOefl */}
-                        {/*  */}
+                    </Grid>
+                    <Ordivider />
+                    <Grid columns={2}>
                         <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="DBO do efluente tratado" placeholder="mg/L" />
                     </Grid>
                 </Column>
