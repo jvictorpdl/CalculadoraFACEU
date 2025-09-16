@@ -4,7 +4,7 @@ import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
-
+import Ordivider from "../../../../components/OrDivider";
 export function DadosAdicionaisStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
 
@@ -27,12 +27,18 @@ export function DadosAdicionaisStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
-                    <Grid columns={4}>
+                    <Grid columns={3}>
                         {/* deixar mais claro k1t como opção */}
                         <TextFieldWithTooltip value={state.data.autodepura.k120c} onBlurValue={(val) => updateStateWithAutodepuraData({ k120c: val })} label="K1(20ºC)" tooltip="Coeficiente de desoxigenação(20ºC)." placeholder="1/dia" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak1} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak1: val })} label="θ para K1" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do Rio." placeholder="ºC" />
                         {/* Ou k1T */}
+                    <br/>
+                    </Grid>
+                        <Ordivider/>
+
+                    <Grid columns={3}>
+                        {/* <br/>Ou */}
                         <TextFieldWithTooltip value={state.data.autodepura.k1t} onBlurValue={(val) => updateStateWithAutodepuraData({ k1t: val })} label="K1T" tooltip="Coeficiente de desoxigenação a uma temperatura(T)" placeholder="1/dia" />
                     </Grid>
                 </Column>
@@ -74,11 +80,17 @@ export function DadosAdicionaisStep2() {
                         <TextFieldWithTooltip value={state.data.autodepura.tetak2} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak2: val })} label="θ para K2" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do Rio" placeholder="ºC" />
                         <TextFieldWithTooltip value={state.data.autodepura.h} onBlurValue={(val) => updateStateWithAutodepuraData({ h: val })} label="H" tooltip="Profundidade do Rio" placeholder="m" />
-                        {/* Ou */}
+                    </Grid>
+                    <Ordivider/>
+                    <Grid columns={4}>
+                    {/* Ou */}
                         <TextFieldWithTooltip value={state.data.autodepura.k220c} onBlurValue={(val) => updateStateWithAutodepuraData({ k220c: val })} label="K2 (20ºC)" tooltip="Coeficiente de reaeração(20ºC)" placeholder="1/dia" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak2} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak2: val })} label="θ para K2" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do Rio" placeholder="ºC" />
                         {/* Ou */}
+                        </Grid>
+                    <Ordivider/>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.k2t} onBlurValue={(val) => updateStateWithAutodepuraData({ k2t: val })} label="K2T" tooltip="Coeficiente de reaeração a temperatura(T)" placeholder="1/dia" />
                     </Grid>
                 </Column>
