@@ -57,7 +57,7 @@ function Linechart(props) {
           // },
 
           xaxis: {
-            title: { text: 'Distância (km)' },
+            title: { text: 'Distância (Km)' },
             categories: props.kmvet
           },
           yaxis: {

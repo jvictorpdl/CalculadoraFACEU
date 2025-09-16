@@ -191,7 +191,7 @@ export default function ColicalcValuesPreview({ isRio }) {
                     </InputGroup>
                     <InputGroup>
                         <Label>V <TooltipInfo info={'Volume da represa'} /></Label>
-                        <Input placeholder="m³" value={state.data.colicalc.v} />
+                        <Input placeholder="m³" value={state.data.colicalc.volume} />
                     </InputGroup>
                 </Column>
             )}
