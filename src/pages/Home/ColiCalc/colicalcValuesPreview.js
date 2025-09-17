@@ -219,11 +219,11 @@ export default function ColicalcValuesPreview({ isRio }) {
                 <Grid>
                     <InputGroup>
                         <Label>T <TooltipInfo info={'Temperatura do Rio'} /></Label>
-                        <Input placeholder="°C" value={state.data.colicalc.t} />
+                        <Input placeholder="°C" value={state.data.colicalc.temperatura} />
                     </InputGroup>
                     {state.data.colicalc.v === null && <InputGroup>
                         <Label>d <TooltipInfo info={'Distância do percurso'} /></Label>
-                        <Input placeholder="m" value={state.data.colicalc.d} />
+                        <Input placeholder="m" value={state.data.colicalc.distancia} />
                     </InputGroup>}
                     {state.data.colicalc.v === null && <InputGroup>
                         <Label>N° trechos <TooltipInfo info={'Número de partições do rio'} /></Label>
@@ -231,7 +231,7 @@ export default function ColicalcValuesPreview({ isRio }) {
                     </InputGroup>}
                     {state.data.colicalc.v === null && <InputGroup>
                         <Label>v <TooltipInfo info={"Velocidade do Rio"} /></Label>
-                        <Input placeholder="m/s" value={state.data.colicalc.v} />
+                        <Input placeholder="m/s" value={state.data.colicalc.velocidade} />
                     </InputGroup>}
                     <InputGroup>
                         <Label>Kb <TooltipInfo info={'Coeficiente de decaimento bacteriano'} /></Label>
