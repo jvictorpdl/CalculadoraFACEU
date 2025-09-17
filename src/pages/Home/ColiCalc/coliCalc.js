@@ -65,13 +65,13 @@ export function ColiCalc() {
             <ColicalcValuesPreview isRio={radioState === 'Dados do rio'} />
             // <ColicalcValuesPreview />
         ],
-        'Gráfico': []
+        'Gráfico': [],
     }
 
     const disableClicksForCollections = [
         'Dados do rio',
         'Dados da represa',
-        'Gráfico'
+        'Gráfico',
     ]
 
 

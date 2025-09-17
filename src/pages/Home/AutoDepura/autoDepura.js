@@ -12,6 +12,7 @@ import AutodepuraValuesPreview from './autodepuraValuesPreview';
 import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
 import { DadosRioStep1 } from './collection/dadosRio';
+import { AutodepuraRecalculate } from './collection/recalculate';
 
 
 export function AutoDepura() {
@@ -78,7 +79,17 @@ export function AutoDepura() {
             <AutodepuraValuesPreview />
         ],
         'Gráfico': [],
+        'Simular novamente': [
+            <AutodepuraRecalculate />
+        ]
     }
+
+    const disableClicksForCollections = [
+        'Dados do rio',
+        'Dados da represa',
+        'Gráfico',
+        'Simular novamente',
+    ]
 
     const renderStep = (step) => {
         console.log('selectedCollection', selectedCollection)
@@ -113,18 +124,41 @@ export function AutoDepura() {
 
     // Handles moving to the next step or collection, or finalizing
     const handleNext = () => {
-        if (isLastStep) {
+        if (selectedCollection === 'Simular novamente') {
+            saveResult(CalculadoraAutodepura(state.data.autodepura));
+            setSelectedCollection('Gráfico');
+            setStep(0);
+        }
+        else if (selectedCollection === 'Gráfico') {
+            setSelectedCollection('Simular novamente');
+            setStep(0);
+        }
+        else if (isLastStep) {
             if (isLastCollection) {
                 saveResult(CalculadoraAutodepura(state.data.autodepura));
                 setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
             } else {
                 setSelectedCollection(collectionKeys[currentCollectionIndex + 1]);
-                setStep(0); // Reset step when changing collections
+                setStep(0);
             }
         } else {
             setStep(step + 1);
         }
     };
+
+    function renderText() {
+        console.log('selectedCollection', selectedCollection)
+        if (selectedCollection === 'Gráfico') {
+            return 'Simular novamente';
+        }
+        else if (selectedCollection === 'Resumo' || selectedCollection === 'Simular novamente') {
+            return 'Calcular';
+        }
+        else {
+            return 'Próximo';
+        }
+
+    }
 
     return (
         <div style={{ height: 'inherit' }}>
@@ -135,7 +169,7 @@ export function AutoDepura() {
                     return <ToolsButton
                         key={collection}
                         selected={selectedCollection === collectionName}
-                        disabled={selectedCollection === collectionName || collectionName === 'Gráfico'}
+                        disabled={selectedCollection === collectionName || disableClicksForCollections.includes(collectionName)}
                         onClick={() => setSelectedCollection(collectionName)}>
                         {collectionName}
                     </ToolsButton>
@@ -162,9 +196,9 @@ export function AutoDepura() {
                 </CancelButton>
 
 
-                {selectedCollection !== 'Gráfico' && <ActionButton onClick={handleNext}>
-                    {isLastStep && isLastCollection ? 'Calcular' : 'Próximo'}
-                </ActionButton>}
+                <ActionButton onClick={handleNext}>
+                    {renderText()}
+                </ActionButton>
             </Row>
         </div >
     );
