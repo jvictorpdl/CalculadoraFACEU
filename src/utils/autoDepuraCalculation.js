@@ -116,7 +116,12 @@ export const CalculadoraAutodepura = (props) => {
       entrada.dboe = entrada.dboefl;
     }
     entrada.dboefl = (1 - entrada.e / 100) * entrada.dboe;
-  } else
+    // entrada.co =
+    //   (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
+    //   (entrada.qr + entrada.qe);
+    //   console.log("variaveis para o co------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
+
+  } 
 
 
     //DADOS DE SAÍDA
@@ -124,6 +129,8 @@ export const CalculadoraAutodepura = (props) => {
     entrada.co =
       (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
       (entrada.qr + entrada.qe);
+      console.log("variaveis para o co ELSE------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
+
 
   // if (entrada.lancamentos.length) {
   //   let qeXode = 0, qe_qe = 0;
@@ -133,7 +140,6 @@ export const CalculadoraAutodepura = (props) => {
   //     qe_qe += lancamento.qe;
 
   //   })
-  //   // console.log("variaveis para o co------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
 
   //   entrada.co =
   //     (entrada.qr * entrada.odr + entrada.qe * entrada.ode + qeXode) /
@@ -142,14 +148,15 @@ export const CalculadoraAutodepura = (props) => {
   //   entrada.co =
   //     (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
   //     (entrada.qr + entrada.qe); //isto é uma media entao ainda tem que inserir mais valores de qe seguindo a mesma logica caso o usuario queira inserir mais valores
-  //   // console.log("co: ", entrada.co);
-  //   // console.log("variaveis para o co/////////////////////////////: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
-  //   // console.log("co: ", entrada.co);
+  //   console.log("co: ", entrada.co);
+  //   console.log("variaveis para o co/////////////////////////////: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
+  //   console.log("co: ", entrada.co);
 
   // }
 
 
   entrada.do = entrada.cslinha - entrada.co;
+console.log("variaveis para o do------------------------------: ", entrada.do, entrada.cslinha , entrada.co);
 
   {
     //Concentração de DBO ultima mistura (Lo)
