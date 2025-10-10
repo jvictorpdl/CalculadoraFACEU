@@ -8,6 +8,7 @@ export const Calculadora2 = (props) => {
     // Adiciona o símbolo de porcentagem
     return `${formattedPercentage}%`;
   }
+    console.log(props);
   const entrada = {
     qr: Number(String(props.qr).replaceAll('.', '').replace(',', '.')),
     qe: Number(String(props.qe).replaceAll('.', '').replace(',', '.')),
@@ -81,6 +82,7 @@ export const Calculadora2 = (props) => {
 
     // entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
     entrada.nRepresa = entrada.nop * (1 + (entrada.kbt * entrada.tDentencao));
+    console.log('nrepresa: ' + entrada.nRepresa);
     // entrada.nRepresa = entrada.no / (1 + entrada.kbt * entrada.tDentencao);
 
     if (entrada.nRepresa > entrada.nop) {
@@ -89,9 +91,11 @@ export const Calculadora2 = (props) => {
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne;
     } else {
       entrada.eficiencia = -1
+            console.log('entrou no else e eficiencia é -1' )
     }
   }
 
+  console.log(props);
   console.log('EFICIENCIA: ' + entrada.eficiencia);
 
   let resultado2 = {};
