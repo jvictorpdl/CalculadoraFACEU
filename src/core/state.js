@@ -54,7 +54,7 @@ export let testState = {
             eficiencia: 0,
             tempo: 0,
             classLimit: 0,
-            represa: true,
+            represa: false,
             tRepresa: 0,
             tDentencao: 0,
             qAfluente: 0,

@@ -3,7 +3,7 @@
 
 
 export const CalculadoraAutodepura = (props) => {
-  console.log(props);
+  // console.log(props);
   const entrada = {
     qr: Number(props.qr),
     odr: Number(props.odr),

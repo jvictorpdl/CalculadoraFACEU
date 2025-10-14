@@ -26,13 +26,16 @@ export function ColiCalc() {
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
     useEffect(() => {
-        if (radioState == 'Dados do rio' && state.data.colicalc.v !== null) {
+        if (radioState === 'Dados do rio' && state.data.colicalc.v !== null) {
             state.data.colicalc.v = null
         }
+        updateStateWithColiCalcData({represa: radioState === 'Dados da represa' });
+        console.log('AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII' + state.data.colicalc.represa);
+
     }, [radioState]);
 
-
     function saveResult(result) {
+        
         dispatch({
             ...state,
             output: {
@@ -43,6 +46,19 @@ export function ColiCalc() {
                 }
             }
         });
+    }
+    
+    function updateStateWithColiCalcData(inputs) {
+        dispatch({
+            ...state,
+            data: {
+                ...state.data,
+                colicalc: {
+                    ...state.data.colicalc,
+                    ...inputs
+                },
+            }
+        })
     }
 
     const collection = {
