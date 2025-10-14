@@ -25,3 +25,26 @@ export const Flex = styled.div`
   height: 100%;
   flex-direction: column; /* optional */
 `;
+
+export const DuoFlex = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  > * {
+    flex: 1 1 calc(50% - 8px); /* 8px = metade do gap */
+    box-sizing: border-box;
+    min-width: 0; /* evita overflow de conteúdo */
+  }
+
+  @media (max-width: 640px) {
+    > * { flex-basis: 100%; }
+  }
+`;
+
+
+export const Duo = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px; /* espaço entre itens */
+`;

@@ -8,7 +8,7 @@ export default function HelpModal(props) {
 
     return (
         <Container onClick={props.handle}>
-            <img src={InfoIcon} alt="Ícone de informação" />
+            {/* <img src={InfoIcon} alt="Ícone de informação" /> */}
             <HelpButton>
                 {props.title}
             </HelpButton>

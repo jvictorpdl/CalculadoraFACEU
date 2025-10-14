@@ -81,14 +81,16 @@ export function DadosMisturaStep1() {
         <div>
             <Row>
                 <Column>
-                    <FormTitle title="Dados da Mistura" />
-                    <Grid columns={4}>
+                        <Title title="Dados da Mistura" />
+
+                    {/* <FormTitle title="Dados da Mistura" /> */}
+                    <Grid columns={3}>
                         <TextFieldWithTooltip value={state.data.colicalc.nop} onBlurValue={(val) => updateStateWithColiCalcData({ nop: val })} label="Nop" tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental" placeholder="org/100ml" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    {/* <span>Informações adicionais</span> */}
                     <CardHelp>
                         <Title title="Informações auxiliares" />
 

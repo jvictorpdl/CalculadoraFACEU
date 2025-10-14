@@ -40,7 +40,7 @@ export function DadosAdicionaisStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
-                    <Grid columns={4}>
+                    <Grid columns={3}>
                         <TextFieldWithTooltip value={state.data.colicalc.temperatura} onBlurValue={(val) => updateStateWithColiCalcData({ temperatura: val })} label="T" tooltip="Temperatura do líquido" placeholder="ºC" />
                         <TextFieldWithTooltip value={state.data.colicalc.distancia} onBlurValue={(val) => updateStateWithColiCalcData({ distancia: val })} label="d" tooltip="Distância do percurso" placeholder="m" />
                         <TextFieldWithTooltip value={state.data.colicalc.velocidade} onBlurValue={(val) => updateStateWithColiCalcData({ velocidade: val })} label="v" tooltip="Velocidade do curso d'água" placeholder="m/s" />
@@ -53,7 +53,6 @@ export function DadosAdicionaisStep1() {
                 <Column>
                     <CardHelp>
                         <Title title="Informações auxiliares" />
-                        <br />
                         <HelpModal title="Clique para auxílio em θ para Kb" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
                             <p>

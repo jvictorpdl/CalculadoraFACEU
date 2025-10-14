@@ -84,7 +84,7 @@ export function DadosRioStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Dados do Rio" />
-                    <Grid columns={4}>
+                    <Grid columns={3}>
                         <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.colicalc.nr} onBlurValue={(val) => updateStateWithColiCalcData({ nr: val })} label="Nr" tooltip="Concentração de coliformes no rio, a montante do lançamento" placeholder="NPM/100ml" />
                     </Grid>
