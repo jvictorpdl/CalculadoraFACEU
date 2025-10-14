@@ -4,10 +4,23 @@ import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
+import Modal from "../../../../components/Modal/index";
+import HelpModal from "../../../../components/HelpModal/index";
+import { useState } from "react";
+import { CardHelp } from "../../../../components/CardHelp/index";
+import Title from "../../../../components/Title/index";
 
 export function DadosAdicionaisStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    // const [modalIsOpen2, setIsOpen2] = useState(false);
 
+    function openModal() {
+        setIsOpen(true);
+    }
+    function closeModal() {
+        setIsOpen(false);
+    }
     function updateStateWithColiCalcData(inputs) {
         dispatch({
             ...state,
@@ -38,7 +51,20 @@ export function DadosAdicionaisStep1() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <CardHelp>
+                        <Title title="Informações auxiliares" />
+                        <br />
+                        <HelpModal title="Clique para auxílio em θ para Kb" handle={openModal} />
+                        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
+                            <p>
+                                Valor usual de θ é de 1,07 1/dia para a temperatura de 20º C.
+                            </p>
+                            {/* editar para dia elevado a menos 1 dps */}
+                            <br />
+                            <h5>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</h5>
+
+                        </Modal>
+                    </CardHelp>
                 </Column>
             </Row>
         </div>
