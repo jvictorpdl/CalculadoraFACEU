@@ -5,14 +5,10 @@ export const CardHelp = styled.section`
   width: 100%;
   background: transparent;
   color:  #111827;
-  padding-block: clamp(12px, 2vw, 20px);
   display: flex;
   flex-direction: column;
   gap: clamp(6px, 1vw, 12px);
 
-  /* Hairline superior (bem leve) para separar do conteúdo anterior */
-  --hairline: rgba(39, 17, 17, 0.08);
-  border-top: 1px solid var(--hairline);
 
 
 
