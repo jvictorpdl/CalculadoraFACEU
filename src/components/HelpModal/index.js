@@ -1,19 +1,14 @@
-import { Container, helpTitle, HelpButton } from "./styles"
+import { Container, HelpButton } from "./styles"
 import InfoIcon from "../../assets/Info.svg"
-import { useState } from "react";
 
 
 
 export default function HelpModal(props) {
-    const [modalIsOpen, setIsOpen] = useState(false);
 
 
-    function openModal() {
-        setIsOpen(true);
-    }
     return (
         <Container onClick={props.handle}>
-            <img src={InfoIcon} />
+            {/* <img src={InfoIcon} alt="Ícone de informação" /> */}
             <HelpButton>
                 {props.title}
             </HelpButton>

@@ -5,7 +5,8 @@ export const ButtonPrimary = styled.button`
   font-size: 20px;
   padding: 5px 15px;
   border-radius: 8px;
-  background: #1A237A;
+  /* background: #1A237A; */
+  background: #2174d4;
   border: 2px solid #333;
   color: #fff;
   font-weight: bold;
@@ -33,6 +34,20 @@ export const ButtonTertiary = styled.button`
   padding: 5px 15px;
   background-color: transparent;
   border: 0px;
+`;
+export const ButtonInative = styled.button`
+  width: 200px;
+  font-size: 20px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  background: #BBB9B9;
+  border: 2px solid #333;
+  color: black;
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  
 `;
 
 /*export const ButtonPrimary = styled.button`

@@ -1,44 +1,41 @@
 import styled from "styled-components";
 
-export const Container = styled.section`
-  width: 100vw;
-  display: flex;
-  padding-top: 40px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-export const TitlePage = styled.div`
-  width: 100%;
-  padding-left: 135px;
-  margin-bottom: 10px;
-  text-align: start;
+export const FinishButton = styled.button`
+    border-radius: 8px;
+    background: #2BA3AB;
+    padding: 12px 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #FFF
 `
 
-export const TitleCard = styled.h2`
-  font-size: 15px;
-`;
 
-export const Progress = styled.hr`
-  height: 4px;
-  background: #1A237A;
-  border: none;
-  margin-left: 137px;
-  margin-right: auto;
+export const CancelButton = styled.button`
+    border-radius: var(--Border-Radius-radius-8, 8px);
+    border: 1px solid var(--Border-color-border-subtle, #D1D5DB);
+    background: var(--BG-color-background, #FFF);
+    color: #4B5563;
+    padding: 12px 16px;
+    font-weight: 600;
+    cursor: pointer;
 `
 
-export const ButtonsSteps = styled.div`
-  width: 100vw;
-  margin-top: 10px;
-  padding-left: 57%;
-  display: flex;
-  column-gap: 20px;
+export const ToolsButton = styled.button`
+    border-radius: var(--Border-Radius-radius-8, 8px);
+    border: 1px solid var(--Border-color-border-subtle, ${(props) => (props.selected ? '#2BA3AB' : '#D1D5DB')});
+    background: var(--BG-color-background, #FFF);
+    color: ${(props) => (props.selected ? '#2BA3AB' : '#D1D5DB')};
+    padding: 4px 12px;
+    font-weight: 600;
+    cursor: ${(props) => (props.disabled ? 'auto' : props.selected ? 'auto' : 'pointer')};
 `
-export const ButtonsStepOne = styled.div`
-  width: 100vw;
-  margin-top: 10px;
-  padding-left: 66.5%;
-  display: flex;
-  column-gap: 22px;
+
+export const ActionButton = styled.button`
+    border-radius: var(--Border-Radius-radius-8, 8px);
+    border: 1px solid ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
+    color: ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
+    background: var(--BG-color-background, #FFF);
+    padding: 12px 16px;
+    cursor: pointer;
 `

@@ -4,7 +4,9 @@ import { Container } from "./styles";
 function PageTemplate(props) {
   return (
     <Container>
+   
       <Header />
+
       {props.children}
     </Container>
   );

@@ -1,8 +1,10 @@
 import { useState } from "react";
+import inforSVD from "../../assets/Info.svg";
 import { Input } from "../Input";
 import { Container, Label } from "./styles";
 
 export default function ItemForm(props) {
+  // eslint-disable-next-line no-unused-vars
   const [locale, setLocale] = useState(props.locale);
 
   function updateData(value) {
@@ -17,6 +19,7 @@ export default function ItemForm(props) {
         </span>
         {props.title}
         {props.sub && <sub>{props.sub}</sub>}
+        <img src={inforSVD} alt="Faceu Logo"></img>
       </Label>
       <Input
         disabled={props.disabled}
