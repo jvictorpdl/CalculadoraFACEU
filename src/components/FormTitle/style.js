@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Title = styled.h2`
     color: #374151;
-    font-family: var(--Font-Family-title, Inter);
+    font-family: var(--Font-Family-title, 'Inter', sans-serif);
     font-size: 18px;
     font-style: normal;
     font-weight: 600;

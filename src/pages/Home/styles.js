@@ -21,11 +21,12 @@ export const CancelButton = styled.button`
     cursor: pointer;
 `
 
+// grupo atual em verde, grupos clicáveis em cinza escuro e os bloqueados em cinza claro
 export const ToolsButton = styled.button`
     border-radius: var(--Border-Radius-radius-8, 8px);
     border: 1px solid var(--Border-color-border-subtle, ${(props) => (props.selected ? '#2BA3AB' : '#D1D5DB')});
     background: var(--BG-color-background, #FFF);
-    color: ${(props) => (props.selected ? '#2BA3AB' : '#D1D5DB')};
+    color: ${(props) => (props.selected ? '#17737A' : props.disabled ? '#9CA3AF' : '#4B5563')};
     padding: 4px 12px;
     font-weight: 600;
     cursor: ${(props) => (props.disabled ? 'auto' : props.selected ? 'auto' : 'pointer')};
@@ -45,7 +46,8 @@ export const MensagemErro = styled.div`
 export const ActionButton = styled.button`
     border-radius: var(--Border-Radius-radius-8, 8px);
     border: 1px solid ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
-    color: ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
+    color: ${(props) => (props.disabled ? '#D1D5DB' : '#17737A')};
+    font-weight: 600;
     background: var(--BG-color-background, #FFF);
     padding: 12px 16px;
     cursor: pointer;

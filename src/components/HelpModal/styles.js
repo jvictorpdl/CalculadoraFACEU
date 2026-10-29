@@ -11,7 +11,7 @@ export const HelpButton = styled.button`
   cursor: pointer;
   font-size: 18px;
   // text-decoration: underline;
-  color: rgba(29, 140, 147, 1);
+  color: #17737A;
   padding:  0 8px;
   font-weight: bolder;
   border: 0;

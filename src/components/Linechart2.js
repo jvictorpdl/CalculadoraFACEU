@@ -11,15 +11,9 @@ function formatScientific(value) {
   const formattedExponentString = Math.abs(formattedExponent).toString().padStart(2, '0');
   return `${formattedCoefficient}E${sign}${formattedExponentString}`;
 }
+// O coeficiente fixo em 1,00 repetia rótulos (150 e 120 viravam 1,00E+2) e o zero virava "E-Infinity"
 function formatYAxisLabel(value) {
-  const exponent = Math.floor(Math.log10(value));
-  // Calcula o valor base para que comece com 1.00
-  // const baseValue = value / (10 ** exponent);
-  // Garante que o coeficiente é sempre 1.00
-  const formattedCoefficient = '1,00';
-  // Formata o expoente para garantir que o formato seja '+X' ou '-X'
-  const formattedExponentString = exponent >= 0 ? `+${exponent}` : `${exponent}`;
-  return `${formattedCoefficient}E${formattedExponentString}`;
+  return value > 0 ? formatScientific(value) : '0';
 }
 
 function Linechart2({ novet, particoesVet, kmvet }) {
@@ -30,7 +24,7 @@ function Linechart2({ novet, particoesVet, kmvet }) {
     <div className="container-fluid mt-3 mb-3">
       <Chart 
         type='line'
-        width={1100}
+        width="100%"
         height={550}
         series={[
           {

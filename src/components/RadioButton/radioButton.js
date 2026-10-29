@@ -46,7 +46,7 @@ const RadioWrapper = styled.label`
 const Label = styled.span`
     color: #4B5563
     /* Body e paragraph/Body/Body 2 - medium */
-    font-family: var(--Font-Family-title, Inter);
+    font-family: var(--Font-Family-title, 'Inter', sans-serif);
     font-size: var(--Font-Size-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-Weight-weight-medium, 400);

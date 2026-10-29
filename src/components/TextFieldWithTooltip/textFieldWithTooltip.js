@@ -1,7 +1,7 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Info } from 'lucide-react';
-import { useState } from 'react';
-import { FieldWrapper, Input, LabelWrapper, TooltipContentStyled } from './style';
+import { useId, useState } from 'react';
+import { FieldWrapper, Input, InputWrapper, LabelWrapper, TooltipContentStyled, TooltipTrigger, Unidade } from './style';
 
 export default function TextFieldWithTooltip({
     label,
@@ -12,6 +12,9 @@ export default function TextFieldWithTooltip({
     value,
 }) {
     const [currentValue, setValue] = useState(value?.toString()?.replaceAll('.', ',') ?? '');
+    const id = useId();
+    // o placeholder recebido é a unidade do campo (m³/s, mg/L, ...)
+    const unidade = placeholder?.trim();
 
     // Regex allows only numbers with up to 5 decimal places
     const handleChange = (e) => {
@@ -49,13 +52,13 @@ export default function TextFieldWithTooltip({
     return (
         <FieldWrapper>
             <LabelWrapper>
-                <span style={{ fontWeight: 600, color: "#374151" }}>{label}</span>
+                <label htmlFor={id} style={{ fontWeight: 600, color: "#374151" }}>{label}</label>
                 <Tooltip.Provider delayDuration={100}>
                     <Tooltip.Root>
                         <Tooltip.Trigger asChild>
-                            <span style={{ display: "inline-flex", cursor: "pointer" }}>
-                                <Info size={16} />
-                            </span>
+                            <TooltipTrigger type="button" aria-label={`Sobre ${label}: ${tooltip}`}>
+                                <Info size={16} aria-hidden="true" />
+                            </TooltipTrigger>
                         </Tooltip.Trigger>
                         <Tooltip.Portal>
                             <TooltipContentStyled side="top" sideOffset={4}>
@@ -66,15 +69,19 @@ export default function TextFieldWithTooltip({
                     </Tooltip.Root>
                 </Tooltip.Provider>
             </LabelWrapper>
-            <Input
-                type="text"
-                inputMode="decimal"
-                placeholder={placeholder}
-                disabled={disabled}
-                value={currentValue?.replaceAll('.', ',')}
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
+            <InputWrapper $disabled={disabled}>
+                <Input
+                    id={id}
+                    type="text"
+                    inputMode="decimal"
+                    aria-describedby={unidade ? `${id}-unidade` : undefined}
+                    disabled={disabled}
+                    value={currentValue?.replaceAll('.', ',')}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                {unidade && <Unidade id={`${id}-unidade`}>{unidade}</Unidade>}
+            </InputWrapper>
         </FieldWrapper>
     );
 }

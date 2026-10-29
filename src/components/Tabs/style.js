@@ -10,6 +10,10 @@ export const TabsWrapper = styled.div`
   display: flex;
   gap: 2rem;
   border-bottom: 1px solid #dce3eb;
+
+  @media (max-width: 768px) {
+    gap: 1.25rem;
+  }
 `;
 
 export const TabButtonStyled = styled.button`
@@ -17,14 +21,14 @@ export const TabButtonStyled = styled.button`
   border: none;
   padding: 1rem 0;
   font-size: 16px;
-  color: ${(props) => (props.active ? '#1D8C93' : '#4B5563')};
+  color: ${(props) => (props.active ? '#17737A' : '#4B5563')};
   font-weight: ${(props) => (props.active ? '600' : '400')};
-  border-bottom: 2px solid ${(props) => (props.active ? '#1D8C93' : 'transparent')};
+  border-bottom: 2px solid ${(props) => (props.active ? '#17737A' : 'transparent')};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    color: #1D8C93;
+    color: #17737A;
   }
 `;
 
@@ -42,4 +46,8 @@ export const Card = styled.div`
   background: #FFF;
   padding: 24px;
   box-shadow: 0 0 24px 0 rgba(46, 60, 88, 0.10);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 `

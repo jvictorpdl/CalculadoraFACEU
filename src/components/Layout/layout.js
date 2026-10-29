@@ -9,12 +9,26 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
+
+  /* no celular as colunas (campos e ajuda) ficam uma embaixo da outra */
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+
+    > ${Column} {
+      flex: 1 1 100%;
+      min-width: 0;
+    }
+  }
 `;
 
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(${(props) => (props.columns)}, 1fr);
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
 `;
 
 

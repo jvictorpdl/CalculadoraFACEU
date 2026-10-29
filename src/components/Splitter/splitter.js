@@ -7,7 +7,11 @@ export const VerticalSplitter = styled.div`
     margin-right: ${(props) => (props.margin ?? '16px')};
     stroke-width: 1px;
     stroke: rgba(0, 0, 0, 0.08);
-    background: #5c5c5c28
+    background: #5c5c5c28;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `
 
 

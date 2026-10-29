@@ -120,8 +120,7 @@ export function AutoDepura() {
                 setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
             }
         } else {
-            console.log(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1)
-            setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+            setStep(step - 1);
         }
     };
 
@@ -208,9 +207,10 @@ export function AutoDepura() {
             }
 
             <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
-                <CancelButton onClick={handleBack}>
-                    {isFirstStep && isFirstCollection ? 'Cancelar' : 'Voltar'}
-                </CancelButton>
+                {/* na primeira tela não há para onde voltar */}
+                {isFirstStep && isFirstCollection
+                    ? <span />
+                    : <CancelButton onClick={handleBack}>Voltar</CancelButton>}
 
 
                 <ActionButton onClick={handleNext}>

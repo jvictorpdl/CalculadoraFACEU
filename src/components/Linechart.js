@@ -8,7 +8,7 @@ function Linechart(props) {
       {/* <h2>Perfil de OD</h2> */}
 
       <Chart type='line'
-        width={1100}
+        width="100%"
         height={550}
 
         series={[

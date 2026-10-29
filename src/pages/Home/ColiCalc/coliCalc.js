@@ -124,9 +124,13 @@ export function ColiCalc() {
                 setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1);
             }
         } else {
-            setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1);
+            setStep(step - 1);
         }
     };
+
+    // a primeira tela é "Dados do rio" ou, no caso de represa, "Dados da represa"
+    const isPrimeiraTela = isFirstStep &&
+        (isFirstCollection || (radioState === 'Dados da represa' && selectedCollection === 'Dados da represa'));
 
 
     // Handles moving to the next step or collection, or finalizing
@@ -221,9 +225,10 @@ export function ColiCalc() {
             }
 
             <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
-                <CancelButton onClick={handleBack}>
-                    {isFirstStep && isFirstCollection ? 'Cancelar' : 'Voltar'}
-                </CancelButton>
+                {/* na primeira tela não há para onde voltar */}
+                {isPrimeiraTela
+                    ? <span />
+                    : <CancelButton onClick={handleBack}>Voltar</CancelButton>}
 
 
                 {selectedCollection !== "Gráfico" && <ActionButton onClick={handleNext}>
