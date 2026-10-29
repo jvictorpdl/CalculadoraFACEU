@@ -1,6 +1,22 @@
 /* eslint-disable no-lone-blocks */
 
 
+// K2 (20ºC) pelas fórmulas hidráulicas; null quando H e v estão fora das faixas de validade
+export const coeficienteK2 = (h, v) => {
+  if (h < 4 && h >= 0.6 && 0.05 <= v && v < 0.8) {
+    //formula O'Connor e Dobbins
+    return 3.73 * Math.pow(v, 0.5) * Math.pow(h, -1.5);
+  }
+  if (h < 4 && h >= 0.6 && 0.8 <= v && v < 1.5) {
+    //formula Churchill et al
+    return 5 * Math.pow(v, 0.97) * Math.pow(h, -1.67);
+  }
+  if (h >= 0.1 && h < 0.6 && 0.05 <= v && v < 1.5) {
+    //formula Owens et al
+    return 5.3 * Math.pow(v, 0.67) * Math.pow(h, -1.85);
+  }
+  return null;
+};
 
 export const CalculadoraAutodepura = (props) => {
   // console.log(props);
@@ -63,34 +79,7 @@ export const CalculadoraAutodepura = (props) => {
 
 
   } else if (entrada.h) {
-    if (
-      entrada.h < 4 &&
-      entrada.h >= 0.6 &&
-      0.05 <= entrada.velocidade &&
-      entrada.velocidade < 0.8
-    ) {
-      //formula O'Connor e Dobbins
-      entrada.k220c =
-        3.73 * Math.pow(entrada.velocidade, 0.5) * Math.pow(entrada.h, -1.5);
-    } else if (
-      entrada.h < 4 &&
-      entrada.h >= 0.6 &&
-      0.8 <= entrada.velocidade &&
-      entrada.velocidade < 1.5
-    ) {
-      //formula Churchill et al
-      entrada.k220c =
-        5 * Math.pow(entrada.velocidade, 0.97) * Math.pow(entrada.h, -1.67);
-    } else if (
-      entrada.h >= 0.1 &&
-      entrada.h < 0.6 &&
-      0.05 <= entrada.velocidade &&
-      entrada.velocidade < 1.5
-    ) {
-      //formula Owens et al
-      entrada.k220c =
-        5.3 * Math.pow(entrada.velocidade, 0.67) * Math.pow(entrada.h, -1.85);
-    }
+    entrada.k220c = coeficienteK2(entrada.h, entrada.velocidade) ?? entrada.k220c;
 
     entrada.k2t = entrada.k220c * Math.pow(entrada.tetak2, entrada.temperatura - 20);
 
@@ -160,29 +149,21 @@ console.log("variaveis para o do------------------------------: ", entrada.do, e
 
   {
     //Concentração de DBO ultima mistura (Lo)
+    // KT converte a DBO5 (ensaio a 20ºC) em DBO última, por isso usa K1 a 20ºC (Von Sperling)
+    const k1Ensaio = entrada.k120c || entrada.k1t;
+    entrada.kt = 1 / (1 - Math.exp(-5 * k1Ensaio));
+
     if (entrada.dboefl) {
       entrada.dbo5 =
         (entrada.qr * entrada.dbor + entrada.qe * entrada.dboefl) /
         (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
-      entrada.kt =
-        1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
-
-
-
-      entrada.lo = entrada.dbo5 * entrada.kt;
-
-
     } else {
       entrada.dbo5 =
         (entrada.qr * entrada.dbor + entrada.qe * entrada.dboe) /
         (entrada.qr + entrada.qe); //  tem mais de um lançamento de esgoto
-
-      entrada.kt =
-        1 / (1 - Math.pow(2.72, -5 * Number(entrada.k1t.toFixed(2))));
-
-      entrada.lo = entrada.dbo5 * entrada.kt;
-
     }
+
+    entrada.lo = entrada.dbo5 * entrada.kt;
   }
 
 
@@ -191,24 +172,25 @@ console.log("variaveis para o do------------------------------: ", entrada.do, e
     Math.log(
       (entrada.k2t / entrada.k1t) *
       (1 -
-        ((entrada.do * (entrada.k2t - entrada.k1t)) / entrada.lo) *
-        entrada.k1t)
+        (entrada.do * (entrada.k2t - entrada.k1t)) / (entrada.lo * entrada.k1t))
     );
-
-  entrada.dc = entrada.tc * entrada.velocidade * 86400;
-  // entrada.dc = Number(entrada.dc).toFixed(2)
 
   // eslint-disable-next-line no-lone-blocks
   {
     //ODC
     //deficitc = defice crítico
-    entrada.deficitc =
-      (entrada.k1t / entrada.k2t) *
-      entrada.lo *
-      Math.pow(2.7182818285, -entrada.k1t * entrada.tc);
-    // entrada.deficitc = Number(entrada.deficitc).toFixed(2)
+    if (entrada.tc > 0) {
+      entrada.deficitc =
+        (entrada.k1t / entrada.k2t) *
+        entrada.lo *
+        Math.pow(2.7182818285, -entrada.k1t * entrada.tc);
+    } else {
+      // tc negativo ou indefinido: o déficit só diminui, o pior ponto é o próprio lançamento
+      entrada.tc = 0;
+      entrada.deficitc = entrada.do;
+    }
 
-
+    entrada.dc = entrada.tc * entrada.velocidade * 86400;
     entrada.odc = entrada.cslinha - entrada.deficitc; //caso o odc der abaixo de 0, mostrar um alerta relatando que o modelo de Streeter-Phelps não seria válido nestas condições e paralisar o caso
   }
 
@@ -246,6 +228,14 @@ console.log("variaveis para o do------------------------------: ", entrada.do, e
     odminVet,
     particoesVet,
     kmvet,
+    critico: {
+      tc: entrada.tc,
+      xcKm: entrada.dc / 1000,
+      odc: entrada.odc,
+      co: entrada.co,
+      odmin: entrada.odmin,
+      distanciaKm: entrada.distancia / 1000,
+    },
   };
   return resultado;
 };

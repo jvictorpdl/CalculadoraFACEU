@@ -15,7 +15,8 @@ export default function TextFieldWithTooltip({
 
     // Regex allows only numbers with up to 5 decimal places
     const handleChange = (e) => {
-        const input = e.target.value;
+        // Ponto também vale como separador decimal; antes era descartado e "0.651" virava 651
+        const input = e.target.value.replaceAll('.', ',');
 
         // Allow empty input
         if (input === '') {

@@ -31,6 +31,17 @@ export const ToolsButton = styled.button`
     cursor: ${(props) => (props.disabled ? 'auto' : props.selected ? 'auto' : 'pointer')};
 `
 
+export const MensagemErro = styled.div`
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #FCA5A5;
+    background: #FEF2F2;
+    color: #B91C1C;
+    font-size: 14px;
+    line-height: 1.5;
+`
+
 export const ActionButton = styled.button`
     border-radius: var(--Border-Radius-radius-8, 8px);
     border: 1px solid ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};

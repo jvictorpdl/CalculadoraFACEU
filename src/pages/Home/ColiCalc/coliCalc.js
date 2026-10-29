@@ -7,8 +7,9 @@ import { RadioButton } from '../../../components/RadioButton/radioButton';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraColicalc } from '../../../utils/coliCalcCalculation';
+import { errosColicalc, errosPassoColicalc } from '../../../utils/validacao';
 import ColicalcChart from '../../ColiCalcResult';
-import { ActionButton, CancelButton, ToolsButton } from '../styles';
+import { ActionButton, CancelButton, MensagemErro, ToolsButton } from '../styles';
 import ColicalcValuesPreview from './colicalcValuesPreview';
 import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
 import { DadosEsgotoStep1 } from './collection/dadosEsgoto';
@@ -22,9 +23,11 @@ export function ColiCalc() {
     const [step, setStep] = useState(0);
     const [selectedCollection, setSelectedCollection] = useState('Dados do rio');
     const [radioState, setRadioState] = useState('Dados do rio');
+    const [erros, setErros] = useState([]);
 
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
+    useEffect(() => { setErros([]) }, [selectedCollection, step]);
     useEffect(() => {
         if (radioState === 'Dados do rio' && state.data.colicalc.v !== null) {
             state.data.colicalc.v = null
@@ -128,6 +131,13 @@ export function ColiCalc() {
 
     // Handles moving to the next step or collection, or finalizing
     const handleNext = () => {
+        // antes de calcular confere tudo; nos demais passos, só os campos do passo atual
+        const errosEncontrados = selectedCollection === 'Resumo'
+            ? errosColicalc(state.data.colicalc)
+            : errosPassoColicalc(selectedCollection, state.data.colicalc);
+        setErros(errosEncontrados);
+        if (errosEncontrados.length) return;
+
         if (selectedCollection === 'Dados do rio' && radioState === 'Dados do rio') {
             // skip "represa"
             setSelectedCollection(collectionKeys[currentCollectionIndex + 2]);
@@ -203,6 +213,12 @@ export function ColiCalc() {
             {renderStep(step)}
 
             <Flex />
+
+            {erros.length > 0 &&
+                <MensagemErro role="alert">
+                    {erros.map((erro) => <div key={erro}>{erro}</div>)}
+                </MensagemErro>
+            }
 
             <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
                 <CancelButton onClick={handleBack}>

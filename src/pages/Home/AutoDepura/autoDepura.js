@@ -6,8 +6,9 @@ import { PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
+import { errosAutodepura, errosPassoAutodepura } from '../../../utils/validacao';
 import AutodepuraChart from '../../AutoDepuraResult';
-import { ActionButton, CancelButton, ToolsButton } from '../styles';
+import { ActionButton, CancelButton, MensagemErro, ToolsButton } from '../styles';
 import AutodepuraValuesPreview from './autodepuraValuesPreview';
 import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
@@ -35,7 +36,10 @@ export function AutoDepura() {
         ]
     })
 
+    const [erros, setErros] = useState([]);
+
     useEffect(() => { setStep(0) }, [selectedCollection]);
+    useEffect(() => { setErros([]) }, [selectedCollection, step]);
 
     function saveResult(result) {
         dispatch({
@@ -124,6 +128,13 @@ export function AutoDepura() {
 
     // Handles moving to the next step or collection, or finalizing
     const handleNext = () => {
+        // antes de calcular confere tudo; nos demais passos, só os campos do passo atual
+        const errosEncontrados = ['Resumo', 'Simular novamente'].includes(selectedCollection)
+            ? errosAutodepura(state.data.autodepura)
+            : errosPassoAutodepura(selectedCollection, step, state.data.autodepura);
+        setErros(errosEncontrados);
+        if (errosEncontrados.length) return;
+
         if (selectedCollection === 'Simular novamente') {
             saveResult(CalculadoraAutodepura(state.data.autodepura));
             setSelectedCollection('Gráfico');
@@ -189,6 +200,12 @@ export function AutoDepura() {
             {renderStep(step)}
 
             <Flex />
+
+            {erros.length > 0 &&
+                <MensagemErro role="alert">
+                    {erros.map((erro) => <div key={erro}>{erro}</div>)}
+                </MensagemErro>
+            }
 
             <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
                 <CancelButton onClick={handleBack}>

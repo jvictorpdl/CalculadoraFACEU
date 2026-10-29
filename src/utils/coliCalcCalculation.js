@@ -67,7 +67,8 @@ export const CalculadoraColicalc = (props) => {
 
       }
     } else {
-      
+      entrada.eficiencia = 0;
+
       for (let i = 0; i <= entrada.particoes; i++) {
         let tempop = ((entrada.distancia / entrada.particoes) * i) / (entrada.velocidade * 86400);
         entrada.noToPush = tempop === 0 ? entrada.no : entrada.no * Math.pow(neperiano, (-entrada.kbt * tempop));
@@ -108,6 +109,13 @@ export const CalculadoraColicalc = (props) => {
 
 
   resultado2.eficiencia = convertToPercentage(entrada.eficiencia);
+  resultado2.eficienciaValor = entrada.eficiencia;
+  // no rio, a mistura já atende o padrão; na represa, a eficiência necessária dá zero ou negativa
+  resultado2.semTratamento = entrada.represa === false ? !(entrada.no > entrada.nop) : !(entrada.eficiencia > 0);
+  // acima de 100%: nem removendo todo o coliforme do esgoto o padrão é atendido (Nr já é alto)
+  resultado2.inviavel = entrada.eficiencia > 1;
+  resultado2.n0 = entrada.no;
+  resultado2.nop = entrada.nop;
   resultado2.particoesVet = particoesVet;
   resultado2.ntempoVet = ntempoVet;
   resultado2.kmvet = kmvet;
