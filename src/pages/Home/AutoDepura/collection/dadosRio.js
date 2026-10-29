@@ -4,6 +4,7 @@ import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
+import { AjudaDBOr, AjudaODmin, AjudaODr, PainelAjuda } from "./ajudas";
 
 export function DadosRioStep1({ onValidityChange }) {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -44,7 +45,11 @@ export function DadosRioStep1({ onValidityChange }) {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaODr />
+                        <AjudaDBOr />
+                        <AjudaODmin />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>

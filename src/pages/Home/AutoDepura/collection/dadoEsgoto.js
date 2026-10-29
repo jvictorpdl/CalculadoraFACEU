@@ -5,6 +5,7 @@ import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
+import { AjudaDBOe, AjudaE, AjudaODe, PainelAjuda } from "./ajudas";
 
 export function DadoEsgotoStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -35,7 +36,9 @@ export function DadoEsgotoStep1() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaODe />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>
@@ -78,7 +81,10 @@ export function DadoEsgotoStep2() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaE />
+                        <AjudaDBOe />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>

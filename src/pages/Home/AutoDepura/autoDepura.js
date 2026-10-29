@@ -163,7 +163,7 @@ export function AutoDepura() {
     return (
         <div style={{ height: 'inherit' }}>
             <PageTitle style={{ marginBottom: '8px' }}>AutoDepura</PageTitle>
-            <PageSubtitle style={{ marginBottom: '8px' }}>Aqui entra a descrição do que o autodepura faz</PageSubtitle>
+            <PageSubtitle style={{ marginBottom: '8px' }}>Simula a autodepuração de um rio após o lançamento de esgoto, estimando o oxigênio dissolvido ao longo do percurso pelo modelo de Streeter-Phelps</PageSubtitle>
             <Row>
                 {Object.entries(collection).map(([collectionName, steps],) => {
                     return <ToolsButton

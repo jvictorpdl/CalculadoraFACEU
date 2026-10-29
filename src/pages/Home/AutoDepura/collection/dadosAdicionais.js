@@ -5,6 +5,7 @@ import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
+import { AjudaK1, AjudaK2, AjudaTetaK1, AjudaTetaK2, AjudaTrechos, PainelAjuda } from "./ajudas";
 export function DadosAdicionaisStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
 
@@ -44,7 +45,10 @@ export function DadosAdicionaisStep1() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaK1 />
+                        <AjudaTetaK1 />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>
@@ -97,7 +101,10 @@ export function DadosAdicionaisStep2() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaK2 />
+                        <AjudaTetaK2 />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>
@@ -135,7 +142,9 @@ export function DadosAdicionaisStep3() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaTrechos />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>
@@ -176,7 +185,7 @@ export function DadosAdicionaisStep4() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda />
                 </Column>
             </Row>
         </div>

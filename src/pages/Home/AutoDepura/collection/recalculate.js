@@ -4,6 +4,7 @@ import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
+import { AjudaE, AjudaK1, AjudaTetaK1, PainelAjuda } from "./ajudas";
 
 
 export function AutodepuraRecalculate() {
@@ -37,7 +38,11 @@ export function AutodepuraRecalculate() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <span>Informações adicionais</span>
+                    <PainelAjuda>
+                        <AjudaE />
+                        <AjudaK1 />
+                        <AjudaTetaK1 />
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>
