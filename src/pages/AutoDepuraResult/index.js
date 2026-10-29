@@ -54,7 +54,7 @@ export default function AutodepuraChart(props) {
         (!odNegativo &&
           <>
             <ConclusaoAutodepura critico={critico} />
-            <Linechart ctVet={ctVet} odminVet={odminVet} particoesVet={particoesVet} kmvet={kmvet} />
+            <Linechart ctVet={ctVet} odminVet={odminVet} particoesVet={particoesVet} kmvet={kmvet} critico={critico} />
           </>)
         ||
         <CardInput>

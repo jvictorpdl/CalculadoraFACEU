@@ -35,7 +35,7 @@ export function DadosRioStep1({ onValidityChange }) {
         <div>
             <Row>
                 <Column>
-                    <FormTitle title="Passo 1" />
+                    <FormTitle title="Dados do rio" />
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.qr} onBlurValue={(val) => updateStateWithAutodepuraData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.odr} onBlurValue={(val) => updateStateWithAutodepuraData({ odr: val })} label="ODr" tooltip="Oxigênio dissolvido do rio." placeholder="mg/L" />

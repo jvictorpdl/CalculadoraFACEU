@@ -91,7 +91,7 @@ const Input = ({ placeholder, value }) => (
         type="text"
         placeholder={placeholder}
         readOnly={true}
-        value={value}
+        value={value === null || value === undefined ? '' : String(value).replace('.', ',')}
         style={{
             width: '100%',
             padding: '10px',
@@ -161,7 +161,7 @@ export default function ColicalcValuesPreview({ isRio }) {
                             <Label>
                                 Nr <TooltipInfo info="Concentração de coliformes no rio, a montante do lançamento" />
                             </Label>
-                            <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
+                            <Input placeholder="NMP/100 mL" value={state.data.colicalc.nr} />
                         </InputGroup>
                     </Grid>
                 </Column>
@@ -176,7 +176,7 @@ export default function ColicalcValuesPreview({ isRio }) {
                     </InputGroup>
                     <InputGroup>
                         <Label>Nr <TooltipInfo info={'Concentração de coliformes no rio, a montante do lançamento'} /></Label>
-                        <Input placeholder="NPM/100ml" value={state.data.colicalc.nr} />
+                        <Input placeholder="NMP/100 mL" value={state.data.colicalc.nr} />
                     </InputGroup>
                 </Grid>
             </Column> */}

@@ -82,7 +82,7 @@ const Input = ({ placeholder, value }) => (
         type="text"
         placeholder={placeholder}
         readOnly={true}
-        value={value}
+        value={value === null || value === undefined ? '' : String(value).replace('.', ',')}
         style={{
             width: '100%',
             padding: '10px',

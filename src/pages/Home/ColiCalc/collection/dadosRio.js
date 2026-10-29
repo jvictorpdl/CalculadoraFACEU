@@ -86,7 +86,7 @@ export function DadosRioStep1() {
                     <FormTitle title="Dados do Rio" />
                     <Grid columns={3}>
                         <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
-                        <TextFieldWithTooltip value={state.data.colicalc.nr} onBlurValue={(val) => updateStateWithColiCalcData({ nr: val })} label="Nr" tooltip="Concentração de coliformes no rio, a montante do lançamento" placeholder="NPM/100ml" />
+                        <TextFieldWithTooltip value={state.data.colicalc.nr} onBlurValue={(val) => updateStateWithColiCalcData({ nr: val })} label="Nr" tooltip="Concentração de coliformes no rio, a montante do lançamento" placeholder="NMP/100 mL" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
@@ -94,8 +94,8 @@ export function DadosRioStep1() {
                     <CardHelp>
                         <Title title="Informações auxiliares" />
 
-                        <HelpModal title="Clique aqui para auxílio em Ne " handle={openModal} />
-                        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Concentração de coliformes no esgoto">
+                        <HelpModal title="Clique aqui para ver os padrões da CONAMA 357/05" handle={openModal} />
+                        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Padrões de coliformes termotolerantes (CONAMA 357/05)">
                             <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
                             <br />
 

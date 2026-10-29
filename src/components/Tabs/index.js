@@ -1,4 +1,4 @@
-import { Children, isValidElement, useContext, useState } from 'react';
+import { Children, isValidElement, useContext, useEffect, useState } from 'react';
 import { ApplicationContext } from '../../core/providers.js';
 import { TabContentContainer, TabsContainer, TabsWrapper } from './style';
 import { TabButton } from './tabButton.js';
@@ -10,6 +10,12 @@ export function Tabs({ children }) {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const activeTab = tabs[activeIndex];
+    const tituloAba = activeTab?.props.label;
+
+    // o título da aba do navegador acompanha a calculadora aberta
+    useEffect(() => {
+        document.title = tituloAba ? `${tituloAba} · Calimpe-H20` : 'Calimpe-H20';
+    }, [tituloAba]);
 
     return (
         <TabsContainer>

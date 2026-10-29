@@ -43,12 +43,17 @@ export const MensagemErro = styled.div`
     line-height: 1.5;
 `
 
+// ação principal preenchida para se destacar do "Voltar"
 export const ActionButton = styled.button`
     border-radius: var(--Border-Radius-radius-8, 8px);
-    border: 1px solid ${(props) => (props.disabled ? '#D1D5DB' : '#2BA3AB')};
-    color: ${(props) => (props.disabled ? '#D1D5DB' : '#17737A')};
+    border: 1px solid ${(props) => (props.disabled ? '#D1D5DB' : '#17737A')};
+    color: ${(props) => (props.disabled ? '#9CA3AF' : '#FFFFFF')};
     font-weight: 600;
-    background: var(--BG-color-background, #FFF);
+    background: ${(props) => (props.disabled ? '#F3F4F6' : '#17737A')};
     padding: 12px 16px;
     cursor: pointer;
+
+    &:hover:not(:disabled) {
+        background: #125E64;
+    }
 `

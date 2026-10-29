@@ -95,7 +95,7 @@ export function DadosMisturaStep1() {
                         <Title title="Informações auxiliares" />
 
                         <HelpModal title="Clique aqui para auxílio em Nop " handle={openModal} />
-                        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Concentração de coliformes no esgoto">
+                        <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Padrão de coliformes permitido no corpo d'água (Nop)">
                             <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
                             <br />
 

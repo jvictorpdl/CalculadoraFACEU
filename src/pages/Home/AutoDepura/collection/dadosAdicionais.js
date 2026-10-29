@@ -6,6 +6,15 @@ import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/te
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
 import { AjudaK1, AjudaK2, AjudaTetaK1, AjudaTetaK2, AjudaTrechos, PainelAjuda } from "./ajudas";
+
+const Orientacao = ({ children }) => (
+    <p style={{ fontSize: 14, lineHeight: 1.5, color: '#4B5563', margin: '0 0 16px' }}>{children}</p>
+);
+
+const Subtitulo = ({ children }) => (
+    <p style={{ fontSize: 14, fontWeight: 600, color: '#374151', margin: '16px 0 8px' }}>{children}</p>
+);
+
 export function DadosAdicionaisStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
 
@@ -28,8 +37,10 @@ export function DadosAdicionaisStep1() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
+                    <Orientacao>
+                        Informe K1 a 20 ºC com θ e T, ou então K1T já na temperatura do rio. Se os dois forem preenchidos, vale o K1(20ºC).
+                    </Orientacao>
                     <Grid columns={3}>
-                        {/* deixar mais claro k1t como opção */}
                         <TextFieldWithTooltip value={state.data.autodepura.k120c} onBlurValue={(val) => updateStateWithAutodepuraData({ k120c: val })} label="K1(20ºC)" tooltip="Coeficiente de desoxigenação(20ºC)." placeholder="1/dia" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak1} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak1: val })} label="θ para K1" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do Rio." placeholder="ºC" />
@@ -78,23 +89,32 @@ export function DadosAdicionaisStep2() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
+                    <Orientacao>
+                        O K2 pode vir de uma das três opções abaixo. Se mais de uma for preenchida, vale o K2T, depois o K2(20ºC) e por último o cálculo por H e v.
+                    </Orientacao>
+
+                    <Subtitulo>Correção pela temperatura (para as opções 1 e 2)</Subtitulo>
                     <Grid columns={4}>
-                        <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="Velocidade do rio" placeholder="m/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak2} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak2: val })} label="θ para K2" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do Rio" placeholder="ºC" />
+                    </Grid>
+
+                    <Subtitulo>Opção 1: calcular o K2 pela profundidade e velocidade</Subtitulo>
+                    <Grid columns={4}>
+                        <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="Velocidade do rio" placeholder="m/s" />
                         <TextFieldWithTooltip value={state.data.autodepura.h} onBlurValue={(val) => updateStateWithAutodepuraData({ h: val })} label="H" tooltip="Profundidade do Rio" placeholder="m" />
                     </Grid>
 
                     <Ordivider />
 
+                    <Subtitulo>Opção 2: informar o K2 a 20 ºC</Subtitulo>
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.k220c} onBlurValue={(val) => updateStateWithAutodepuraData({ k220c: val })} label="K2 (20ºC)" tooltip="Coeficiente de reaeração(20ºC)" placeholder="1/dia" />
-                        <TextFieldWithTooltip value={state.data.autodepura.tetak2} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak2: val })} label="θ para K2" tooltip="Coeficiente de temperatura" placeholder="ad." />
-                        <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do Rio" placeholder="ºC" />
                     </Grid>
 
                     <Ordivider />
 
+                    <Subtitulo>Opção 3: informar o K2 já na temperatura do rio</Subtitulo>
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.k2t} onBlurValue={(val) => updateStateWithAutodepuraData({ k2t: val })} label="K2T" tooltip="Coeficiente de reaeração a temperatura(T)" placeholder="1/dia" />
                     </Grid>
