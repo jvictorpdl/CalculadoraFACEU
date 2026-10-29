@@ -1,5 +1,5 @@
 import { Container, HelpButton } from "./styles"
-import InfoIcon from "../../assets/Info.svg"
+// import InfoIcon from "../../assets/Info.svg"
 
 
 

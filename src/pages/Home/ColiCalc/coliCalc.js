@@ -32,6 +32,7 @@ export function ColiCalc() {
         updateStateWithColiCalcData({represa: radioState === 'Dados da represa' });
         console.log('AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII' + state.data.colicalc.represa);
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [radioState]);
 
     function saveResult(result) {

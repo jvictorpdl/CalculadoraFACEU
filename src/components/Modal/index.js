@@ -1,8 +1,7 @@
-import { Container, Header, Content, ContainerChildren, modaltitle } from "./styles"
+import { Container, Header, Content, ContainerChildren } from "./styles"
 import ModalComp from 'react-modal'
 import CloseIcon from "../../assets/X.svg"
 import "./style.css"
-import { toPadding } from "chart.js/helpers";
 
 export default function Modal(props) {
 

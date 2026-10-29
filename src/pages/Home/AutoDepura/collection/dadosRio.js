@@ -12,6 +12,7 @@ export function DadosRioStep1({ onValidityChange }) {
         const requiredFields = ['qr', 'odr', 'dbor', 'odmin'];
         const areAllInputsFilled = requiredFields.every(field => state.data[field] && state.data[field].length > 0);
         onValidityChange(areAllInputsFilled);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
 
 

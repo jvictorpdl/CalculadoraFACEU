@@ -75,6 +75,7 @@ const Label = ({ children }) => (
     </label>
 );
 
+// eslint-disable-next-line no-unused-vars
 const InfoIcon = () => (
     <span style={{
         fontSize: '1rem',

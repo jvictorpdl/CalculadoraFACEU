@@ -1,13 +1,13 @@
 import { useContext } from "react";
 
-import FormTitle from "../../../../components/FormTitle/formTitle";
-import { Column, Grid, Row, DuoFlex, Duo} from "../../../../components/Layout/layout";
+// import FormTitle from "../../../../components/FormTitle/formTitle";
+import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import { CardHelp } from "../../../../components/CardHelp/index";
 import Title from "../../../../components/Title/index";
-import HelpModal from "../../../../components/HelpModal/index";
+// import HelpModal from "../../../../components/HelpModal/index";
 
 export function DadosRepresaStep1() {
     const { state, dispatch } = useContext(ApplicationContext);

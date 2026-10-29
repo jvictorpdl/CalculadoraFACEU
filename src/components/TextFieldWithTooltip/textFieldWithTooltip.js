@@ -23,7 +23,7 @@ export default function TextFieldWithTooltip({
             return;
         }
 
-        const valid = /^(\d+(\,\d{0,5})?)?$/.test(input);
+        const valid = /^(\d+(,\d{0,5})?)?$/.test(input);
         if (valid) {
             setValue(input);
         }
