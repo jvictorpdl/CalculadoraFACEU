@@ -97,9 +97,8 @@ export function AutoDepura() {
         ]
     }
 
+    // gráfico e nova simulação dependem do cálculo; abrem pelo botão principal
     const disableClicksForCollections = [
-        'Dados do rio',
-        'Dados da represa',
         'Gráfico',
         'Simular novamente',
     ]
@@ -184,10 +183,10 @@ export function AutoDepura() {
             <Row>
                 {Object.entries(collection).map(([collectionName, steps],) => {
                     return <ToolsButton
-                        key={collection}
+                        key={collectionName}
                         selected={selectedCollection === collectionName}
                         disabled={selectedCollection === collectionName || disableClicksForCollections.includes(collectionName)}
-                        onClick={() => setSelectedCollection(collectionName)}>
+                        onClick={() => { setStep(0); setSelectedCollection(collectionName); }}>
                         {collectionName}
                     </ToolsButton>
                 })}

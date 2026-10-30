@@ -97,9 +97,9 @@ export function ColiCalc() {
         'Gráfico': [],
     }
 
+    // bloqueia o grupo do tipo não escolhido (rio ou represa) e o gráfico, que abre ao calcular
     const disableClicksForCollections = [
-        'Dados do rio',
-        'Dados da represa',
+        radioState === 'Dados do rio' ? 'Dados da represa' : 'Dados do rio',
         'Gráfico',
     ]
 
@@ -205,7 +205,7 @@ export function ColiCalc() {
                         key={collectionName}
                         selected={selectedCollection === collectionName}
                         disabled={selectedCollection === collectionName || disableClicksForCollections.includes(collectionName)}
-                        onClick={() => setSelectedCollection(collectionName)}>
+                        onClick={() => { setStep(0); setSelectedCollection(collectionName); }}>
                         {collectionName}
                     </ToolsButton>
                 })}
