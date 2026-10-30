@@ -85,7 +85,7 @@ export function DadosRioStep1() {
                 <Column>
                     <FormTitle title="Dados do Rio" />
                     <Grid columns={3}>
-                        <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
+                        <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.colicalc.nr} onBlurValue={(val) => updateStateWithColiCalcData({ nr: val })} label="Nr" tooltip="Concentração de coliformes no rio, a montante do lançamento" placeholder="NMP/100 mL" />
                     </Grid>
                 </Column>
@@ -102,7 +102,7 @@ export function DadosRioStep1() {
                             <Table table={table} />
 
                             <br />
-                            <h5>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</h5>
+                            <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</p>
                         </Modal>
                     </CardHelp>
 

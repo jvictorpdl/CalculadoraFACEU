@@ -107,6 +107,10 @@ const tableE = {
     ]
 }
 
+// fontes e notas com o visual de antes (h5), mas sem pular níveis de título
+const Nota = ({ children }) => <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>{children}</p>;
+const lista = { paddingLeft: 20 };
+
 function Ajuda({ campo, titulo, children }) {
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -141,12 +145,14 @@ export function AjudaODr() {
                 em função do grau de poluição do curso d’água:
             </p>
             <br />
-            <li>curso d’água com poucos indícios de poluição: <br />
-                ODr pode ser de 80 a 90% do valor de saturação de oxigênio do rio;</li>
-            <li>curso d'água bem poluído: <br />
-                incluir os principais focos poluidores (ODr será bem inferior ao teor de saturação).</li>
+            <ul style={lista}>
+                <li>curso d’água com poucos indícios de poluição: <br />
+                    ODr pode ser de 80 a 90% do valor de saturação de oxigênio do rio;</li>
+                <li>curso d'água bem poluído: <br />
+                    incluir os principais focos poluidores (ODr será bem inferior ao teor de saturação).</li>
+            </ul>
             <br />
-            <h5>Fonte: Von Sperling (2005)</h5>
+            <Nota>Fonte: Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -158,7 +164,7 @@ export function AjudaDBOr() {
             <br />
             <Table table={tableDBOr} />
             <br />
-            <h5>Fonte: Klein (1962) apud Von Sperling (2005)</h5>
+            <Nota>Fonte: Klein (1962) apud Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -170,7 +176,7 @@ export function AjudaODmin() {
             <br />
             <Table table={tableODmin} />
             <br />
-            <h5>Fonte: Resolução CONAMA 357 (BRASIL, 2005)</h5>
+            <Nota>Fonte: Resolução CONAMA 357 (BRASIL, 2005)</Nota>
         </Ajuda>
     );
 }
@@ -180,16 +186,20 @@ export function AjudaODe() {
         <Ajuda campo="ODe" titulo="Oxigênio dissolvido no esgoto">
             <p>Não sendo possível coletar amostras, sugere-se para esgoto doméstico:</p>
             <br />
-            <h4>Esgoto bruto:</h4>
-            <li>ODe = 0 mg/L</li>
+            <p><strong>Esgoto bruto:</strong></p>
+            <ul style={lista}>
+                <li>ODe = 0 mg/L</li>
+            </ul>
             <br />
-            <h4>Esgoto tratado:</h4>
-            <li>Tratamento primário: ODe = 0 mg/L;</li>
-            <li>Tratamento anaeróbio: ODe = 0 mg/L;</li>
-            <li>Lodos ativados, filtros biológicos percoladores e outros sistemas aeróbios similares: ODe = 2 mg/L ou mais;</li>
-            <li>Lagoas facultativas: ODe = 4 a 6 mg/L.</li>
+            <p><strong>Esgoto tratado:</strong></p>
+            <ul style={lista}>
+                <li>Tratamento primário: ODe = 0 mg/L;</li>
+                <li>Tratamento anaeróbio: ODe = 0 mg/L;</li>
+                <li>Lodos ativados, filtros biológicos percoladores e outros sistemas aeróbios similares: ODe = 2 mg/L ou mais;</li>
+                <li>Lagoas facultativas: ODe = 4 a 6 mg/L.</li>
+            </ul>
             <br />
-            <h5>Fonte: Von Sperling (2005)</h5>
+            <Nota>Fonte: Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -201,11 +211,11 @@ export function AjudaE() {
             <br />
             <Table table={tableE} />
             <br />
-            <h5>(*) Reator UASB + pós-tratamento: praticamente todos os processos listados acima podem ser utilizados como pós-tratamento. A eficiência global (reator UASB + pós tratamento) é similar à do processo selecionado para o pós tratamento, caso este estivesse tratando esgotos brutos. Por exemplo, a eficiência do sistema de lodos ativados tratando esgotos brutos é similar à do sistema UASB + lodos ativados.</h5>
+            <Nota>(*) Reator UASB + pós-tratamento: praticamente todos os processos listados acima podem ser utilizados como pós-tratamento. A eficiência global (reator UASB + pós tratamento) é similar à do processo selecionado para o pós tratamento, caso este estivesse tratando esgotos brutos. Por exemplo, a eficiência do sistema de lodos ativados tratando esgotos brutos é similar à do sistema UASB + lodos ativados.</Nota>
             <br />
-            <h5>(**) Os processos de infiltração no solo não geram efluentes superficiais, já que o mesmo infiltra-se no terreno. Medições no subsolo, próximas ao local de infiltração, usualmente indicam eficiências superiores a 90%. Das variantes de infiltração, a mais eficiente é a infiltração lenta.</h5>
+            <Nota>(**) Os processos de infiltração no solo não geram efluentes superficiais, já que o mesmo infiltra-se no terreno. Medições no subsolo, próximas ao local de infiltração, usualmente indicam eficiências superiores a 90%. Das variantes de infiltração, a mais eficiente é a infiltração lenta.</Nota>
             <br />
-            <h5>Fonte: Von Sperling (2005)</h5>
+            <Nota>Fonte: Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -215,9 +225,11 @@ export function AjudaDBOe() {
         <Ajuda campo="DBOe" titulo="Auxílio na definição da demanda bioquímica do esgoto (DBOe)">
             <p>Caso não possua o valor, sugere-se:</p>
             <br />
-            <li>Esgoto doméstico bruto: DBOe = 300 mg/L</li>
+            <ul style={lista}>
+                <li>Esgoto doméstico bruto: DBOe = 300 mg/L</li>
+            </ul>
             <br />
-            <h5>Fonte: Von Sperling (2005)</h5>
+            <Nota>Fonte: Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -229,7 +241,7 @@ export function AjudaK1() {
             <br />
             <Table table={tableK1} />
             <br />
-            <h5>Fonte: Adaptado de Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
+            <Nota>Fonte: Adaptado de Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -239,7 +251,7 @@ export function AjudaTetaK1() {
         <Ajuda campo="θ para K1" titulo="Auxílio em θ para K1">
             <p>Valor usual de θ é de 1,047 (acréscimo de 4,7% em K1 para cada aumento de 1 °C na temperatura da água).</p>
             <br />
-            <h5>Fonte: Von Sperling (2005)</h5>
+            <Nota>Fonte: Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -251,7 +263,7 @@ export function AjudaK2() {
             <br />
             <Table table={tableK2} />
             <br />
-            <h5>Fonte: Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</h5>
+            <Nota>Fonte: Fair et al. (1973) e Arceivala (1981) apud Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }
@@ -261,7 +273,7 @@ export function AjudaTetaK2() {
         <Ajuda campo="θ para K2" titulo="Auxílio em θ para K2">
             <p>Valor usual de θ é de 1,024.</p>
             <br />
-            <h5>Fonte: Von Sperling (2005)</h5>
+            <Nota>Fonte: Von Sperling (2005)</Nota>
         </Ajuda>
     );
 }

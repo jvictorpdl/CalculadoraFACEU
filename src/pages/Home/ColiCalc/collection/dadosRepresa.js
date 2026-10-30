@@ -35,7 +35,7 @@ export function DadosRepresaStep1() {
                     {/* <FormTitle title="Dados da Represa" /> */}
                     <Grid columns={3}>
                         
-                        <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio." placeholder="m³/s" />
+                        <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.colicalc.nr} onBlurValue={(val) => updateStateWithColiCalcData({ nr: val })} label="Nr" tooltip="Concentração de coliformes no rio, a montante do lançamento" placeholder="org/100ml" />
                         <TextFieldWithTooltip value={state.data.colicalc.volume} onBlurValue={(val) => updateStateWithColiCalcData({ volume: val })} label="V" tooltip="Volume da represa" placeholder="m³" />
                     </Grid>

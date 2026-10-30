@@ -3,11 +3,11 @@ import { ApplicationContext } from '../../core/providers.js';
 import { TabContentContainer, TabsContainer, TabsWrapper } from './style';
 import { TabButton } from './tabButton.js';
 
-export function Tabs({ children }) {
+export function Tabs({ children, abaInicial = 0 }) {
     const { state, dispatch } = useContext(ApplicationContext)
 
     const tabs = Children.toArray(children).filter(isValidElement);
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(abaInicial);
 
     const activeTab = tabs[activeIndex];
     const tituloAba = activeTab?.props.label;

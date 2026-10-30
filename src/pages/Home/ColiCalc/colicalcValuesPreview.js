@@ -154,7 +154,7 @@ export default function ColicalcValuesPreview({ isRio }) {
                     <Grid>
                         <InputGroup>
                             <Label>
-                                Qr <TooltipInfo info="Vazão do rio." />
+                                Qr <TooltipInfo info="Vazão do rio" />
                             </Label>
                             <Input placeholder="m³/s" value={state.data.colicalc.qr} />
                         </InputGroup>
@@ -173,7 +173,7 @@ export default function ColicalcValuesPreview({ isRio }) {
             {/* <Column title="Dados do rio">
                 <Grid>
                     <InputGroup>
-                        <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
+                        <Label>Qr <TooltipInfo info={'Vazão do rio'} /></Label>
                         <Input placeholder="m³/s" value={state.data.colicalc.qr} />
                     </InputGroup>
                     <InputGroup>
@@ -185,7 +185,7 @@ export default function ColicalcValuesPreview({ isRio }) {
             {!isRio && (
                 <Column title="Dados da represa">
                     <InputGroup>
-                        <Label>Qr <TooltipInfo info={'Vazão do rio.'} /></Label>
+                        <Label>Qr <TooltipInfo info={'Vazão do rio'} /></Label>
                         <Input placeholder="m³/s" value={state.data.colicalc.qr} />
                     </InputGroup>
                     <InputGroup>
@@ -201,11 +201,11 @@ export default function ColicalcValuesPreview({ isRio }) {
             {/* 'Dados do esgoto' column */}
             <Column title="Dados do esgoto">
                 <InputGroup>
-                    <Label>Qe <TooltipInfo info={'Vazão do esgoto.'} /></Label>
+                    <Label>Qe <TooltipInfo info={'Vazão do esgoto'} /></Label>
                     <Input placeholder="m³/s" value={state.data.colicalc.qe} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>Ne <TooltipInfo info={'Concentração de coliformes no esgoto.'} /></Label>
+                    <Label>Ne <TooltipInfo info={'Concentração de coliformes no esgoto'} /></Label>
                     <Input placeholder="org/100ml" value={state.data.colicalc.ne} />
                 </InputGroup>
             </Column>
@@ -221,19 +221,19 @@ export default function ColicalcValuesPreview({ isRio }) {
             <Column title="Dados adicionais">
                 <Grid>
                     <InputGroup>
-                        <Label>T <TooltipInfo info={'Temperatura do Rio'} /></Label>
+                        <Label>T <TooltipInfo info={'Temperatura do rio'} /></Label>
                         <Input placeholder="°C" value={state.data.colicalc.temperatura} />
                     </InputGroup>
                     {isRio && <InputGroup>
-                        <Label>d <TooltipInfo info={'Distância do percurso'} /></Label>
+                        <Label>d <TooltipInfo info={'Distância percorrida a partir do lançamento'} /></Label>
                         <Input placeholder="m" value={state.data.colicalc.distancia} />
                     </InputGroup>}
                     {isRio && <InputGroup>
-                        <Label>N° trechos <TooltipInfo info={'Número de partições do rio'} /></Label>
+                        <Label>Nº trechos <TooltipInfo info={'Número de trechos em que o percurso é dividido no cálculo'} /></Label>
                         <Input placeholder="Quantidade" value={state.data.colicalc.particoes} />
                     </InputGroup>}
                     {isRio && <InputGroup>
-                        <Label>v <TooltipInfo info={"Velocidade do Rio"} /></Label>
+                        <Label>v <TooltipInfo info={"Velocidade do rio"} /></Label>
                         <Input placeholder="m/s" value={state.data.colicalc.velocidade} />
                     </InputGroup>}
                     <InputGroup>

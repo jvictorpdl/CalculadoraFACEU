@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { Flex, Row } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
@@ -8,7 +8,6 @@ import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraColicalc } from '../../../utils/coliCalcCalculation';
 import { errosColicalc, errosPassoColicalc } from '../../../utils/validacao';
-import ColicalcChart from '../../ColiCalcResult';
 import { ActionButton, CancelButton, MensagemErro, ToolsButton } from '../styles';
 import ColicalcValuesPreview from './colicalcValuesPreview';
 import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
@@ -16,6 +15,9 @@ import { DadosEsgotoStep1 } from './collection/dadosEsgoto';
 import { DadosMisturaStep1 } from './collection/dadosMistura';
 import { DadosRepresaStep1 } from './collection/dadosRepresa';
 import { DadosRioStep1 } from './collection/dadosRio';
+
+// o gráfico (ApexCharts) é a maior parte do JavaScript; só é baixado ao abrir o resultado
+const ColicalcChart = lazy(() => import('../../ColiCalcResult'));
 
 
 export function ColiCalc() {
@@ -105,7 +107,7 @@ export function ColiCalc() {
     const renderStep = (step) => {
         if (selectedCollection === null || selectedCollection.length === 0) return collection[selectedCollection][0];
         if (selectedCollection === 'Gráfico') {
-            return <ColicalcChart data={state.data.colicalc} />
+            return <Suspense fallback={<p>Carregando o gráfico…</p>}><ColicalcChart data={state.data.colicalc} /></Suspense>
         }
         return collection[selectedCollection][step]
     }

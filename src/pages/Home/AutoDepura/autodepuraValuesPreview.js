@@ -139,19 +139,19 @@ export default function AutodepuraValuesPreview() {
                 <Grid>
 
                     <InputGroup>
-                        <Label>Qr (m³/s)<TooltipInfo info={'Vazão do rio.'}> </TooltipInfo></Label>
+                        <Label>Qr (m³/s)<TooltipInfo info={'Vazão do rio'}> </TooltipInfo></Label>
                         <Input placeholder="m³/s" value={state.data.autodepura.qr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>ODr (mg/L)<TooltipInfo info={'Oxigênio dissolvido no rio.'}> </TooltipInfo></Label>
+                        <Label>ODr (mg/L)<TooltipInfo info={'Oxigênio dissolvido no rio'}> </TooltipInfo></Label>
                         <Input placeholder="mg/L" value={state.data.autodepura.odr} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>DBOr (mg/L)<TooltipInfo info={'Demanda bioquimíca de oxigênio do rio.'}> </TooltipInfo></Label>
+                        <Label>DBOr (mg/L)<TooltipInfo info={'Demanda bioquímica de oxigênio do rio'}> </TooltipInfo></Label>
                         <Input placeholder="mg/L" value={state.data.autodepura.dbor} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>ODmín (mg/L)<TooltipInfo info={'Oxigênio dissolvido mínimo do rio'}> </TooltipInfo></Label>
+                        <Label>ODmín (mg/L)<TooltipInfo info={'Oxigênio dissolvido mínimo exigido para o rio'}> </TooltipInfo></Label>
                         <Input placeholder="mg/L" value={state.data.autodepura.odmin} />
                     </InputGroup>
                 </Grid>
@@ -164,15 +164,15 @@ export default function AutodepuraValuesPreview() {
                     <Input placeholder="m³/s" value={state.data.autodepura.qe} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>ODe (mg/L)<TooltipInfo info={'Oxigênio dissolvido no esgoto.'}> </TooltipInfo></Label>
+                    <Label>ODe (mg/L)<TooltipInfo info={'Oxigênio dissolvido no esgoto'}> </TooltipInfo></Label>
                     <Input placeholder="mg/L" value={state.data.autodepura.ode} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>E (%)<TooltipInfo info={'Eficiência do tratamento na remoção de DBO'}> </TooltipInfo></Label>
+                    <Label>E (%)<TooltipInfo info={'Eficiência do tratamento de esgoto na remoção de DBO'}> </TooltipInfo></Label>
                     <Input placeholder="%" value={state.data.autodepura.e} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>DBOe (mg/L)<TooltipInfo info={'Demanda bioquimíca de oxigênio no esgoto.'}> </TooltipInfo></Label>
+                    <Label>DBOe (mg/L)<TooltipInfo info={'Demanda bioquímica de oxigênio do esgoto'}> </TooltipInfo></Label>
                     <Input placeholder="mg/L" value={state.data.autodepura.dboe} />
                 </InputGroup>
                 <InputGroup>
@@ -185,7 +185,7 @@ export default function AutodepuraValuesPreview() {
             <Column title="Dados morfométricos e ambientais">
                 <Grid>
                     <InputGroup>
-                        <Label>k1(20°C) (1/dia)<TooltipInfo info={'Coeficiente de desoxigenação(20ºC).'}> </TooltipInfo></Label>
+                        <Label>K1 (20 °C) (1/dia)<TooltipInfo info={'Coeficiente de desoxigenação a 20 °C'}> </TooltipInfo></Label>
                         <Input placeholder="1/dia" value={state.data.autodepura.k120c} />
                     </InputGroup>
                     <InputGroup>
@@ -193,16 +193,16 @@ export default function AutodepuraValuesPreview() {
                         <Input placeholder="ad." value={state.data.autodepura.tetak1} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>T (°C)<TooltipInfo info={'Temperatura do Rio.'}> </TooltipInfo></Label>
+                        <Label>T (°C)<TooltipInfo info={'Temperatura do rio'}> </TooltipInfo></Label>
                         <Input placeholder="°C" value={state.data.autodepura.temperatura} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>K1T (1/dia)<TooltipInfo info={'Coeficiente de desoxigenação a uma temperatura(T)'}> </TooltipInfo></Label>
+                        <Label>K1T (1/dia)<TooltipInfo info={'Coeficiente de desoxigenação na temperatura do rio (T)'}> </TooltipInfo></Label>
                         <Input placeholder="1/dia" value={state.data.autodepura.k1t} />
                     </InputGroup>
 
                     <InputGroup>
-                        <Label>V (m/s)<TooltipInfo info={'Velocidade do rio'}> </TooltipInfo></Label>
+                        <Label>v (m/s)<TooltipInfo info={'Velocidade do rio'}> </TooltipInfo></Label>
                         <Input placeholder="m/s" value={state.data.autodepura.velocidade} />
                     </InputGroup>
                     <InputGroup>
@@ -210,28 +210,28 @@ export default function AutodepuraValuesPreview() {
                         <Input placeholder="ad." value={state.data.autodepura.tetak2} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>H (m)<TooltipInfo info={'Profundidade do Rio'}> </TooltipInfo></Label>
+                        <Label>H (m)<TooltipInfo info={'Profundidade do rio'}> </TooltipInfo></Label>
                         <Input placeholder="m" value={state.data.autodepura.h} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Altitude (m)<TooltipInfo info={'Altitude'}> </TooltipInfo></Label>
+                        <Label>Altitude (m)<TooltipInfo info={'Altitude do local'}> </TooltipInfo></Label>
                         <Input placeholder="m" value={state.data.autodepura.altitude} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>K2 (20ºC) (1/dia)<TooltipInfo info={'Coeficiente de reaeração(20ºC)'}> </TooltipInfo></Label>
+                        <Label>K2 (20 °C) (1/dia)<TooltipInfo info={'Coeficiente de reaeração a 20 °C'}> </TooltipInfo></Label>
                         <Input placeholder="1/dia" value={state.data.autodepura.k220c} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>K2T (1/dia) <TooltipInfo info={'Coeficiente de reaeração a temperatura(T)'}> </TooltipInfo></Label>
+                        <Label>K2T (1/dia) <TooltipInfo info={'Coeficiente de reaeração na temperatura do rio (T)'}> </TooltipInfo></Label>
                         <Input placeholder="1/dia" value={state.data.autodepura.k2t} />
                     </InputGroup>
 
                     <InputGroup>
-                        <Label>d (m)<TooltipInfo info={'Distância do rio'}> </TooltipInfo></Label>
+                        <Label>d (m)<TooltipInfo info={'Distância percorrida a partir do lançamento'}> </TooltipInfo></Label>
                         <Input placeholder="m" value={state.data.autodepura.distancia} />
                     </InputGroup>
                     <InputGroup>
-                        <Label>Nº (Quantidade)<TooltipInfo info={'Número de partições do rio'}> </TooltipInfo></Label>
+                        <Label>Nº (Quantidade)<TooltipInfo info={'Número de trechos em que o percurso é dividido no cálculo'}> </TooltipInfo></Label>
                         <Input placeholder="Quantidade" value={state.data.autodepura.particoes} />
                     </InputGroup>
                     <InputGroup>

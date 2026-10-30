@@ -102,7 +102,7 @@ export function DadosMisturaStep1() {
                             <Table table={table} />
 
                             <br />
-                            <h5>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</h5>
+                            <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</p>
                         </Modal>
                     </CardHelp>
                 </Column>

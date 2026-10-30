@@ -41,14 +41,14 @@ export function DadosAdicionaisStep1() {
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Grid columns={3}>
-                        <TextFieldWithTooltip value={state.data.colicalc.temperatura} onBlurValue={(val) => updateStateWithColiCalcData({ temperatura: val })} label="T" tooltip="Temperatura do líquido" placeholder="ºC" />
+                        <TextFieldWithTooltip value={state.data.colicalc.temperatura} onBlurValue={(val) => updateStateWithColiCalcData({ temperatura: val })} label="T" tooltip="Temperatura da água" placeholder="°C" />
                         <TextFieldWithTooltip value={state.data.colicalc.kb} onBlurValue={(val) => updateStateWithColiCalcData({ kb: val })} label="Kb" tooltip="Coeficiente de decaimento bacteriano" placeholder="1/dia" />
                         <TextFieldWithTooltip value={state.data.colicalc.teta} onBlurValue={(val) => updateStateWithColiCalcData({ teta: val })} label="θ para Kb" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         {/* distância, velocidade e trechos só entram no perfil ao longo do rio; a represa não usa */}
                         {!state.data.colicalc.represa && <>
-                            <TextFieldWithTooltip value={state.data.colicalc.distancia} onBlurValue={(val) => updateStateWithColiCalcData({ distancia: val })} label="d" tooltip="Distância do percurso" placeholder="m" />
-                            <TextFieldWithTooltip value={state.data.colicalc.velocidade} onBlurValue={(val) => updateStateWithColiCalcData({ velocidade: val })} label="v" tooltip="Velocidade do curso d'água" placeholder="m/s" />
-                            <TextFieldWithTooltip value={state.data.colicalc.particoes} onBlurValue={(val) => updateStateWithColiCalcData({ particoes: val })} label="Nº trechos" tooltip="Quantidade de segmentos" placeholder="Quantidade" />
+                            <TextFieldWithTooltip value={state.data.colicalc.distancia} onBlurValue={(val) => updateStateWithColiCalcData({ distancia: val })} label="d" tooltip="Distância percorrida a partir do lançamento" placeholder="m" />
+                            <TextFieldWithTooltip value={state.data.colicalc.velocidade} onBlurValue={(val) => updateStateWithColiCalcData({ velocidade: val })} label="v" tooltip="Velocidade do rio" placeholder="m/s" />
+                            <TextFieldWithTooltip value={state.data.colicalc.particoes} onBlurValue={(val) => updateStateWithColiCalcData({ particoes: val })} label="Nº trechos" tooltip="Número de trechos em que o percurso é dividido no cálculo" placeholder="Quantidade" />
                         </>}
                     </Grid>
                 </Column>
@@ -59,10 +59,10 @@ export function DadosAdicionaisStep1() {
                         <HelpModal title="Ajuda sobre θ para Kb" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
                             <p>
-                                Valor usual de θ é de 1,07 (adimensional), corrigindo o Kb a partir de 20 ºC.
+                                Valor usual de θ é de 1,07 (adimensional), corrigindo o Kb a partir de 20 °C.
                             </p>
                             <br />
-                            <h5>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</h5>
+                            <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</p>
 
                         </Modal>
                     </CardHelp>

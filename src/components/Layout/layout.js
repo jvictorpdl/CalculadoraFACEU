@@ -10,11 +10,21 @@ export const Row = styled.div`
   flex-direction: row;
   gap: 8px;
 
-  /* no celular as colunas (campos e ajuda) ficam uma embaixo da outra */
-  @media (max-width: 768px) {
+  /* campos ocupam o espaço que sobra; a coluna de ajuda (a última) tem largura fixa */
+  > ${Column}:first-child {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  > ${Column}:last-child:not(:first-child) {
+    flex: 0 0 280px;
+  }
+
+  /* em telas estreitas as colunas (campos e ajuda) ficam uma embaixo da outra */
+  @media (max-width: 900px) {
     flex-wrap: wrap;
 
-    > ${Column} {
+    > ${Column}, > ${Column}:first-child, > ${Column}:last-child:not(:first-child) {
       flex: 1 1 100%;
       min-width: 0;
     }
@@ -23,11 +33,11 @@ export const Row = styled.div`
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${(props) => (props.columns)}, 1fr);
+  grid-template-columns: repeat(${(props) => (props.columns)}, minmax(0, 1fr));
   gap: 1rem;
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 `;
 

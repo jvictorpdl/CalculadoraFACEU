@@ -5,13 +5,9 @@ export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  min-width: 230px;
+  min-width: 0;
   min-height: 48px;
   width: 100%;
-
-  @media (max-width: 768px) {
-    min-width: 0;
-  }
 `;
 
 export const LabelWrapper = styled.div`

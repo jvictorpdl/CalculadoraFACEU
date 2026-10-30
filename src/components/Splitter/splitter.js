@@ -9,7 +9,7 @@ export const VerticalSplitter = styled.div`
     stroke: rgba(0, 0, 0, 0.08);
     background: #5c5c5c28;
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         display: none;
     }
 `

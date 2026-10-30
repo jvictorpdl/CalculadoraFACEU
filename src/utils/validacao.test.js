@@ -21,7 +21,7 @@ test('ODe igual a zero é um valor válido', () => {
 
 test('θ em branco é barrado', () => {
     expect(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, tetak1: null }))
-        .toEqual(['Informe K1(20ºC), θ para K1 e T, ou então K1T.']);
+        .toEqual(['Informe K1 (20 °C), θ para K1 e T, ou então K1T.']);
 });
 
 test('H fora das faixas pede K2', () => {
@@ -38,4 +38,18 @@ test('represa não exige distância, velocidade nem trechos', () => {
     const represa = { qr: 0.651, nr: 10, volume: 5000000, qe: 0.114, ne: 5e7, nop: 1000, temperatura: 23, kb: 1, teta: 1.07, represa: true };
     expect(errosColicalc(represa)).toEqual([]);
     expect(errosColicalc({ ...represa, represa: false })).toEqual(['Preencha: d, v, Nº trechos.']);
+});
+
+test('Nº de trechos enorme é barrado (travaria a página)', () => {
+    expect(errosPassoAutodepura('Dados adicionais', 2, { ...autodepura, particoes: 1000000000 }))
+        .toEqual(['Nº de trechos deve ser um número inteiro entre 1 e 1000.']);
+});
+
+test('valores fora das faixas plausíveis são barrados', () => {
+    expect(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, temperatura: 1000 }))
+        .toEqual(['T deve estar entre 0 e 40 °C.']);
+    expect(errosPassoAutodepura('Dados adicionais', 1, { ...autodepura, tetak2: 3 }))
+        .toEqual(['θ para K2 deve estar entre 1 e 1,2.']);
+    expect(errosPassoAutodepura('Dados do rio', 0, { ...autodepura, odr: 70 }))
+        .toEqual(['ODr deve estar entre 0 e 20 mg/L.']);
 });

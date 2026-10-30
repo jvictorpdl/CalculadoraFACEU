@@ -31,7 +31,7 @@ export function DadoEsgotoStep1() {
                     <FormTitle title="Vazão e oxigênio do esgoto" />
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.qe} onBlurValue={(val) => updateStateWithAutodepuraData({ qe: val })} label="Qe" tooltip="Vazão do esgoto" placeholder="m³/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.ode} onBlurValue={(val) => updateStateWithAutodepuraData({ ode: val })} label="ODe" tooltip="Oxigênio dissolvido no esgoto." placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.ode} onBlurValue={(val) => updateStateWithAutodepuraData({ ode: val })} label="ODe" tooltip="Oxigênio dissolvido no esgoto" placeholder="mg/L" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
@@ -73,7 +73,7 @@ export function DadoEsgotoStep2() {
                     <FormTitle title="Carga orgânica do esgoto" />
                     <Grid columns={2}>
                         <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="Eficiência do tratamento de esgoto na remoção de DBO" placeholder="%" />
-                        <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio" placeholder="mg/L" />
+                        <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio do esgoto" placeholder="mg/L" />
                     </Grid>
                     <Ordivider />
                     <Grid columns={2}>

@@ -24,7 +24,7 @@ const Conclusao = styled.div`
 const numero = (valor, casas = 2) => valor.toFixed(casas).replace('.', ',');
 
 function ConclusaoAutodepura({ critico }) {
-  const { tc, xcKm, odc, co, odmin, distanciaKm } = critico;
+  const { tc, xcKm, odc, co, odmin, distanciaKm, cs, odr } = critico;
   const atende = odc >= odmin;
 
   return (
@@ -37,6 +37,10 @@ function ConclusaoAutodepura({ critico }) {
         <div>O ponto crítico fica além da distância simulada ({numero(distanciaKm, 1)} km). Aumente d para ver o trecho mais crítico no gráfico.</div>}
       {odc < 0 &&
         <div>Abaixo de zero o modelo de Streeter-Phelps deixa de valer nesse trecho.</div>}
+      {odmin >= cs &&
+        <div>Atenção: o ODmín ({numero(odmin)} mg/L) é maior ou igual à saturação (Cs' = {numero(cs)} mg/L), então nenhum trecho do rio consegue atendê-lo. Confira os valores.</div>}
+      {odr > cs &&
+        <div>Atenção: o ODr ({numero(odr)} mg/L) está acima da saturação (Cs' = {numero(cs)} mg/L). Isso só ocorre em rios supersaturados; confira os valores.</div>}
     </Conclusao>
   );
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { Flex, Row } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
@@ -7,13 +7,15 @@ import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
 import { errosAutodepura, errosPassoAutodepura } from '../../../utils/validacao';
-import AutodepuraChart from '../../AutoDepuraResult';
 import { ActionButton, CancelButton, MensagemErro, ToolsButton } from '../styles';
 import AutodepuraValuesPreview from './autodepuraValuesPreview';
 import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
 import { DadosRioStep1 } from './collection/dadosRio';
 import { AutodepuraRecalculate } from './collection/recalculate';
+
+// o gráfico (ApexCharts) é a maior parte do JavaScript; só é baixado ao abrir o resultado
+const AutodepuraChart = lazy(() => import('../../AutoDepuraResult'));
 
 
 export function AutoDepura() {
@@ -105,7 +107,7 @@ export function AutoDepura() {
     const renderStep = (step) => {
         if (selectedCollection === null || selectedCollection.length === 0) return collection[selectedCollection][0];
         if (selectedCollection === 'Gráfico') {
-            return <AutodepuraChart data={state.data.autodepura} />
+            return <Suspense fallback={<p>Carregando o gráfico…</p>}><AutodepuraChart data={state.data.autodepura} /></Suspense>
         }
         return collection[selectedCollection][step]
     }

@@ -14,6 +14,6 @@ export const Container = styled.div`
     @media (max-width: 768px) {
         margin-left: 16px;
         margin-top: 24px;
-        font-size: 26px;
+        font-size: clamp(22px, 7vw, 26px);
     }
 `;

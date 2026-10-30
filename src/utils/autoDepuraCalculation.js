@@ -231,6 +231,8 @@ export const CalculadoraAutodepura = (props) => {
       co: entrada.co,
       odmin: entrada.odmin,
       distanciaKm: entrada.distancia / 1000,
+      cs: entrada.cslinha,
+      odr: entrada.odr,
     },
   };
   return resultado;
