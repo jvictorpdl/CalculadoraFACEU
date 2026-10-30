@@ -8,7 +8,6 @@ export const CalculadoraColicalc = (props) => {
     // Adiciona o símbolo de porcentagem
     return `${formattedPercentage}%`;
   }
-  console.log(props);
 
   const entrada = {
     qr: Number(props.qr),
@@ -48,7 +47,6 @@ export const CalculadoraColicalc = (props) => {
 
 
   if (entrada.represa === false) {
-    console.log('ENTROU NO RIO');
     
     entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.ne)) / (entrada.qr + entrada.qe);
 
@@ -78,7 +76,6 @@ export const CalculadoraColicalc = (props) => {
       }
     }
   } else { //CASO DE REPRESA===true
-    console.log('ENTROU NA REPRESA');
     entrada.qAfluente = entrada.qr + entrada.qe;
 
     entrada.kbt = entrada.kb * Math.pow(entrada.teta, (entrada.temperatura - 20));
@@ -86,7 +83,6 @@ export const CalculadoraColicalc = (props) => {
 
     // entrada.no = ((entrada.qr * entrada.nr) + (entrada.qe * entrada.nr)) / (entrada.qr + entrada.qe);
     entrada.nRepresa = entrada.nop * (1 + (entrada.kbt * entrada.tDentencao));
-    console.log('nrepresa: ' + entrada.nRepresa);
     // entrada.nRepresa = entrada.no / (1 + entrada.kbt * entrada.tDentencao);
 
     if (entrada.nRepresa > entrada.nop) {
@@ -95,11 +91,9 @@ export const CalculadoraColicalc = (props) => {
       entrada.eficiencia = (entrada.ne - entrada.nep) / entrada.ne;
     } else {
       entrada.eficiencia = -1
-      console.log('entrou no else e eficiencia é -1' )
     }
   }
 
-  console.log('EFICIENCIA: ' + entrada.eficiencia);
 
   let resultado2 = {};
   // apenas para testar o grafico
@@ -121,7 +115,6 @@ export const CalculadoraColicalc = (props) => {
   resultado2.kmvet = kmvet;
   resultado2.novet = novet;
 
-  console.log('Resultado final: ' + novet);
 
   // console.log(entrada);
   return resultado2;

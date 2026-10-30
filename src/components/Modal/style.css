@@ -20,3 +20,22 @@
 .ReactModal__Overlay {
     background-color: rgba(42, 42, 42, 0.3) !important;
 }
+
+/* no celular 60vw deixava o modal com ~225px e a tabela não cabia */
+@media (max-width: 768px) {
+    .modal-content {
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        max-height: 85vh;
+    }
+
+    .modal-content th {
+        padding: 6px 4px;
+        font-size: 13px;
+    }
+
+    .modal-content td {
+        padding: 6px 4px;
+        font-size: 13px;
+    }
+}

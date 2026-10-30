@@ -2,8 +2,8 @@ import { Container } from "./styles";
 
 export default function Title(props) {
   return <Container>
-      <h2>
+      <h3 style={{ fontSize: "1.5em" }}>
         {props.title}
-      </h2>
+      </h3>
   </Container>;
 }

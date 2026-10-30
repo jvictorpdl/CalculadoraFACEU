@@ -94,7 +94,7 @@ export function DadosMisturaStep1() {
                     <CardHelp>
                         <Title title="Informações auxiliares" />
 
-                        <HelpModal title="Clique aqui para auxílio em Nop " handle={openModal} />
+                        <HelpModal title="Ajuda sobre Nop" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Padrão de coliformes permitido no corpo d'água (Nop)">
                             <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
                             <br />

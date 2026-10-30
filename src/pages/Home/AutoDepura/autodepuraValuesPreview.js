@@ -13,6 +13,7 @@ const ColumnWrapper = ({ children }) => (
     <div style={{
         display: 'flex',
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         paddingBottom: '32px',
         gap: '20px',
@@ -26,7 +27,8 @@ const ColumnWrapper = ({ children }) => (
 // The component for each column (Dados do rio, Dados do esgoto, etc.)
 const Column = ({ children, title }) => (
     <div style={{
-        flex: '1',
+        flex: '1 1 280px',
+        minWidth: 0,
         backgroundColor: '#ffffff',
         padding: '20px',
         borderRadius: '12px',
@@ -114,9 +116,9 @@ export const TooltipInfo = ({ info }) => (
     <Tooltip.Provider delayDuration={100}>
         <Tooltip.Root>
             <Tooltip.Trigger asChild>
-                <span style={{ display: "inline-flex", cursor: "pointer" }}>
-                    <Info size={16} />
-                </span>
+                <button type="button" aria-label={info} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 24, minHeight: 24, padding: 0, border: 0, background: "transparent", color: "inherit", cursor: "pointer" }}>
+                    <Info size={16} aria-hidden="true" />
+                </button>
             </Tooltip.Trigger>
             <Tooltip.Portal>
                 <TooltipContentStyled side="top" sideOffset={4}>
@@ -130,8 +132,6 @@ export const TooltipInfo = ({ info }) => (
 
 export default function AutodepuraValuesPreview() {
     const { state } = useContext(ApplicationContext);
-    console.log('state in AutodepuraValuesPreview', state);
-
     return (
         <ColumnWrapper>
             {/* 'Dados do rio' column */}

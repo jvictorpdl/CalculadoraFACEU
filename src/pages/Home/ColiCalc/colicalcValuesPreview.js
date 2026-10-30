@@ -11,6 +11,7 @@ const ColumnWrapper = ({ children }) => (
     <div style={{
         display: 'flex',
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         paddingBottom: '32px',
         gap: '20px',
@@ -24,7 +25,8 @@ const ColumnWrapper = ({ children }) => (
 // The component for each column (Dados do rio, Dados do esgoto, etc.)
 const Column = ({ children, title }) => (
     <div style={{
-        flex: '1',
+        flex: '1 1 280px',
+        minWidth: 0,
         backgroundColor: '#ffffff',
         padding: '20px',
         borderRadius: '12px',
@@ -124,9 +126,9 @@ export const TooltipInfo = ({ info }) => (
     <Tooltip.Provider delayDuration={100}>
         <Tooltip.Root>
             <Tooltip.Trigger asChild>
-                <span style={{ display: "inline-flex", cursor: "pointer" }}>
-                    <Info size={16} />
-                </span>
+                <button type="button" aria-label={info} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 24, minHeight: 24, padding: 0, border: 0, background: "transparent", color: "inherit", cursor: "pointer" }}>
+                    <Info size={16} aria-hidden="true" />
+                </button>
             </Tooltip.Trigger>
             <Tooltip.Portal>
                 <TooltipContentStyled side="top" sideOffset={4}>
@@ -222,15 +224,15 @@ export default function ColicalcValuesPreview({ isRio }) {
                         <Label>T <TooltipInfo info={'Temperatura do Rio'} /></Label>
                         <Input placeholder="°C" value={state.data.colicalc.temperatura} />
                     </InputGroup>
-                    {state.data.colicalc.v === null && <InputGroup>
+                    {isRio && <InputGroup>
                         <Label>d <TooltipInfo info={'Distância do percurso'} /></Label>
                         <Input placeholder="m" value={state.data.colicalc.distancia} />
                     </InputGroup>}
-                    {state.data.colicalc.v === null && <InputGroup>
+                    {isRio && <InputGroup>
                         <Label>N° trechos <TooltipInfo info={'Número de partições do rio'} /></Label>
                         <Input placeholder="Quantidade" value={state.data.colicalc.particoes} />
                     </InputGroup>}
-                    {state.data.colicalc.v === null && <InputGroup>
+                    {isRio && <InputGroup>
                         <Label>v <TooltipInfo info={"Velocidade do Rio"} /></Label>
                         <Input placeholder="m/s" value={state.data.colicalc.velocidade} />
                     </InputGroup>}
@@ -240,7 +242,7 @@ export default function ColicalcValuesPreview({ isRio }) {
                     </InputGroup>
                     <InputGroup>
                         <Label>θ para Kb <TooltipInfo info={'Coeficiente de temperatura'} /></Label>
-                        <Input placeholder="1/dia" value={state.data.colicalc.teta} />
+                        <Input placeholder="ad." value={state.data.colicalc.teta} />
                     </InputGroup>
 
                 </Grid>

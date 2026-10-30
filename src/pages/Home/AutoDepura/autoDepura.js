@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Flex, Row } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
@@ -41,6 +41,14 @@ export function AutoDepura() {
     useEffect(() => { setStep(0) }, [selectedCollection]);
     useEffect(() => { setErros([]) }, [selectedCollection, step]);
 
+    // ao trocar de passo, se o topo da calculadora saiu da tela, volta até ele
+    const topo = useRef(null);
+    useEffect(() => {
+        if (topo.current && topo.current.getBoundingClientRect().top < 0) {
+            topo.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [selectedCollection, step]);
+
     function saveResult(result) {
         dispatch({
             ...state,
@@ -56,7 +64,6 @@ export function AutoDepura() {
 
     // Function to handle the validity change from a child component
     const handleStepValidityChange = (isValid) => {
-        console.log('handleee')
         var collec = collection[selectedCollection]
         collec[step] = isValid
         setValidStepStates({
@@ -96,7 +103,6 @@ export function AutoDepura() {
     ]
 
     const renderStep = (step) => {
-        console.log('selectedCollection', selectedCollection)
         if (selectedCollection === null || selectedCollection.length === 0) return collection[selectedCollection][0];
         if (selectedCollection === 'Gráfico') {
             return <AutodepuraChart data={state.data.autodepura} />
@@ -157,7 +163,6 @@ export function AutoDepura() {
     };
 
     function renderText() {
-        console.log('selectedCollection', selectedCollection)
         if (selectedCollection === 'Gráfico') {
             return 'Simular novamente';
         }
@@ -171,7 +176,7 @@ export function AutoDepura() {
     }
 
     return (
-        <div style={{ height: 'inherit' }}>
+        <div ref={topo} style={{ height: 'inherit' }}>
             <PageTitle style={{ marginBottom: '8px' }}>AutoDepura</PageTitle>
             <PageSubtitle style={{ marginBottom: '8px' }}>Simula a autodepuração de um rio após o lançamento de esgoto, estimando o oxigênio dissolvido ao longo do percurso pelo modelo de Streeter-Phelps</PageSubtitle>
             <Row>

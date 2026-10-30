@@ -11,7 +11,15 @@ export default function Stepper({ totalSteps = 4, currentStep = 0, onTap }) {
                 return (
                     <StepWrapper key={step}>
                         {!isFirst && <StepLine active={isActive} />}
-                        <StepCircle active={isActive} onClick={() => onTap(step)} >{step + 1}</StepCircle>
+                        <StepCircle
+                            type="button"
+                            active={isActive}
+                            aria-label={`Passo ${step + 1} de ${totalSteps}`}
+                            aria-current={step === currentStep ? 'step' : undefined}
+                            onClick={() => onTap(step)}
+                        >
+                            {step + 1}
+                        </StepCircle>
                     </StepWrapper>
                 );
             })}

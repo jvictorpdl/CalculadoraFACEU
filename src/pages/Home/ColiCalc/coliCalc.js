@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Flex, Row } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
@@ -28,12 +28,19 @@ export function ColiCalc() {
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
     useEffect(() => { setErros([]) }, [selectedCollection, step]);
+
+    // ao trocar de passo, se o topo da calculadora saiu da tela, volta até ele
+    const topo = useRef(null);
+    useEffect(() => {
+        if (topo.current && topo.current.getBoundingClientRect().top < 0) {
+            topo.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [selectedCollection, step]);
     useEffect(() => {
         if (radioState === 'Dados do rio' && state.data.colicalc.v !== null) {
             state.data.colicalc.v = null
         }
         updateStateWithColiCalcData({represa: radioState === 'Dados da represa' });
-        console.log('AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII' + state.data.colicalc.represa);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [radioState]);
@@ -96,7 +103,6 @@ export function ColiCalc() {
 
 
     const renderStep = (step) => {
-        console.log('selectedCollection', selectedCollection)
         if (selectedCollection === null || selectedCollection.length === 0) return collection[selectedCollection][0];
         if (selectedCollection === 'Gráfico') {
             return <ColicalcChart data={state.data.colicalc} />
@@ -163,7 +169,7 @@ export function ColiCalc() {
 
 
     return (
-        <div style={{ height: 'inherit' }}>
+        <div ref={topo} style={{ height: 'inherit' }}>
             <PageTitle style={{ marginBottom: '8px' }}>ColiCalc</PageTitle>
             <PageSubtitle style={{ marginBottom: '8px' }}>Calculadora de Coliformes</PageSubtitle>
             <Row style={{ marginBottom: '8px' }}>
@@ -193,7 +199,6 @@ export function ColiCalc() {
 
             <Row>
                 {Object.entries(collection).map(([collectionName, steps],) => {
-                    console.log(`Key: ${collectionName}, Value: ${steps}`);
                     return <ToolsButton
                         key={collectionName}
                         selected={selectedCollection === collectionName}

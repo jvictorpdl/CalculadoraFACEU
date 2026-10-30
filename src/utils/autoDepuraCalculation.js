@@ -57,14 +57,12 @@ export const CalculadoraAutodepura = (props) => {
     odc: 0,
     ct: 0,
   };
-  console.log(entrada);
 
 
   const particoesVet = [];
   const ctVet = [];
   const odminVet = [];
   const kmvet = [];
-  console.log("props", entrada);
 
   if (entrada.k120c) {
     entrada.k1t =
@@ -118,7 +116,6 @@ export const CalculadoraAutodepura = (props) => {
     entrada.co =
       (entrada.qr * entrada.odr + entrada.qe * entrada.ode) /
       (entrada.qr + entrada.qe);
-      console.log("variaveis para o co ELSE------------------------------: ", entrada.co, entrada.qr, entrada.odr, entrada.qe, entrada.ode);
 
 
   // if (entrada.lancamentos.length) {
@@ -145,7 +142,6 @@ export const CalculadoraAutodepura = (props) => {
 
 
   entrada.do = entrada.cslinha - entrada.co;
-console.log("variaveis para o do------------------------------: ", entrada.do, entrada.cslinha , entrada.co);
 
   {
     //Concentração de DBO ultima mistura (Lo)

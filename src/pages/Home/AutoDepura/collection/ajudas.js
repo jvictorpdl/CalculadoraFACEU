@@ -112,7 +112,7 @@ function Ajuda({ campo, titulo, children }) {
 
     return (
         <>
-            <HelpModal title={`Clique aqui para auxílio em ${campo}`} handle={() => setIsOpen(true)} />
+            <HelpModal title={`Ajuda sobre ${campo}`} handle={() => setIsOpen(true)} />
             <Modal modalIsOpen={modalIsOpen} closeModal={() => setIsOpen(false)} title={titulo}>
                 {children}
             </Modal>

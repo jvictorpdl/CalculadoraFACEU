@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const PageTitle = styled.h1`
+export const PageTitle = styled.h2`
     color: var(--Text-and-icons-color-fg-strong, #374151);
     /* Heading & Title/Titles/Title 2 - bold */
     font-family: var(--Font-Family-title, 'Inter', sans-serif);
@@ -11,7 +11,7 @@ export const PageTitle = styled.h1`
     letter-spacing: var(--Font-Letter-spacing-letter-spacing, 0);
 `
 
-export const PageSubtitle = styled.h2`
+export const PageSubtitle = styled.p`
     color: var(--Text-and-icons-color-fg-primary, #4B5563);
 
     /* Body e paragraph/Body/Body 2 - medium */

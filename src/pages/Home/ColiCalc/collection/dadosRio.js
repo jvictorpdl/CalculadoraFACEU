@@ -94,7 +94,7 @@ export function DadosRioStep1() {
                     <CardHelp>
                         <Title title="Informações auxiliares" />
 
-                        <HelpModal title="Clique aqui para ver os padrões da CONAMA 357/05" handle={openModal} />
+                        <HelpModal title="Padrões da CONAMA 357/05" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Padrões de coliformes termotolerantes (CONAMA 357/05)">
                             <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
                             <br />

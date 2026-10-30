@@ -10,6 +10,8 @@ export const Container = styled.div`
 export const HelpButton = styled.button`
   cursor: pointer;
   font-size: 18px;
+  min-height: 24px;
+  text-align: left;
   // text-decoration: underline;
   color: #17737A;
   padding:  0 8px;

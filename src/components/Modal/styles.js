@@ -10,8 +10,9 @@ export const ContainerChildren = styled.div`
   display: block;
   justify-content: center;
   align-items: center;
-  justify-items: center;
   width: auto;
+  /* tabela mais larga que o modal rola de lado em vez de ficar cortada */
+  overflow-x: auto;
 `;
 
 export const Header = styled.div`
@@ -20,7 +21,8 @@ justify-content: space-between;
 align-items: center;
 border-bottom: 1px solid black;
 padding: 5px 0;
-height: 40px;
+min-height: 40px;
+gap: 8px;
 `;
 
 export const Content = styled.div`

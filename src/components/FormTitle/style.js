@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Title = styled.h2`
+export const Title = styled.h3`
     color: #374151;
     font-family: var(--Font-Family-title, 'Inter', sans-serif);
     font-size: 18px;

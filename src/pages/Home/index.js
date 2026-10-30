@@ -15,7 +15,7 @@ export default function Home() {
             <AppName>
                 Calimpe-H20
             </AppName>
-            <Holder>
+            <Holder as="main">
                 <Tabs id='tabs'>
                     <Tab id={Tools.AutoDepura} label="Autodepura">
                         <AutoDepura />
