@@ -1,7 +1,10 @@
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { Info } from 'lucide-react';
-import { useId, useState } from 'react';
-import { FieldWrapper, Input, InputWrapper, LabelWrapper, TooltipContentStyled, TooltipTrigger, Unidade } from './style';
+import { createContext, useContext, useId, useState } from 'react';
+import BotaoDica from '../Dica';
+import { TextoDica } from '../Dica/style';
+import { FieldWrapper, Input, InputWrapper, LabelWrapper, Unidade } from './style';
+
+// rótulos dos campos apontados pela validação; a calculadora fornece ao redor do passo atual
+export const CamposComErro = createContext(new Set());
 
 export default function TextFieldWithTooltip({
     label,
@@ -12,6 +15,8 @@ export default function TextFieldWithTooltip({
     value,
 }) {
     const [currentValue, setValue] = useState(value?.toString()?.replaceAll('.', ',') ?? '');
+    const [dicaAberta, setDicaAberta] = useState(false);
+    const invalido = useContext(CamposComErro).has(label);
     const id = useId();
     // o placeholder recebido é a unidade do campo (m³/s, mg/L, ...)
     const unidade = placeholder?.trim();
@@ -53,28 +58,15 @@ export default function TextFieldWithTooltip({
         <FieldWrapper>
             <LabelWrapper>
                 <label htmlFor={id} style={{ fontWeight: 600, color: "#374151" }}>{label}</label>
-                <Tooltip.Provider delayDuration={100}>
-                    <Tooltip.Root>
-                        <Tooltip.Trigger asChild>
-                            <TooltipTrigger type="button" aria-label={`Sobre ${label}: ${tooltip}`}>
-                                <Info size={16} aria-hidden="true" />
-                            </TooltipTrigger>
-                        </Tooltip.Trigger>
-                        <Tooltip.Portal>
-                            <TooltipContentStyled side="top" sideOffset={4}>
-                                {tooltip}
-                                <Tooltip.Arrow />
-                            </TooltipContentStyled>
-                        </Tooltip.Portal>
-                    </Tooltip.Root>
-                </Tooltip.Provider>
+                <BotaoDica rotulo={label} texto={tooltip} onToque={() => setDicaAberta(!dicaAberta)} />
             </LabelWrapper>
-            <InputWrapper $disabled={disabled}>
+            <InputWrapper $disabled={disabled} $invalido={invalido}>
                 <Input
                     id={id}
                     type="text"
                     inputMode="decimal"
                     aria-describedby={unidade ? `${id}-unidade` : undefined}
+                    aria-invalid={invalido || undefined}
                     disabled={disabled}
                     value={currentValue?.replaceAll('.', ',')}
                     onChange={handleChange}
@@ -82,6 +74,7 @@ export default function TextFieldWithTooltip({
                 />
                 {unidade && <Unidade id={`${id}-unidade`}>{unidade}</Unidade>}
             </InputWrapper>
+            {dicaAberta && <TextoDica>{tooltip}</TextoDica>}
         </FieldWrapper>
     );
 }

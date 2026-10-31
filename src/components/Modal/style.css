@@ -17,7 +17,9 @@
     overflow-y: scroll;
 }
 
+/* precisa cobrir a barra fixa de botões do celular */
 .ReactModal__Overlay {
+    z-index: 20;
     background-color: rgba(42, 42, 42, 0.3) !important;
 }
 

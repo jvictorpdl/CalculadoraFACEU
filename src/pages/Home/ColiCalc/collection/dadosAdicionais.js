@@ -7,8 +7,7 @@ import { ApplicationContext } from "../../../../core/providers";
 import Modal from "../../../../components/Modal/index";
 import HelpModal from "../../../../components/HelpModal/index";
 import { useState } from "react";
-import { CardHelp } from "../../../../components/CardHelp/index";
-import Title from "../../../../components/Title/index";
+import { PainelAjuda } from "../../../../components/CardHelp/index";
 
 export function DadosAdicionaisStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -54,8 +53,7 @@ export function DadosAdicionaisStep1() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <CardHelp>
-                        <Title title="Informações auxiliares" />
+                    <PainelAjuda>
                         <HelpModal title="Ajuda sobre θ para Kb" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Auxílio em θ para Kb">
                             <p>
@@ -65,7 +63,7 @@ export function DadosAdicionaisStep1() {
                             <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>Arceivala, 1981; EPA, 1985; Thomann e Mueller, 1987 apud Von Sperling, 2005</p>
 
                         </Modal>
-                    </CardHelp>
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>

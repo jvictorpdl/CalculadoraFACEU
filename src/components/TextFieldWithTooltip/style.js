@@ -1,4 +1,3 @@
-import * as Tooltip from '@radix-ui/react-tooltip';
 import styled from "styled-components";
 
 export const FieldWrapper = styled.div`
@@ -8,6 +7,19 @@ export const FieldWrapper = styled.div`
   min-width: 0;
   min-height: 48px;
   width: 100%;
+
+  /* no celular rótulo e campo dividem a linha: todos ficam com a mesma largura e sobra espaço para o valor;
+     abaixo de 360 px o campo volta para a linha de baixo, senão não cabe número longo com unidade */
+  @media (min-width: 360px) and (max-width: 768px) {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 8px;
+
+    > p {
+      grid-column: 1 / -1;
+    }
+  }
 `;
 
 export const LabelWrapper = styled.div`
@@ -17,23 +29,9 @@ export const LabelWrapper = styled.div`
   font-size: 0.875rem;
   font-weight: 500;
   color: #6b7280; /* Tailwind's text-muted-foreground */
-`;
 
-export const TooltipTrigger = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-
-  &:focus-visible {
-    outline: 2px solid #17737A;
+  @media (max-width: 768px) {
+    min-height: 44px;
   }
 `;
 
@@ -41,14 +39,16 @@ export const TooltipTrigger = styled.button`
 export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => (props.$invalido ? '#B91C1C' : '#d1d5db')};
   border-radius: 0.375rem;
   background: #fff;
   opacity: ${props => (props.$disabled ? 0.5 : 1)};
 
+  box-shadow: ${props => (props.$invalido ? '0 0 0 1px #B91C1C' : 'none')};
+
   &:focus-within {
-    border-color: #17737A;
-    box-shadow: 0 0 0 1px #17737A;
+    border-color: ${props => (props.$invalido ? '#B91C1C' : '#17737A')};
+    box-shadow: 0 0 0 1px ${props => (props.$invalido ? '#B91C1C' : '#17737A')};
   }
 `;
 
@@ -61,6 +61,13 @@ export const Input = styled.input`
   background: transparent;
   font-size: 0.875rem;
   outline: none;
+
+  /* abaixo de 16 px o Safari do iPhone dá zoom na página ao focar o campo */
+  @media (max-width: 768px) {
+    min-height: 44px;
+    padding: 0.5rem 0.25rem 0.5rem 0.5rem;
+    font-size: 16px;
+  }
 `;
 
 export const Unidade = styled.span`
@@ -68,13 +75,8 @@ export const Unidade = styled.span`
   font-size: 0.875rem;
   color: #6b7280;
   white-space: nowrap;
-`;
 
-export const TooltipContentStyled = styled(Tooltip.Content)`
-  background-color: black;
-  color: white;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-  max-width: 200px;
+  @media (max-width: 768px) {
+    padding: 0 0.5rem 0 0;
+  }
 `;

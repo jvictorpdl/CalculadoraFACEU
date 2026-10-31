@@ -30,11 +30,19 @@ export const TabButtonStyled = styled.button`
   &:hover {
     color: #17737A;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 0;
+  }
 `;
 
 export const TabContentContainer = styled.div`
   margin: 24px 0px 0px 0px;
   height: 100%;
+
+  @media (max-width: 768px) {
+    margin-top: 12px;
+  }
 `;
 
 

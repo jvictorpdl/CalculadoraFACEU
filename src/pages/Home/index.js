@@ -23,10 +23,10 @@ export default function Home() {
                 </AppName>
                 <Holder>
                     <Tabs id='tabs' abaInicial={abaInicial}>
-                        <Tab id={Tools.AutoDepura} label="Autodepura">
+                        <Tab id={Tools.AutoDepura} label="AutoDepura">
                             <AutoDepura />
                         </Tab>
-                        <Tab id={Tools.ColiCalc} label="Colicalc">
+                        <Tab id={Tools.ColiCalc} label="ColiCalc">
                             <ColiCalc />
                         </Tab>
                         <Tab id={Tools.EutroFriza} label="EutroFriza">

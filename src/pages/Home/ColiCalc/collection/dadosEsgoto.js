@@ -4,8 +4,7 @@ import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
-import { CardHelp } from "../../../../components/CardHelp/index";
-import Title from "../../../../components/Title/index";
+import { PainelAjuda } from "../../../../components/CardHelp/index";
 
 export function DadosEsgotoStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -28,22 +27,15 @@ export function DadosEsgotoStep1() {
         <div>
             <Row>
                 <Column>
-                    <FormTitle title="Dados da Esgoto" />
+                    <FormTitle title="Dados do esgoto" />
                     <Grid columns={3}>
                         <TextFieldWithTooltip value={state.data.colicalc.qe} onBlurValue={(val) => updateStateWithColiCalcData({ qe: val })} label="Qe" tooltip="Vazão do esgoto" placeholder="m³/s" />
-                        <TextFieldWithTooltip value={state.data.colicalc.ne} onBlurValue={(val) => updateStateWithColiCalcData({ ne: val })} label="Ne" tooltip="Concentração de coliformes no esgoto" placeholder="org/100ml" />
+                        <TextFieldWithTooltip value={state.data.colicalc.ne} onBlurValue={(val) => updateStateWithColiCalcData({ ne: val })} label="Ne" tooltip="Concentração de coliformes no esgoto" placeholder="org/100 mL" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                                <CardHelp>
-                                     <Title title="Informações auxiliares" />
-                                    <p style={{ opacity: 0.7, fontSize: 14 }}>
-                                        Sem informações auxiliares para esta tela.
-                                    </p>
-                                    {/* <span>Informações adicionais</span> */}
-                                    </CardHelp>
-                    {/* <span>Informações adicionais</span> */}
+                    <PainelAjuda />
                 </Column>
             </Row>
         </div>

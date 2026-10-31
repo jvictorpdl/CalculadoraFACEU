@@ -9,15 +9,18 @@ export const Container = styled.div`
 
 export const HelpButton = styled.button`
   cursor: pointer;
-  font-size: 18px;
+  font-size: 14px;
   min-height: 24px;
   text-align: left;
   // text-decoration: underline;
   color: #17737A;
-  padding:  0 8px;
-  font-weight: bolder;
+  padding: 0;
+  font-weight: 600;
   border: 0;
   background-color: transparent;
 
+  @media (max-width: 768px) {
+    min-height: 44px;
+  }
 `;
 

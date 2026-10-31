@@ -1,5 +1,5 @@
 import { useContext } from "react";
-// import FormTitle from "../../../../components/FormTitle/formTitle";
+import FormTitle from "../../../../components/FormTitle/formTitle";
 import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
@@ -7,8 +7,7 @@ import { ApplicationContext } from "../../../../core/providers";
 import Modal from "../../../../components/Modal/index";
 import HelpModal from "../../../../components/HelpModal/index";
 import { useState } from "react";
-import { CardHelp } from "../../../../components/CardHelp/index";
-import Title from "../../../../components/Title/index";
+import { PainelAjuda } from "../../../../components/CardHelp/index";
 import Table from "../../../../components/Table/index";
 export function DadosMisturaStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -81,19 +80,14 @@ export function DadosMisturaStep1() {
         <div>
             <Row>
                 <Column>
-                        <Title title="Dados da Mistura" />
-
-                    {/* <FormTitle title="Dados da Mistura" /> */}
+                    <FormTitle title="Dados da mistura" />
                     <Grid columns={3}>
-                        <TextFieldWithTooltip value={state.data.colicalc.nop} onBlurValue={(val) => updateStateWithColiCalcData({ nop: val })} label="Nop" tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental" placeholder="org/100ml" />
+                        <TextFieldWithTooltip value={state.data.colicalc.nop} onBlurValue={(val) => updateStateWithColiCalcData({ nop: val })} label="Nop" tooltip="Concentração máxima permissível de coliformes no ponto de mistura em função da legislação ambiental" placeholder="org/100 mL" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    {/* <span>Informações adicionais</span> */}
-                    <CardHelp>
-                        <Title title="Informações auxiliares" />
-
+                    <PainelAjuda>
                         <HelpModal title="Ajuda sobre Nop" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Padrão de coliformes permitido no corpo d'água (Nop)">
                             <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
@@ -104,7 +98,7 @@ export function DadosMisturaStep1() {
                             <br />
                             <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</p>
                         </Modal>
-                    </CardHelp>
+                    </PainelAjuda>
                 </Column>
             </Row>
         </div>

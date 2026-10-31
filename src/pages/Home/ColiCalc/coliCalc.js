@@ -1,14 +1,17 @@
 import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
-import { Flex, Row } from '../../../components/Layout/layout';
+import { flushSync } from 'react-dom';
+import { Flex } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
-import { PageDescription, PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
-import { RadioButton } from '../../../components/RadioButton/radioButton';
+import { PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
+import { RadioButton, RadioGroup } from '../../../components/RadioButton/radioButton';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
+import { CamposComErro } from '../../../components/TextFieldWithTooltip/textFieldWithTooltip';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraColicalc } from '../../../utils/coliCalcCalculation';
 import { errosColicalc, errosPassoColicalc } from '../../../utils/validacao';
-import { ActionButton, CancelButton, MensagemErro, ToolsButton } from '../styles';
+import { Grupos, irParaErro } from '../navegacao';
+import { ActionButton, BarraAcoes, CancelButton, MensagemErro } from '../styles';
 import ColicalcValuesPreview from './colicalcValuesPreview';
 import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
 import { DadosEsgotoStep1 } from './collection/dadosEsgoto';
@@ -74,6 +77,11 @@ export function ColiCalc() {
         })
     }
 
+    function abrirGrupo(nome) {
+        setStep(0);
+        setSelectedCollection(nome);
+    }
+
     const collection = {
         'Dados do rio': [
             <DadosRioStep1 />
@@ -91,17 +99,14 @@ export function ColiCalc() {
             <DadosAdicionaisStep1 />
         ],
         'Resumo': [
-            <ColicalcValuesPreview isRio={radioState === 'Dados do rio'} />
-            // <ColicalcValuesPreview />
+            <ColicalcValuesPreview isRio={radioState === 'Dados do rio'} onEditar={abrirGrupo} />
         ],
         'Gráfico': [],
     }
 
-    // bloqueia o grupo do tipo não escolhido (rio ou represa) e o gráfico, que abre ao calcular
-    const disableClicksForCollections = [
-        radioState === 'Dados do rio' ? 'Dados da represa' : 'Dados do rio',
-        'Gráfico',
-    ]
+    // o gráfico abre ao calcular; e o cálculo é para rio OU represa, então o grupo do outro tipo nem aparece
+    const disableClicksForCollections = ['Gráfico']
+    const grupoNaoUsado = radioState === 'Dados do rio' ? 'Dados da represa' : 'Dados do rio';
 
 
     const renderStep = (step) => {
@@ -140,15 +145,22 @@ export function ColiCalc() {
     const isPrimeiraTela = isFirstStep &&
         (isFirstCollection || (radioState === 'Dados da represa' && selectedCollection === 'Dados da represa'));
 
+    // antes de calcular confere tudo; nos demais passos, só os campos do passo atual
+    const errosDaTela = () => selectedCollection === 'Resumo'
+        ? errosColicalc(state.data.colicalc)
+        : errosPassoColicalc(selectedCollection, state.data.colicalc);
+
+    // o destaque some assim que o campo é corrigido; a mensagem fica até a próxima tentativa
+    const camposComErro = new Set(erros.length ? errosDaTela().flatMap((erro) => erro.campos) : []);
 
     // Handles moving to the next step or collection, or finalizing
     const handleNext = () => {
-        // antes de calcular confere tudo; nos demais passos, só os campos do passo atual
-        const errosEncontrados = selectedCollection === 'Resumo'
-            ? errosColicalc(state.data.colicalc)
-            : errosPassoColicalc(selectedCollection, state.data.colicalc);
-        setErros(errosEncontrados);
-        if (errosEncontrados.length) return;
+        const errosEncontrados = errosDaTela();
+        if (errosEncontrados.length) {
+            flushSync(() => setErros(errosEncontrados));
+            irParaErro(topo.current);
+            return;
+        }
 
         if (selectedCollection === 'Dados do rio' && radioState === 'Dados do rio') {
             // skip "represa"
@@ -173,9 +185,8 @@ export function ColiCalc() {
     return (
         <div ref={topo} style={{ height: 'inherit' }}>
             <PageTitle style={{ marginBottom: '8px' }}>ColiCalc</PageTitle>
-            <PageSubtitle style={{ marginBottom: '8px' }}>Calculadora de Coliformes</PageSubtitle>
-            <Row style={{ marginBottom: '8px' }}>
-                <PageDescription>Esse cálculo será feito para um </PageDescription>
+            <PageSubtitle $soNaPrimeiraTela={!isPrimeiraTela} style={{ marginBottom: '8px' }}>Calcula a concentração de coliformes após o lançamento de esgoto em um rio ou represa e a eficiência de tratamento necessária para atender ao padrão da legislação</PageSubtitle>
+            <RadioGroup legenda="Esse cálculo será feito para um">
                 <RadioButton
                     name="colecao"
                     value="dadosDoRio"
@@ -197,20 +208,14 @@ export function ColiCalc() {
                         setSelectedCollection('Dados da represa');
                     }}
                 />
-            </Row>
+            </RadioGroup>
 
-            <Row>
-                {Object.entries(collection).map(([collectionName, steps],) => {
-                    return <ToolsButton
-                        key={collectionName}
-                        selected={selectedCollection === collectionName}
-                        disabled={selectedCollection === collectionName || disableClicksForCollections.includes(collectionName)}
-                        onClick={() => { setStep(0); setSelectedCollection(collectionName); }}>
-                        {collectionName}
-                    </ToolsButton>
-                })}
-
-            </Row>
+            <Grupos
+                nomes={collectionKeys.filter((nome) => nome !== grupoNaoUsado)}
+                selecionado={selectedCollection}
+                bloqueados={disableClicksForCollections}
+                onSelecionar={abrirGrupo}
+            />
             <HorizontalSplitter />
             {
                 collection[selectedCollection]?.length > 1 &&
@@ -221,17 +226,19 @@ export function ColiCalc() {
                 />
             }
 
-            {renderStep(step)}
-
-            <Flex />
-
             {erros.length > 0 &&
                 <MensagemErro role="alert">
-                    {erros.map((erro) => <div key={erro}>{erro}</div>)}
+                    {erros.map((erro) => <div key={erro.mensagem}>{erro.mensagem}</div>)}
                 </MensagemErro>
             }
 
-            <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
+            <CamposComErro.Provider value={camposComErro}>
+                {renderStep(step)}
+            </CamposComErro.Provider>
+
+            <Flex />
+
+            <BarraAcoes>
                 {/* na primeira tela não há para onde voltar */}
                 {isPrimeiraTela
                     ? <span />
@@ -241,7 +248,7 @@ export function ColiCalc() {
                 {selectedCollection !== "Gráfico" && <ActionButton onClick={handleNext}>
                     {isLastStep && isLastCollection ? 'Calcular' : 'Próximo'}
                 </ActionButton>}
-            </Row>
+            </BarraAcoes>
         </div >
     );
 }

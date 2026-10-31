@@ -1,246 +1,43 @@
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { Info } from 'lucide-react';
 import { useContext } from 'react';
-import { TooltipContentStyled } from '../../../components/TextFieldWithTooltip/style';
+import { GrupoResumo, LinhaResumo, Resumo } from '../../../components/Resumo';
 import { ApplicationContext } from '../../../core/providers';
-// The styled-components library is not available, so we are creating our own components with inline styles
-// and a functional approach to replicate the styling.
 
-
-
-// A wrapper for the three main columns, using Flexbox for layout
-const ColumnWrapper = ({ children }) => (
-    <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        paddingBottom: '32px',
-        gap: '20px',
-        maxWidth: '1200px',
-        width: '100%',
-    }}>
-        {children}
-    </div>
-);
-
-// The component for each column (Dados do rio, Dados do esgoto, etc.)
-const Column = ({ children, title }) => (
-    <div style={{
-        flex: '1 1 280px',
-        minWidth: 0,
-        backgroundColor: '#ffffff',
-        padding: '20px',
-        borderRadius: '12px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-        '@media (max-width: 1024px)': {
-            width: '100%',
-            maxWidth: '600px',
-        },
-    }}>
-        <h3 style={{
-            fontSize: '1.25rem',
-            fontWeight: '600',
-            color: '#343a40',
-            margin: '0',
-            paddingBottom: '10px',
-            borderBottom: '1px solid #e9ecef',
-        }}>
-            {title}
-        </h3>
-        {children}
-    </div>
-);
-
-// A component for each input row
-const InputGroup = ({ children }) => (
-    <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-    }}>
-        {children}
-    </div>
-);
-
-const Label = ({ children }) => (
-    <label style={{
-        fontSize: '0.9rem',
-        fontWeight: '500',
-        color: '#495057',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4px',
-    }}>
-        {children}
-    </label>
-);
-
-const Input = ({ placeholder, value }) => (
-    <input
-        type="text"
-        placeholder={placeholder}
-        readOnly={true}
-        value={value === null || value === undefined ? '' : String(value).replace('.', ',')}
-        style={{
-            width: '100%',
-            padding: '10px',
-            fontSize: '1rem',
-            border: '1px solid #ced4da',
-            borderRadius: '8px',
-            boxSizing: 'border-box',
-            transition: 'border-color 0.3s, box-shadow 0.3s',
-            ':focus': {
-                borderColor: '#007bff',
-                boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
-                outline: 'none',
-            },
-        }}
-    />
-);
-
-const Grid = ({ children }) => (
-    <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
-    }}>
-        {children}
-    </div>
-);
-
-export const TooltipInfo = ({ info }) => (
-    <Tooltip.Provider delayDuration={100}>
-        <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-                <button type="button" aria-label={info} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 24, minHeight: 24, padding: 0, border: 0, background: "transparent", color: "inherit", cursor: "pointer" }}>
-                    <Info size={16} aria-hidden="true" />
-                </button>
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-                <TooltipContentStyled side="top" sideOffset={4}>
-                    {info}
-                    <Tooltip.Arrow />
-                </TooltipContentStyled>
-            </Tooltip.Portal>
-        </Tooltip.Root>
-    </Tooltip.Provider>
-);
-
-export default function AutodepuraValuesPreview() {
+export default function AutodepuraValuesPreview({ onEditar }) {
     const { state } = useContext(ApplicationContext);
+    const dados = state.data.autodepura;
+
     return (
-        <ColumnWrapper>
-            {/* 'Dados do rio' column */}
-            <Column title="Dados do rio">
-                <Grid>
+        <Resumo>
+            <GrupoResumo titulo="Dados do rio" onEditar={() => onEditar('Dados do rio')}>
+                <LinhaResumo rotulo="Qr" dica="Vazão do rio" valor={dados.qr} unidade="m³/s" />
+                <LinhaResumo rotulo="ODr" dica="Oxigênio dissolvido no rio" valor={dados.odr} unidade="mg/L" />
+                <LinhaResumo rotulo="DBOr" dica="Demanda bioquímica de oxigênio do rio" valor={dados.dbor} unidade="mg/L" />
+                <LinhaResumo rotulo="ODmín" dica="Oxigênio dissolvido mínimo exigido para o rio" valor={dados.odmin} unidade="mg/L" />
+            </GrupoResumo>
 
-                    <InputGroup>
-                        <Label>Qr (m³/s)<TooltipInfo info={'Vazão do rio'}> </TooltipInfo></Label>
-                        <Input placeholder="m³/s" value={state.data.autodepura.qr} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>ODr (mg/L)<TooltipInfo info={'Oxigênio dissolvido no rio'}> </TooltipInfo></Label>
-                        <Input placeholder="mg/L" value={state.data.autodepura.odr} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>DBOr (mg/L)<TooltipInfo info={'Demanda bioquímica de oxigênio do rio'}> </TooltipInfo></Label>
-                        <Input placeholder="mg/L" value={state.data.autodepura.dbor} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>ODmín (mg/L)<TooltipInfo info={'Oxigênio dissolvido mínimo exigido para o rio'}> </TooltipInfo></Label>
-                        <Input placeholder="mg/L" value={state.data.autodepura.odmin} />
-                    </InputGroup>
-                </Grid>
-            </Column>
+            <GrupoResumo titulo="Dados do esgoto" onEditar={() => onEditar('Dados do esgoto')}>
+                <LinhaResumo rotulo="Qe" dica="Vazão do esgoto" valor={dados.qe} unidade="m³/s" />
+                <LinhaResumo rotulo="ODe" dica="Oxigênio dissolvido no esgoto" valor={dados.ode} unidade="mg/L" />
+                <LinhaResumo opcional rotulo="E" dica="Eficiência do tratamento de esgoto na remoção de DBO" valor={dados.e} unidade="%" />
+                <LinhaResumo opcional rotulo="DBOe" dica="Demanda bioquímica de oxigênio do esgoto" valor={dados.dboe} unidade="mg/L" />
+                <LinhaResumo opcional rotulo="DBOefl" dica="DBO do efluente tratado" valor={dados.dboefl} unidade="mg/L" />
+            </GrupoResumo>
 
-            {/* 'Dados do esgoto' column */}
-            <Column title="Dados do esgoto">
-                <InputGroup>
-                    <Label>Qe (m³/s)<TooltipInfo info={'Vazão do esgoto'}> </TooltipInfo></Label>
-                    <Input placeholder="m³/s" value={state.data.autodepura.qe} />
-                </InputGroup>
-                <InputGroup>
-                    <Label>ODe (mg/L)<TooltipInfo info={'Oxigênio dissolvido no esgoto'}> </TooltipInfo></Label>
-                    <Input placeholder="mg/L" value={state.data.autodepura.ode} />
-                </InputGroup>
-                <InputGroup>
-                    <Label>E (%)<TooltipInfo info={'Eficiência do tratamento de esgoto na remoção de DBO'}> </TooltipInfo></Label>
-                    <Input placeholder="%" value={state.data.autodepura.e} />
-                </InputGroup>
-                <InputGroup>
-                    <Label>DBOe (mg/L)<TooltipInfo info={'Demanda bioquímica de oxigênio do esgoto'}> </TooltipInfo></Label>
-                    <Input placeholder="mg/L" value={state.data.autodepura.dboe} />
-                </InputGroup>
-                <InputGroup>
-                    <Label>DBOefl (mg/L)<TooltipInfo info={'DBO do efluente tratado'}> </TooltipInfo></Label>
-                    <Input placeholder="mg/L" value={state.data.autodepura.dboefl} />
-                </InputGroup>
-            </Column>
-
-            {/* 'Dados morfométricos e ambientais' column */}
-            <Column title="Dados morfométricos e ambientais">
-                <Grid>
-                    <InputGroup>
-                        <Label>K1 (20 °C) (1/dia)<TooltipInfo info={'Coeficiente de desoxigenação a 20 °C'}> </TooltipInfo></Label>
-                        <Input placeholder="1/dia" value={state.data.autodepura.k120c} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>θ para K1 (ad.)<TooltipInfo info={'Coeficiente de temperatura'}> </TooltipInfo></Label>
-                        <Input placeholder="ad." value={state.data.autodepura.tetak1} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>T (°C)<TooltipInfo info={'Temperatura do rio'}> </TooltipInfo></Label>
-                        <Input placeholder="°C" value={state.data.autodepura.temperatura} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>K1T (1/dia)<TooltipInfo info={'Coeficiente de desoxigenação na temperatura do rio (T)'}> </TooltipInfo></Label>
-                        <Input placeholder="1/dia" value={state.data.autodepura.k1t} />
-                    </InputGroup>
-
-                    <InputGroup>
-                        <Label>v (m/s)<TooltipInfo info={'Velocidade do rio'}> </TooltipInfo></Label>
-                        <Input placeholder="m/s" value={state.data.autodepura.velocidade} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>θ para K2 (ad.)<TooltipInfo info={'Coeficiente de temperatura'}> </TooltipInfo></Label>
-                        <Input placeholder="ad." value={state.data.autodepura.tetak2} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>H (m)<TooltipInfo info={'Profundidade do rio'}> </TooltipInfo></Label>
-                        <Input placeholder="m" value={state.data.autodepura.h} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>Altitude (m)<TooltipInfo info={'Altitude do local'}> </TooltipInfo></Label>
-                        <Input placeholder="m" value={state.data.autodepura.altitude} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>K2 (20 °C) (1/dia)<TooltipInfo info={'Coeficiente de reaeração a 20 °C'}> </TooltipInfo></Label>
-                        <Input placeholder="1/dia" value={state.data.autodepura.k220c} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>K2T (1/dia) <TooltipInfo info={'Coeficiente de reaeração na temperatura do rio (T)'}> </TooltipInfo></Label>
-                        <Input placeholder="1/dia" value={state.data.autodepura.k2t} />
-                    </InputGroup>
-
-                    <InputGroup>
-                        <Label>d (m)<TooltipInfo info={'Distância percorrida a partir do lançamento'}> </TooltipInfo></Label>
-                        <Input placeholder="m" value={state.data.autodepura.distancia} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>Nº (Quantidade)<TooltipInfo info={'Número de trechos em que o percurso é dividido no cálculo'}> </TooltipInfo></Label>
-                        <Input placeholder="Quantidade" value={state.data.autodepura.particoes} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>Cs' (mg/L) <TooltipInfo info={'Concentração de saturação de oxigênio dissolvido no rio'}> </TooltipInfo></Label>
-                        <Input placeholder="mg/L" value={state.data.autodepura.cslinha} />
-                    </InputGroup>
-                </Grid>
-            </Column>
-        </ColumnWrapper>
+            <GrupoResumo titulo="Dados adicionais" onEditar={() => onEditar('Dados adicionais')}>
+                <LinhaResumo opcional rotulo="K1 (20 °C)" dica="Coeficiente de desoxigenação a 20 °C" valor={dados.k120c} unidade="1/dia" />
+                <LinhaResumo opcional rotulo="θ para K1" dica="Coeficiente de temperatura" valor={dados.tetak1} />
+                <LinhaResumo opcional rotulo="K1T" dica="Coeficiente de desoxigenação na temperatura do rio (T)" valor={dados.k1t} unidade="1/dia" />
+                <LinhaResumo rotulo="T" dica="Temperatura do rio" valor={dados.temperatura} unidade="°C" />
+                <LinhaResumo rotulo="v" dica="Velocidade do rio" valor={dados.velocidade} unidade="m/s" />
+                <LinhaResumo opcional rotulo="θ para K2" dica="Coeficiente de temperatura" valor={dados.tetak2} />
+                <LinhaResumo opcional rotulo="H" dica="Profundidade do rio" valor={dados.h} unidade="m" />
+                <LinhaResumo opcional rotulo="K2 (20 °C)" dica="Coeficiente de reaeração a 20 °C" valor={dados.k220c} unidade="1/dia" />
+                <LinhaResumo opcional rotulo="K2T" dica="Coeficiente de reaeração na temperatura do rio (T)" valor={dados.k2t} unidade="1/dia" />
+                <LinhaResumo rotulo="d" dica="Distância percorrida a partir do lançamento" valor={dados.distancia} unidade="m" />
+                <LinhaResumo rotulo="Nº" dica="Número de trechos em que o percurso é dividido no cálculo" valor={dados.particoes} />
+                <LinhaResumo opcional rotulo="Altitude" dica="Altitude do local" valor={dados.altitude} unidade="m" />
+                <LinhaResumo opcional rotulo="Cs'" dica="Concentração de saturação de oxigênio dissolvido no rio" valor={dados.cslinha} unidade="mg/L" />
+            </GrupoResumo>
+        </Resumo>
     );
 };
-

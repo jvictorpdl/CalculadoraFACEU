@@ -1,13 +1,16 @@
 import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
-import { Flex, Row } from '../../../components/Layout/layout';
+import { flushSync } from 'react-dom';
+import { Flex } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
 import { PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
+import { CamposComErro } from '../../../components/TextFieldWithTooltip/textFieldWithTooltip';
 import { ApplicationContext } from '../../../core/providers';
 import { CalculadoraAutodepura } from '../../../utils/autoDepuraCalculation';
 import { errosAutodepura, errosPassoAutodepura } from '../../../utils/validacao';
-import { ActionButton, CancelButton, MensagemErro, ToolsButton } from '../styles';
+import { Grupos, irParaErro } from '../navegacao';
+import { ActionButton, BarraAcoes, CancelButton, MensagemErro } from '../styles';
 import AutodepuraValuesPreview from './autodepuraValuesPreview';
 import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
@@ -74,6 +77,11 @@ export function AutoDepura() {
         });
     };
 
+    function abrirGrupo(nome) {
+        setStep(0);
+        setSelectedCollection(nome);
+    }
+
     const collection = {
         'Dados do rio': [
             <DadosRioStep1 onValidityChange={handleStepValidityChange} />
@@ -89,7 +97,7 @@ export function AutoDepura() {
             <DadosAdicionaisStep4 />,
         ],
         'Resumo': [
-            <AutodepuraValuesPreview />
+            <AutodepuraValuesPreview onEditar={abrirGrupo} />
         ],
         'Gráfico': [],
         'Simular novamente': [
@@ -119,6 +127,15 @@ export function AutoDepura() {
     const isLastCollection = currentCollectionIndex === collectionKeys.length - 2;
     const isFirstStep = step === 0;
     const isLastStep = step === collection[selectedCollection]?.length - 1;
+    const isPrimeiraTela = isFirstStep && isFirstCollection;
+
+    // antes de calcular confere tudo; nos demais passos, só os campos do passo atual
+    const errosDaTela = () => ['Resumo', 'Simular novamente'].includes(selectedCollection)
+        ? errosAutodepura(state.data.autodepura)
+        : errosPassoAutodepura(selectedCollection, step, state.data.autodepura);
+
+    // o destaque some assim que o campo é corrigido; a mensagem fica até a próxima tentativa
+    const camposComErro = new Set(erros.length ? errosDaTela().flatMap((erro) => erro.campos) : []);
 
     const handleBack = () => {
         if (isFirstStep) {
@@ -134,12 +151,12 @@ export function AutoDepura() {
 
     // Handles moving to the next step or collection, or finalizing
     const handleNext = () => {
-        // antes de calcular confere tudo; nos demais passos, só os campos do passo atual
-        const errosEncontrados = ['Resumo', 'Simular novamente'].includes(selectedCollection)
-            ? errosAutodepura(state.data.autodepura)
-            : errosPassoAutodepura(selectedCollection, step, state.data.autodepura);
-        setErros(errosEncontrados);
-        if (errosEncontrados.length) return;
+        const errosEncontrados = errosDaTela();
+        if (errosEncontrados.length) {
+            flushSync(() => setErros(errosEncontrados));
+            irParaErro(topo.current);
+            return;
+        }
 
         if (selectedCollection === 'Simular novamente') {
             saveResult(CalculadoraAutodepura(state.data.autodepura));
@@ -179,19 +196,13 @@ export function AutoDepura() {
     return (
         <div ref={topo} style={{ height: 'inherit' }}>
             <PageTitle style={{ marginBottom: '8px' }}>AutoDepura</PageTitle>
-            <PageSubtitle style={{ marginBottom: '8px' }}>Simula a autodepuração de um rio após o lançamento de esgoto, estimando o oxigênio dissolvido ao longo do percurso pelo modelo de Streeter-Phelps</PageSubtitle>
-            <Row>
-                {Object.entries(collection).map(([collectionName, steps],) => {
-                    return <ToolsButton
-                        key={collectionName}
-                        selected={selectedCollection === collectionName}
-                        disabled={selectedCollection === collectionName || disableClicksForCollections.includes(collectionName)}
-                        onClick={() => { setStep(0); setSelectedCollection(collectionName); }}>
-                        {collectionName}
-                    </ToolsButton>
-                })}
-
-            </Row>
+            <PageSubtitle $soNaPrimeiraTela={!isPrimeiraTela} style={{ marginBottom: '8px' }}>Simula a autodepuração de um rio após o lançamento de esgoto, estimando o oxigênio dissolvido ao longo do percurso pelo modelo de Streeter-Phelps</PageSubtitle>
+            <Grupos
+                nomes={collectionKeys}
+                selecionado={selectedCollection}
+                bloqueados={disableClicksForCollections}
+                onSelecionar={abrirGrupo}
+            />
             <HorizontalSplitter />
             {
                 collection[selectedCollection]?.length > 1 &&
@@ -202,19 +213,21 @@ export function AutoDepura() {
                 />
             }
 
-            {renderStep(step)}
-
-            <Flex />
-
             {erros.length > 0 &&
                 <MensagemErro role="alert">
-                    {erros.map((erro) => <div key={erro}>{erro}</div>)}
+                    {erros.map((erro) => <div key={erro.mensagem}>{erro.mensagem}</div>)}
                 </MensagemErro>
             }
 
-            <Row style={{ justifyContent: 'space-between', paddingTop: '16px' }}>
+            <CamposComErro.Provider value={camposComErro}>
+                {renderStep(step)}
+            </CamposComErro.Provider>
+
+            <Flex />
+
+            <BarraAcoes>
                 {/* na primeira tela não há para onde voltar */}
-                {isFirstStep && isFirstCollection
+                {isPrimeiraTela
                     ? <span />
                     : <CancelButton onClick={handleBack}>Voltar</CancelButton>}
 
@@ -222,7 +235,7 @@ export function AutoDepura() {
                 <ActionButton onClick={handleNext}>
                     {renderText()}
                 </ActionButton>
-            </Row>
+            </BarraAcoes>
         </div >
     );
 }

@@ -1,74 +1,102 @@
+import { useId } from 'react';
 import styled from 'styled-components';
 
+const Grupo = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+`;
 
-const CustomRadioIndicator = styled.div`
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      // ... other default styling
-      &::after { // For the inner dot when checked
-        content: '';
-        width: 50%;
-        height: 50%;
-        border-radius: 50%;
-        background-color: #2BA3AB; // Color of the inner dot
-        transform: scale(0); // Initially hidden
-        transition: transform 0.2s ease-in-out;
-      }
-    `;
-
-const HiddenRadioInput = styled.input`
-      opacity: 0;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-
-      &:checked + ${CustomRadioIndicator} {
-        border-color: #2BA3AB; // Change border color when checked
-        &::after {
-          transform: scale(1); // Show the inner dot when checked
-        }
-      }
-    `;
-
-const RadioWrapper = styled.label`
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      position: relative; // For positioning the hidden input
-    `;
-
-const Label = styled.span`
-    color: #4B5563
-    /* Body e paragraph/Body/Body 2 - medium */
+const Legenda = styled.span`
+    color: #4B5563;
     font-family: var(--Font-Family-title, 'Inter', sans-serif);
-    font-size: var(--Font-Size-size-14, 14px);
-    font-style: normal;
-    font-weight: var(--Font-Weight-weight-medium, 400);
-    line-height: var(--Font-Line-height-line-height-20, 20px); /* 142.857% */
-    letter-spacing: var(--Font-Letter-spacing-letter-spacing, 0);
-    
-    margin-left: 4px;
-`
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+
+    /* no celular as opções ocupam a largura toda e falam por si; o leitor de tela segue lendo a legenda */
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const Opcoes = styled.div`
+    display: inline-flex;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+        display: flex;
+        width: 100%;
+    }
+`;
+
+const Opcao = styled.label`
+    position: relative;
+    flex: 1;
+    cursor: pointer;
+
+    input {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    span {
+        display: block;
+        padding: 6px 16px;
+        background: #FFF;
+        color: #4B5563;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: center;
+    }
+
+    input:checked + span {
+        background: #17737A;
+        color: #FFF;
+    }
+
+    input:focus-visible + span {
+        outline: 2px solid #111827;
+        outline-offset: -4px;
+    }
+
+    @media (max-width: 768px) {
+        span {
+            padding: 12px 16px;
+        }
+    }
+`;
+
+export function RadioGroup({ legenda, children }) {
+    const id = useId();
+
+    return (
+        <Grupo role="radiogroup" aria-labelledby={id}>
+            <Legenda id={id}>{legenda}</Legenda>
+            <Opcoes>{children}</Opcoes>
+        </Grupo>
+    );
+}
 
 export function RadioButton({ value, name, checked, onChange, label }) {
     return (
-        <RadioWrapper>
-            <HiddenRadioInput
+        <Opcao>
+            <input
                 type="radio"
                 name={name}
                 value={value}
                 checked={checked}
                 onChange={onChange}
-                onClick={onChange}
             />
-            <CustomRadioIndicator />
-            <Label>{label}</Label>
-        </RadioWrapper>
+            <span>{label}</span>
+        </Opcao>
     );
 }

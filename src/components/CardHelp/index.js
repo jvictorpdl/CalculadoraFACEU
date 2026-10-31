@@ -1,4 +1,7 @@
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 import styled from "styled-components";
+import Title from "../Title/index";
 
 /** Seção de ajuda minimalista: sem bordas, sem raio, sem height fixa */
 export const CardHelp = styled.section`
@@ -19,7 +22,74 @@ export const CardHelp = styled.section`
     top: 12px;
     align-self: start;
   }
+
+  /* no celular uma tela sem ajuda não mostra nada */
+  @media (max-width: 768px) {
+    display: ${(props) => (props.$vazio ? 'none' : 'flex')};
+    margin-top: 8px;
+    border-top: 1px solid #E5E7EB;
+  }
 `;
+
+const TituloFixo = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const BotaoRecolher = styled.button`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #4B5563;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    svg {
+      transform: rotate(${(props) => (props.$aberto ? '180deg' : '0deg')});
+      transition: transform 0.2s ease;
+    }
+  }
+`;
+
+const Conteudo = styled.div`
+  @media (max-width: 768px) {
+    display: ${(props) => (props.$aberto ? 'block' : 'none')};
+  }
+`;
+
+/** Ajuda da tela: sempre aberta nas telas largas e recolhida no celular, onde disputaria espaço com os campos */
+export function PainelAjuda({ children }) {
+  const [aberto, setAberto] = useState(false);
+
+  return (
+    <CardHelp $vazio={!children}>
+      <TituloFixo>
+        <Title title="Informações auxiliares" />
+      </TituloFixo>
+      <BotaoRecolher type="button" $aberto={aberto} aria-expanded={aberto} onClick={() => setAberto(!aberto)}>
+        Informações auxiliares
+        <ChevronDown size={20} aria-hidden="true" />
+      </BotaoRecolher>
+      <Conteudo $aberto={aberto}>
+        {children || (
+          <p style={{ opacity: 0.7, fontSize: 14 }}>
+            Sem informações auxiliares para esta tela.
+          </p>
+        )}
+      </Conteudo>
+    </CardHelp>
+  );
+}
 
 /* Título enxuto */
 export const HelpTitle = styled.h3`

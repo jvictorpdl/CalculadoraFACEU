@@ -4,6 +4,7 @@ export const StepperContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 12px;
 `;
 
 export const StepWrapper = styled.div`
@@ -28,6 +29,11 @@ export const StepCircle = styled.button`
     outline: 2px solid #17737A;
     outline-offset: 2px;
   }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 export const StepLine = styled.div`
   width: 120px;
@@ -37,6 +43,6 @@ export const StepLine = styled.div`
 
   /* no celular quatro passos com linhas de 120px não cabem na tela */
   @media (max-width: 768px) {
-    width: 40px;
+    width: 32px;
   }
 `;

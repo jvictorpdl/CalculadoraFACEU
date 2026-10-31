@@ -6,12 +6,14 @@ const autodepura = {
     cslinha: 7.8, qe: 0.114, ode: 0, dboe: 341, dboefl: null, e: null, altitude: null,
 };
 
+const mensagens = (erros) => erros.map((erro) => erro.mensagem);
+
 test('dados completos não geram erro', () => {
     expect(errosAutodepura(autodepura)).toEqual([]);
 });
 
 test('campos vazios são apontados no passo', () => {
-    expect(errosPassoAutodepura('Dados do rio', 0, { ...autodepura, qr: null, odmin: null }))
+    expect(mensagens(errosPassoAutodepura('Dados do rio', 0, { ...autodepura, qr: null, odmin: null })))
         .toEqual(['Preencha: Qr, ODmín.']);
 });
 
@@ -20,36 +22,45 @@ test('ODe igual a zero é um valor válido', () => {
 });
 
 test('θ em branco é barrado', () => {
-    expect(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, tetak1: null }))
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, tetak1: null })))
         .toEqual(['Informe K1 (20 °C), θ para K1 e T, ou então K1T.']);
 });
 
 test('H fora das faixas pede K2', () => {
     const erros = errosPassoAutodepura('Dados adicionais', 1, { ...autodepura, k220c: null, h: 5 });
-    expect(erros[0]).toMatch(/fora das faixas/);
+    expect(erros[0].mensagem).toMatch(/fora das faixas/);
 });
 
 test('DBOefl junto com E é barrado', () => {
-    expect(errosPassoAutodepura('Dados do esgoto', 1, { ...autodepura, dboe: null, e: 80, dboefl: 60 }))
+    expect(mensagens(errosPassoAutodepura('Dados do esgoto', 1, { ...autodepura, dboe: null, e: 80, dboefl: 60 })))
         .toEqual(['Informe a DBOe (com ou sem E) ou a DBOefl, não os dois.']);
 });
 
 test('represa não exige distância, velocidade nem trechos', () => {
     const represa = { qr: 0.651, nr: 10, volume: 5000000, qe: 0.114, ne: 5e7, nop: 1000, temperatura: 23, kb: 1, teta: 1.07, represa: true };
     expect(errosColicalc(represa)).toEqual([]);
-    expect(errosColicalc({ ...represa, represa: false })).toEqual(['Preencha: d, v, Nº trechos.']);
+    expect(mensagens(errosColicalc({ ...represa, represa: false }))).toEqual(['Preencha: d, v, Nº trechos.']);
 });
 
 test('Nº de trechos enorme é barrado (travaria a página)', () => {
-    expect(errosPassoAutodepura('Dados adicionais', 2, { ...autodepura, particoes: 1000000000 }))
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 2, { ...autodepura, particoes: 1000000000 })))
         .toEqual(['Nº de trechos deve ser um número inteiro entre 1 e 1000.']);
 });
 
 test('valores fora das faixas plausíveis são barrados', () => {
-    expect(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, temperatura: 1000 }))
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, temperatura: 1000 })))
         .toEqual(['T deve estar entre 0 e 40 °C.']);
-    expect(errosPassoAutodepura('Dados adicionais', 1, { ...autodepura, tetak2: 3 }))
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 1, { ...autodepura, tetak2: 3 })))
         .toEqual(['θ para K2 deve estar entre 1 e 1,2.']);
-    expect(errosPassoAutodepura('Dados do rio', 0, { ...autodepura, odr: 70 }))
+    expect(mensagens(errosPassoAutodepura('Dados do rio', 0, { ...autodepura, odr: 70 })))
         .toEqual(['ODr deve estar entre 0 e 20 mg/L.']);
+});
+
+test('cada erro aponta os campos a destacar', () => {
+    expect(errosPassoAutodepura('Dados do rio', 0, { ...autodepura, qr: null, odmin: null })[0].campos)
+        .toEqual(['Qr', 'ODmín']);
+    expect(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, k120c: null })[0].campos)
+        .toEqual(['K1 (20 °C)', 'K1T']);
+    expect(errosPassoAutodepura('Dados adicionais', 2, { ...autodepura, particoes: 0 })[0].campos)
+        .toEqual(['Nº']);
 });

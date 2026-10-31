@@ -9,6 +9,11 @@ export const PageTitle = styled.h2`
     font-weight: var(--Font-Weight-weight-bold, 700);
     line-height: var(--Font-Line-height-line-height-28, 28px); /* 140% */
     letter-spacing: var(--Font-Letter-spacing-letter-spacing, 0);
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        line-height: 24px;
+    }
 `
 
 export const PageSubtitle = styled.p`
@@ -21,6 +26,11 @@ export const PageSubtitle = styled.p`
     font-weight: var(--Font-Weight-weight-medium, 500);
     line-height: var(--Font-Line-height-line-height-20, 20px); /* 142.857% */
     letter-spacing: var(--Font-Letter-spacing-letter-spacing, 0);
+
+    /* no celular a descrição só aparece na primeira tela, para os campos subirem nas demais */
+    @media (max-width: 768px) {
+        display: ${(props) => (props.$soNaPrimeiraTela ? 'none' : 'block')};
+    }
 `
 
 export const PageDescription = styled.p`

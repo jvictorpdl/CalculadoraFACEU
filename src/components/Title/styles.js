@@ -3,8 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
 /* background-color: brown; */
 // border-bottom: 1px solid #171717;
-padding: 8px;
-margin: 0 0 16px 0;
+margin: 0 0 8px 0;
 width: 100%;
 max-width: 350px;
 font-family: 'Inter', sans-serif;

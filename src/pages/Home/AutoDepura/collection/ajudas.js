@@ -2,8 +2,7 @@ import { useState } from "react";
 import Modal from "../../../../components/Modal/index";
 import HelpModal from "../../../../components/HelpModal/index";
 import Table from "../../../../components/Table/index";
-import { CardHelp } from "../../../../components/CardHelp/index";
-import Title from "../../../../components/Title/index";
+export { PainelAjuda } from "../../../../components/CardHelp/index";
 
 // Conteúdo das ajudas trazido da versão anterior do AutoDepura (src/pages/AutoDepura/stepN)
 
@@ -121,19 +120,6 @@ function Ajuda({ campo, titulo, children }) {
                 {children}
             </Modal>
         </>
-    );
-}
-
-export function PainelAjuda({ children }) {
-    return (
-        <CardHelp>
-            <Title title="Informações auxiliares" />
-            {children || (
-                <p style={{ opacity: 0.7, fontSize: 14 }}>
-                    Sem informações auxiliares para esta tela.
-                </p>
-            )}
-        </CardHelp>
     );
 }
 

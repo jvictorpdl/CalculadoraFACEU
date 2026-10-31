@@ -38,7 +38,7 @@ const modaltitle = {
                         onClick={props.closeModal}
                         aria-label="Fechar"
                         title="Fechar"
-                        style={{ flexShrink: 0, minWidth: 32, minHeight: 32, padding: 4, border: 0, background: 'transparent', cursor: 'pointer', opacity: 0.9 }}
+                        style={{ flexShrink: 0, minWidth: 44, minHeight: 44, padding: 4, border: 0, background: 'transparent', cursor: 'pointer', opacity: 0.9 }}
                         onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
                         onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.9')}
                     >

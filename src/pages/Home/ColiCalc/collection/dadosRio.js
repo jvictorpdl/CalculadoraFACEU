@@ -8,8 +8,7 @@ import Modal from "../../../../components/Modal/index";
 import HelpModal from "../../../../components/HelpModal/index";
 import { useState } from "react";
 import Table from "../../../../components/Table/index";
-import { CardHelp } from "../../../../components/CardHelp/index";
-import Title from "../../../../components/Title/index";
+import { PainelAjuda } from "../../../../components/CardHelp/index";
 
 export function DadosRioStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -83,7 +82,7 @@ export function DadosRioStep1() {
         <div>
             <Row>
                 <Column>
-                    <FormTitle title="Dados do Rio" />
+                    <FormTitle title="Dados do rio" />
                     <Grid columns={3}>
                         <TextFieldWithTooltip value={state.data.colicalc.qr} onBlurValue={(val) => updateStateWithColiCalcData({ qr: val })} label="Qr" tooltip="Vazão do rio" placeholder="m³/s" />
                         <TextFieldWithTooltip value={state.data.colicalc.nr} onBlurValue={(val) => updateStateWithColiCalcData({ nr: val })} label="Nr" tooltip="Concentração de coliformes no rio, a montante do lançamento" placeholder="NMP/100 mL" />
@@ -91,9 +90,7 @@ export function DadosRioStep1() {
                 </Column>
                 <VerticalSplitter />
                 <Column>
-                    <CardHelp>
-                        <Title title="Informações auxiliares" />
-
+                    <PainelAjuda>
                         <HelpModal title="Padrões da CONAMA 357/05" handle={openModal} />
                         <Modal modalIsOpen={modalIsOpen} closeModal={closeModal} title="Padrões de coliformes termotolerantes (CONAMA 357/05)">
                             <p>Padrões de coliformes termotolerantes em corpos d'água doces, segundo a RESOLUÇÃO CONAMA 357/05</p>
@@ -104,7 +101,7 @@ export function DadosRioStep1() {
                             <br />
                             <p style={{ fontSize: '0.83em', fontWeight: 'bold' }}>Nota: Classe Especial - não são admitidos lançamentos de efluentes, mesmo que tratados.</p>
                         </Modal>
-                    </CardHelp>
+                    </PainelAjuda>
 
                 </Column>
             </Row>
