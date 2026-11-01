@@ -110,6 +110,10 @@ export const CalculadoraColicalc = (props) => {
   resultado2.inviavel = entrada.eficiencia > 1;
   resultado2.n0 = entrada.no;
   resultado2.nop = entrada.nop;
+  resultado2.kbt = entrada.kbt;
+  resultado2.nep = entrada.nep;
+  resultado2.tDetencao = entrada.tDentencao;
+  resultado2.nMaximo = entrada.nRepresaMax;
   resultado2.particoesVet = particoesVet;
   resultado2.ntempoVet = ntempoVet;
   resultado2.kmvet = kmvet;

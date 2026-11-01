@@ -16,53 +16,62 @@ function formatYAxisLabel(value) {
   return value > 0 ? formatScientific(value) : '0';
 }
 
-function Linechart2({ novet, particoesVet, kmvet }) {
+export function graficoColiformes({ novet, kmvet }) {
   // Formatar os valores para exibição no eixo y e tooltip
   // const formattedNovet = novet.map(formatScientific);
 
+  return {
+    series: [
+      {
+        name: "N0",
+        data: novet // Aqui é utilizado os valores nao formatados para definir a posição no grafico (tendo em vista que o grafico só funciona com valores "reais")
+      }
+    ],
+    options: {
+      // o download fica nos botões da página, em português e com o relatório completo
+      chart: { toolbar: { tools: { download: false } } },
+      title: {
+        text: 'Coliformes (org/100 mL)',
+        style: { fontSize: '13px' },
+      },
+      legend: {
+        tooltipHoverFormatter: function(val, opts) {
+          return val + ' - ' + formatScientific(opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex]);
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return formatScientific(val) + " org / 100ml";
+          }
+        }
+      },
+
+      xaxis:{
+        title: {text: 'Distância (km)'},
+        categories: kmvet
+      },
+
+      yaxis: {
+        title: { text: "CF (org / 100ml)" },
+        labels: {
+          formatter: function (val) {
+            return formatYAxisLabel(val);
+          }
+        }
+      }
+    }
+  };
+}
+
+function Linechart2({ novet, kmvet }) {
   return (
     <div className="container-fluid mt-3 mb-3">
-      <Chart 
+      <Chart
         type='line'
         width="100%"
         height={550}
-        series={[
-          {
-            name: "N0",
-            data: novet // Aqui é utilizado os valores nao formatados para definir a posição no grafico (tendo em vista que o grafico só funciona com valores "reais")
-          }
-        ]}
-        options={{
-          title: {
-            text: 'Perfil da concentração de coliformes ao longo da distância - N (org/100 mL)',
-          },
-          legend: {
-            tooltipHoverFormatter: function(val, opts) {
-              return val + ' - ' + formatScientific(opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex]);
-            }
-          },
-          tooltip: {
-            y: {
-              formatter: function (val) {
-                return formatScientific(val) + " org / 100ml";
-              }
-            }
-          },
-          
-          xaxis:{
-            title: {text: 'Distância (km)'},
-            categories: kmvet
-          },
-
-          yaxis: {
-            title: { text: "CF (org / 100ml)" },
-            labels: {
-              formatter: function (val) {
-                return formatYAxisLabel(val);
-              }
-            }
-          }
-        }}
+        {...graficoColiformes({ novet, kmvet })}
       />
     </div>
   );

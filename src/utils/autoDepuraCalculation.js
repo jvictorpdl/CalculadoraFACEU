@@ -234,6 +234,14 @@ export const CalculadoraAutodepura = (props) => {
       cs: entrada.cslinha,
       odr: entrada.odr,
     },
+    calculados: {
+      k1t: entrada.k1t,
+      k2t: entrada.k2t,
+      k220c: entrada.k220c,
+      dbo5: entrada.dbo5,
+      lo: entrada.lo,
+      deficit: entrada.do,
+    },
   };
   return resultado;
 };

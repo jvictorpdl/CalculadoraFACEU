@@ -34,31 +34,103 @@ export const ToolsButton = styled.button`
     cursor: ${(props) => (props.disabled ? 'auto' : props.selected ? 'auto' : 'pointer')};
 `
 
+export const NavegacaoGrupos = styled.div`
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+`
+
+/* o respiro de 3px evita que a rolagem corte o contorno de foco dos botões */
 export const FaixaGrupos = styled.div`
     position: relative;
+    flex: 1;
+    min-width: 0;
     display: flex;
     gap: 8px;
+    margin: -3px 0;
+    padding: 3px;
+    overflow-x: auto;
+    scrollbar-width: none;
 
-    @media (max-width: 900px) {
-        flex-wrap: wrap;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    > button {
+        flex: none;
     }
 
     @media (max-width: 768px) {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        margin: 0 -16px;
-        padding: 0 16px;
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
         > button {
-            flex: none;
             min-height: 44px;
         }
     }
+`
+
+export const SetaGrupos = styled.button`
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    background: #FFF;
+    color: #17737A;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+        border-color: #17737A;
+        background: #F0F9FA;
+    }
+
+    &:disabled {
+        color: #D1D5DB;
+        cursor: default;
+    }
+`
+
+// título à esquerda e limpeza à direita, sem empurrar os campos para baixo
+export const CabecalhoCalculadora = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+`
+
+export const BotaoLimpar = styled.button`
+    flex: none;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #B91C1C;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background: #FEF2F2;
+    }
+
+    @media (max-width: 768px) {
+        min-height: 44px;
+        margin: -10px -8px;
+    }
+`
+
+export const TextoConfirmacao = styled.p`
+    margin: 8px 0 16px;
+    color: #374151;
+    font-size: 14px;
+    line-height: 20px;
+`
+
+export const BotoesConfirmacao = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
 `
 
 export const MensagemErro = styled.div`

@@ -28,10 +28,23 @@ export const CardInput = styled.section`
   align-items: center;
   justify-content: center;
   padding: 32px;
+  margin-bottom: 24px;
 
   border-radius: 4px;
 background: #FFF;
 box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.15);
+
+  /* no celular o texto grande empurrava os botões de download para fora da tela */
+  @media (max-width: 768px) {
+    max-width: none;
+    padding: 16px;
+
+    h1 {
+      font-size: 18px;
+      line-height: 24px;
+      text-align: center;
+    }
+  }
 
   @media (min-width: 400px) {
     //width: 380px;

@@ -1,16 +1,17 @@
-import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
+import { Fragment, lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { Flex } from '../../../components/Layout/layout';
 import Stepper from '../../../components/Steps/stepper';
 
-import { PageSubtitle, PageTitle } from '../../../components/PageTitles/titles';
+import { PageSubtitle } from '../../../components/PageTitles/titles';
 import { RadioButton, RadioGroup } from '../../../components/RadioButton/radioButton';
 import { HorizontalSplitter } from '../../../components/Splitter/splitter';
 import { CamposComErro } from '../../../components/TextFieldWithTooltip/textFieldWithTooltip';
 import { ApplicationContext } from '../../../core/providers';
+import { defaultState } from '../../../core/state';
 import { CalculadoraColicalc } from '../../../utils/coliCalcCalculation';
 import { errosColicalc, errosPassoColicalc } from '../../../utils/validacao';
-import { Grupos, irParaErro } from '../navegacao';
+import { Grupos, irParaErro, TituloCalculadora } from '../navegacao';
 import { ActionButton, BarraAcoes, CancelButton, MensagemErro } from '../styles';
 import ColicalcValuesPreview from './colicalcValuesPreview';
 import { DadosAdicionaisStep1 } from './collection/dadosAdicionais';
@@ -26,9 +27,12 @@ const ColicalcChart = lazy(() => import('../../ColiCalcResult'));
 export function ColiCalc() {
     const { state, dispatch } = useContext(ApplicationContext);
     const [step, setStep] = useState(0);
-    const [selectedCollection, setSelectedCollection] = useState('Dados do rio');
-    const [radioState, setRadioState] = useState('Dados do rio');
+    // volta no tipo que estava em uso, ao recarregar a página ou trocar de calculadora
+    const tipoInicial = state.data.colicalc.represa ? 'Dados da represa' : 'Dados do rio';
+    const [selectedCollection, setSelectedCollection] = useState(tipoInicial);
+    const [radioState, setRadioState] = useState(tipoInicial);
     const [erros, setErros] = useState([]);
+    const [limpezas, setLimpezas] = useState(0);
 
 
     useEffect(() => { setStep(0) }, [selectedCollection]);
@@ -80,6 +84,17 @@ export function ColiCalc() {
     function abrirGrupo(nome) {
         setStep(0);
         setSelectedCollection(nome);
+    }
+
+    function limparDados() {
+        dispatch({
+            ...state,
+            data: { ...state.data, colicalc: { ...defaultState.data.colicalc, represa: radioState === 'Dados da represa' } },
+            output: { ...state.output, colicalc: defaultState.output.colicalc },
+        });
+        setErros([]);
+        setLimpezas(limpezas + 1);
+        abrirGrupo(radioState);
     }
 
     const collection = {
@@ -184,7 +199,7 @@ export function ColiCalc() {
 
     return (
         <div ref={topo} style={{ height: 'inherit' }}>
-            <PageTitle style={{ marginBottom: '8px' }}>ColiCalc</PageTitle>
+            <TituloCalculadora titulo="ColiCalc" dados={state.data.colicalc} onLimpar={limparDados} />
             <PageSubtitle $soNaPrimeiraTela={!isPrimeiraTela} style={{ marginBottom: '8px' }}>Calcula a concentração de coliformes após o lançamento de esgoto em um rio ou represa e a eficiência de tratamento necessária para atender ao padrão da legislação</PageSubtitle>
             <RadioGroup legenda="Esse cálculo será feito para um">
                 <RadioButton
@@ -233,7 +248,8 @@ export function ColiCalc() {
             }
 
             <CamposComErro.Provider value={camposComErro}>
-                {renderStep(step)}
+                {/* cada campo guarda o próprio texto; a key os recria vazios depois da limpeza */}
+                <Fragment key={limpezas}>{renderStep(step)}</Fragment>
             </CamposComErro.Provider>
 
             <Flex />

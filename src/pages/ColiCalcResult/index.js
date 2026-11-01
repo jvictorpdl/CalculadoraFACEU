@@ -1,64 +1,37 @@
 import alertIcon from "../../assets/alertIcon.svg";
-import Linechart2 from "../../components/Linechart2";
+import BaixarRelatorio from "../../components/BaixarRelatorio";
+import Linechart2, { graficoColiformes } from "../../components/Linechart2";
 import * as calc from "../../utils/coliCalcCalculation";
+import { relatorioColicalc } from "../../utils/relatorio";
 import { CardInput } from "../AutoDepura/styleSteps";
-
-const inteiro = (valor) => Math.round(valor).toLocaleString('pt-BR');
 
 export default function ColicalcChart(props) {
   const result = calc.CalculadoraColicalc(props.data);
+  const { novet, particoesVet, kmvet } = result;
+  const relatorio = relatorioColicalc(props.data, result);
+  const { conclusao, perfil } = relatorio;
 
-  const novet = result.novet || [];
-  const particoesVet = result.particoesVet || [];
-  const kmvet = result.kmvet || [];
-  const eficiencia = result.eficiencia;
-
-  if (result.inviavel) {
+  // represa não tem perfil ao longo do percurso; caso inviável também não
+  if (!perfil) {
     return (
-      <CardInput>
-        <img src={alertIcon} alt="Icone de alerta" />
-        <h1>Mesmo removendo 100% dos coliformes do esgoto, o padrão não é atendido: a concentração do rio a montante (Nr) já é alta demais.</h1>
-      </CardInput>
+      <>
+        <CardInput>
+          {result.inviavel && <img src={alertIcon} alt="Icone de alerta" />}
+          <h1>{conclusao.titulo}</h1>
+        </CardInput>
+        <BaixarRelatorio relatorio={relatorio} />
+      </>
     );
   }
 
   return (
-    <>
-      {props.data.represa === false ? (
-        novet.length > 1 ? (
-          result.semTratamento ? (
-            <div>
-              <h2>Não é necessário tratamento: a mistura (N0 = {inteiro(result.n0)} org/100 mL) já atende o padrão (Nop = {inteiro(result.nop)} org/100 mL).</h2>
-              <br />
-              <Linechart2 novet={novet} particoesVet={particoesVet} kmvet={kmvet} />
-            </div>
-          ) : (
-            <div>
-              <h2>Valor resultante de eficiência: {eficiencia}</h2>
-              <p>O gráfico mostra o perfil após o tratamento, com a mistura saindo com Nop = {inteiro(result.nop)} org/100 mL.</p>
-              <br />
-              <Linechart2 novet={novet} particoesVet={particoesVet} kmvet={kmvet} />
-            </div>
-          )
-        ) : (
-          <CardInput>
-            <img src={alertIcon} alt="Icone de alerta" />
-            <h1>Nenhum dado disponível para exibir o gráfico.</h1>
-          </CardInput>
-        )
-      ) : (
-        result.semTratamento ? (
-          <CardInput>
-            <h1>Não será necessário nenhum tratamento</h1>
-          </CardInput>
-        ) : (
-          <CardInput>
-            <h1>Valor resultante de eficiência: {eficiencia}</h1>
-          </CardInput>
-        )
-      )
-      }
-    </>
+    <div>
+      <h2>{conclusao.titulo}</h2>
+      {conclusao.linhas.map((linha) => <p key={linha}>{linha}</p>)}
+      <br />
+      <BaixarRelatorio relatorio={relatorio} grafico={graficoColiformes({ novet, kmvet })} />
+      <Linechart2 novet={novet} particoesVet={particoesVet} kmvet={kmvet} />
+    </div>
   );
 }
 

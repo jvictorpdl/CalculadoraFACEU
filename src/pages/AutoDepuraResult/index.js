@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import alertIcon from "../../assets/alertIcon.svg";
-import Linechart from "../../components/Linechart";
+import BaixarRelatorio from "../../components/BaixarRelatorio";
+import Linechart, { graficoOD } from "../../components/Linechart";
 import * as calc from "../../utils/autoDepuraCalculation";
+import { relatorioAutodepura } from "../../utils/relatorio";
 import { CardInput } from "../AutoDepura/styleSteps";
 
 const Conclusao = styled.div`
@@ -21,53 +23,33 @@ const Conclusao = styled.div`
   }
 `;
 
-const numero = (valor, casas = 2) => valor.toFixed(casas).replace('.', ',');
-
-function ConclusaoAutodepura({ critico }) {
-  const { tc, xcKm, odc, co, odmin, distanciaKm, cs, odr } = critico;
-  const atende = odc >= odmin;
-
-  return (
-    <Conclusao atende={atende} role="status">
-      <strong>{atende ? 'Atende o OD mínimo' : 'Não atende o OD mínimo'}</strong>
-      {tc > 0
-        ? <div>Ponto crítico: OD de {numero(odc)} mg/L a {numero(xcKm, 1)} km do lançamento (tc = {numero(tc)} dia). ODmín = {numero(odmin)} mg/L.</div>
-        : <div>O OD não cai depois do lançamento: o menor valor é o da mistura, {numero(co)} mg/L. ODmín = {numero(odmin)} mg/L.</div>}
-      {xcKm > distanciaKm &&
-        <div>O ponto crítico fica além da distância simulada ({numero(distanciaKm, 1)} km). Aumente d para ver o trecho mais crítico no gráfico.</div>}
-      {odc < 0 &&
-        <div>Abaixo de zero o modelo de Streeter-Phelps deixa de valer nesse trecho.</div>}
-      {odmin >= cs &&
-        <div>Atenção: o ODmín ({numero(odmin)} mg/L) é maior ou igual à saturação (Cs' = {numero(cs)} mg/L), então nenhum trecho do rio consegue atendê-lo. Confira os valores.</div>}
-      {odr > cs &&
-        <div>Atenção: o ODr ({numero(odr)} mg/L) está acima da saturação (Cs' = {numero(cs)} mg/L). Isso só ocorre em rios supersaturados; confira os valores.</div>}
-    </Conclusao>
-  );
-}
-
 export default function AutodepuraChart(props) {
-  const { ctVet, odminVet, particoesVet, kmvet, critico } = calc.CalculadoraAutodepura(props.data);
-  // OD negativo dentro do trecho simulado, mesmo entre os pontos amostrados
-  const odNegativo = ctVet.find(e => e < 0) || (critico.odc < 0 && critico.xcKm <= critico.distanciaKm);
+  const resultado = calc.CalculadoraAutodepura(props.data);
+  const { ctVet, odminVet, particoesVet, kmvet, critico } = resultado;
+  const relatorio = relatorioAutodepura(props.data, resultado);
+  const { conclusao, perfil } = relatorio;
 
-
-  return (
-
-    <>
-      {
-        (!odNegativo &&
-          <>
-            <ConclusaoAutodepura critico={critico} />
-            <Linechart ctVet={ctVet} odminVet={odminVet} particoesVet={particoesVet} kmvet={kmvet} critico={critico} />
-          </>)
-        ||
+  if (!perfil) {
+    return (
+      <>
         <CardInput>
           <img src={alertIcon} alt="Icone de Alerta" />
 
-          <h1>Concentração negativa de oxigênio dissolvido!!! O modelo de Streeter-Phelps não tem validade para este caso.</h1>
+          <h1>{conclusao.titulo}. {conclusao.linhas[0]}</h1>
         </CardInput>
-      }
-    </>
+        <BaixarRelatorio relatorio={relatorio} />
+      </>
+    )
+  }
 
+  return (
+    <>
+      <Conclusao atende={conclusao.atende} role="status">
+        <strong>{conclusao.titulo}</strong>
+        {conclusao.linhas.map((linha) => <div key={linha}>{linha}</div>)}
+      </Conclusao>
+      <BaixarRelatorio relatorio={relatorio} grafico={graficoOD({ ctVet, odminVet, kmvet, critico })} />
+      <Linechart ctVet={ctVet} odminVet={odminVet} particoesVet={particoesVet} kmvet={kmvet} critico={critico} />
+    </>
   )
 }
