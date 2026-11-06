@@ -22,8 +22,11 @@ async function adicionarFonte(doc, url, arquivo, estilo) {
     doc.addFont(arquivo, 'Inter', estilo);
 }
 
-export async function gerarPdf(relatorio, imagem, gerado) {
-    const { titulo, descricao, conclusao, fornecidos, calculados, perfil } = relatorio;
+// trechos demais não cabem lado a lado na página em pé; a tabela continua com os próximos
+const TRECHOS_POR_TABELA = 5;
+
+export async function gerarPdf(relatorio, imagens, gerado) {
+    const { titulo, descricao, conclusao, fornecidos, calculados, porTrecho, perfil } = relatorio;
     const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
     await adicionarFonte(doc, fonteRegular, 'Inter-Regular.ttf', 'normal');
     await adicionarFonte(doc, fonteSemiBold, 'Inter-SemiBold.ttf', 'bold');
@@ -126,22 +129,41 @@ export async function gerarPdf(relatorio, imagem, gerado) {
         );
     }
 
-    if (imagem) {
+    if (porTrecho) {
+        for (let inicio = 0; inicio < porTrecho.colunas.length; inicio += TRECHOS_POR_TABELA) {
+            const fim = Math.min(inicio + TRECHOS_POR_TABELA, porTrecho.colunas.length);
+            const colunasTrechos = Object.fromEntries(Array.from({ length: fim - inicio }, (_, i) => [i + 2, { halign: 'right' }]));
+            secao(inicio === 0 ? 'Resultados por trecho' : 'Resultados por trecho (continuação)', 8 + porTrecho.linhas.length * 7.2);
+            tabela(
+                ['Parâmetro', 'Unidade', ...porTrecho.colunas.slice(inicio, fim)],
+                porTrecho.linhas.map(({ rotulo, descricao: texto, unidade, valores }) => [
+                    `${texto} (${rotulo})`,
+                    unidade,
+                    ...valores.slice(inicio, fim).map(({ texto: valor }) => valor),
+                ]),
+                { 0: { cellWidth: 60 }, 1: { cellWidth: 20 }, ...colunasTrechos },
+            );
+        }
+    }
+
+    imagens.forEach((imagem, i) => {
         const alturaImagem = largura * ALTURA_GRAFICO / LARGURA_GRAFICO;
         garantirEspaco(alturaImagem + 14);
-        y += 6;
-        escrever('Gráfico', 12, 'bold', TEXTO);
-        y += 2;
+        if (i === 0) {
+            y += 6;
+            escrever(imagens.length > 1 ? 'Gráficos' : 'Gráfico', 12, 'bold', TEXTO);
+            y += 2;
+        }
         doc.addImage(imagem, 'PNG', MARGEM, y, largura, alturaImagem, undefined, 'FAST');
         y += alturaImagem + 3;
-    }
+    });
 
     if (perfil) {
         secao('Perfil ao longo do percurso');
         tabela(
             perfil.colunas.map((coluna) => coluna.titulo),
             perfil.linhas.map((linha) => linha.map((valor, i) => numero(valor, perfil.colunas[i].casas))),
-            { 0: { halign: 'right' }, 1: { halign: 'right' } },
+            Object.fromEntries(perfil.colunas.map((_, i) => [i, { halign: 'right' }])),
         );
     }
 

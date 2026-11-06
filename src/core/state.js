@@ -113,6 +113,9 @@ export let defaultState = {
             e: null,
             altitude: null,
             lancamentos: null,
+            kd20c: null,
+            kdt: null,
+            trechos: [],
         },
         colicalc: {
             qr: null,

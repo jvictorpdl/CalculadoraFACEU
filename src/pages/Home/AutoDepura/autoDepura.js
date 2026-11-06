@@ -17,6 +17,7 @@ import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
 import { DadosRioStep1 } from './collection/dadosRio';
 import { AutodepuraRecalculate } from './collection/recalculate';
+import { TrechosSeguintes } from './collection/trechos';
 
 // o gráfico (ApexCharts) é a maior parte do JavaScript; só é baixado ao abrir o resultado
 const AutodepuraChart = lazy(() => import('../../AutoDepuraResult'));
@@ -38,6 +39,9 @@ export function AutoDepura() {
             false,
             false,
             false,
+            false
+        ],
+        'Trechos seguintes': [
             false
         ]
     })
@@ -108,6 +112,9 @@ export function AutoDepura() {
             <DadosAdicionaisStep2 />,
             <DadosAdicionaisStep3 />,
             <DadosAdicionaisStep4 />,
+        ],
+        'Trechos seguintes': [
+            <TrechosSeguintes />
         ],
         'Resumo': [
             <AutodepuraValuesPreview onEditar={abrirGrupo} />

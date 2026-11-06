@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { nomeArquivo, relatorioCsv } from '../../utils/relatorio';
 import { Botao, Botoes, Caixa, Erro, Titulo } from './style';
 
-const imagemDe = async (grafico) => {
-    if (!grafico) return null;
+const imagensDe = async (graficos) => {
     const { imagemDoGrafico } = await import('../../utils/exportar/grafico');
-    return imagemDoGrafico(grafico);
+    return Promise.all(graficos.map(imagemDoGrafico));
 };
 
 // cada biblioteca só é baixada quando alguém escolhe o formato
@@ -15,18 +14,18 @@ const formatos = [
         rotulo: 'PDF',
         Icone: FileText,
         extensao: 'pdf',
-        gerar: async ({ relatorio, grafico, gerado }) => {
-            const [{ gerarPdf }, imagem] = await Promise.all([import('../../utils/exportar/pdf'), imagemDe(grafico)]);
-            return gerarPdf(relatorio, imagem, gerado);
+        gerar: async ({ relatorio, graficos, gerado }) => {
+            const [{ gerarPdf }, imagens] = await Promise.all([import('../../utils/exportar/pdf'), imagensDe(graficos)]);
+            return gerarPdf(relatorio, imagens, gerado);
         },
     },
     {
         rotulo: 'Word',
         Icone: FileType,
         extensao: 'docx',
-        gerar: async ({ relatorio, grafico, gerado }) => {
-            const [{ gerarWord }, imagem] = await Promise.all([import('../../utils/exportar/word'), imagemDe(grafico)]);
-            return gerarWord(relatorio, imagem, gerado);
+        gerar: async ({ relatorio, graficos, gerado }) => {
+            const [{ gerarWord }, imagens] = await Promise.all([import('../../utils/exportar/word'), imagensDe(graficos)]);
+            return gerarWord(relatorio, imagens, gerado);
         },
     },
     {
@@ -50,7 +49,10 @@ const formatos = [
         extensao: 'png',
         parte: '-grafico',
         precisaDeGrafico: true,
-        gerar: async ({ grafico }) => (await fetch(await imagemDe(grafico))).blob(),
+        gerar: async ({ graficos }) => {
+            const { imagemDosGraficos } = await import('../../utils/exportar/grafico');
+            return (await fetch(await imagemDosGraficos(graficos))).blob();
+        },
     },
 ];
 
@@ -66,7 +68,8 @@ function salvar(blob, nome) {
     setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
-export default function BaixarRelatorio({ relatorio, grafico = null }) {
+// quem tem um gráfico só passa "grafico"; o AutoDepura passa os de OD e DBO5 em "graficos"
+export default function BaixarRelatorio({ relatorio, grafico = null, graficos = grafico ? [grafico] : [] }) {
     const [gerando, setGerando] = useState(null);
     const [falhou, setFalhou] = useState(false);
 
@@ -75,7 +78,7 @@ export default function BaixarRelatorio({ relatorio, grafico = null }) {
         setFalhou(false);
         try {
             const gerado = new Date();
-            const blob = await formato.gerar({ relatorio, grafico, gerado });
+            const blob = await formato.gerar({ relatorio, graficos, gerado });
             salvar(blob, nomeArquivo(relatorio, gerado, formato.extensao, formato.parte));
         } catch (erro) {
             console.error(erro);
@@ -90,7 +93,7 @@ export default function BaixarRelatorio({ relatorio, grafico = null }) {
             <Titulo>Baixar relatório com os valores fornecidos</Titulo>
             <Botoes>
                 {formatos
-                    .filter(({ precisaDeGrafico }) => !precisaDeGrafico || grafico)
+                    .filter(({ precisaDeGrafico }) => !precisaDeGrafico || graficos.length > 0)
                     .map((formato) => (
                         <Botao key={formato.rotulo} type="button" disabled={gerando !== null} onClick={() => baixar(formato)}>
                             <formato.Icone size={16} aria-hidden="true" />

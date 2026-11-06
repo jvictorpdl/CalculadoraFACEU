@@ -1,4 +1,4 @@
-import { coeficienteK2 } from "./autoDepuraCalculation";
+import { coeficienteK2, trechosDe } from "./autoDepuraCalculation";
 
 // Regras de preenchimento de cada passo; cada regra devolve a lista de erros,
 // cada um com a mensagem e os rótulos dos campos que devem ser destacados
@@ -21,11 +21,11 @@ function exigirPositivo(dados, campos) {
         .map(([, rotulo]) => erro(`${rotulo} deve ser maior que zero.`, rotulo));
 }
 
-function exigirTrechos(dados, chave, rotulo) {
+function exigirDivisoes(dados, chave, rotulo, nome) {
     const n = Number(dados[chave]);
-    // acima de 1000 trechos o gráfico não ganha nada e valores enormes travam a página
+    // acima de 1000 divisões o gráfico não ganha nada e valores enormes travam a página
     return preenchido(dados[chave]) && (!Number.isInteger(n) || n < 1 || n > 1000)
-        ? [erro('Nº de trechos deve ser um número inteiro entre 1 e 1000.', rotulo)]
+        ? [erro(`${nome} deve ser um número inteiro entre 1 e 1000.`, rotulo)]
         : [];
 }
 
@@ -39,6 +39,56 @@ function exigirFaixa(dados, campos) {
 const faixaT = ['temperatura', 'T', 0, 40, '°C'];
 const faixaV = ['velocidade', 'v', 0, 5, 'm/s'];
 const faixaD = ['distancia', 'd', 0, 1000000, 'm'];
+
+export const MAXIMO_TRECHOS = 20;
+
+// os campos dos trechos seguintes repetem os rótulos; o destaque de erro precisa saber de qual trecho é
+export const campoDoTrecho = (rotulo, numero) => `${rotulo} (trecho ${numero})`;
+
+function errosDoTrecho(trecho, numero, dados) {
+    const erroTrecho = (mensagem, ...rotulos) => erro(`Trecho ${numero}: ${mensagem}`, ...rotulos.map((rotulo) => campoDoTrecho(rotulo, numero)));
+    const erros = [];
+
+    const vazios = [['distancia', 'd'], ['velocidade', 'v']].filter(([chave]) => !preenchido(trecho[chave])).map(([, rotulo]) => rotulo);
+    if (vazios.length) erros.push(erroTrecho(`preencha ${vazios.join(', ')}.`, ...vazios));
+    [['distancia', 'd'], ['velocidade', 'v']]
+        .filter(([chave]) => preenchido(trecho[chave]) && !positivo(trecho[chave]))
+        .forEach(([, rotulo]) => erros.push(erroTrecho(`${rotulo} deve ser maior que zero.`, rotulo)));
+    [faixaD, faixaV, ['ode', 'ODe', 0, 20, 'mg/L'], ['e', 'E', 0, 100, '%']]
+        .filter(([chave, , minimo, maximo]) => preenchido(trecho[chave]) && (Number(trecho[chave]) < minimo || Number(trecho[chave]) > maximo))
+        .forEach(([, rotulo, minimo, maximo, unidade]) => erros.push(erroTrecho(`${rotulo} deve estar entre ${decimal(minimo)} e ${decimal(maximo)} ${unidade}.`, rotulo)));
+
+    // a contribuição é opcional: sem Qe, o trecho só muda de velocidade, profundidade ou K2
+    if (positivo(trecho.qe)) {
+        const semValor = [['ode', 'ODe'], ['dboe', 'DBOe']].filter(([chave]) => !preenchido(trecho[chave])).map(([, rotulo]) => rotulo);
+        if (semValor.length) erros.push(erroTrecho(`preencha ${semValor.join(', ')} da contribuição.`, ...semValor));
+    } else if (['ode', 'dboe', 'e'].some((chave) => preenchido(trecho[chave]))) {
+        erros.push(erroTrecho('informe a vazão Qe da contribuição ou apague ODe, DBOe e E.', 'Qe'));
+    }
+
+    if (!positivo(trecho.k2t)) {
+        if (!positivo(trecho.k220c)) {
+            if (!positivo(trecho.h)) {
+                erros.push(erroTrecho('informe H, K2 (20 °C) ou K2T.', 'H', 'K2 (20 °C)', 'K2T'));
+            } else if (positivo(trecho.velocidade) && coeficienteK2(Number(trecho.h), Number(trecho.velocidade)) === null) {
+                erros.push(erroTrecho(`H = ${decimal(trecho.h)} m e v = ${decimal(trecho.velocidade)} m/s estão fora das faixas das fórmulas de K2 (O'Connor-Dobbins, Churchill, Owens). Informe K2 (20 °C) ou K2T.`, 'v', 'H'));
+            }
+        }
+        // só quando o trecho já usa uma das opções a 20 °C; antes disso o aviso só atrapalha
+        if ((positivo(trecho.k220c) || positivo(trecho.h)) && (!positivo(dados.tetak2) || !preenchido(dados.temperatura))) {
+            erros.push(erroTrecho('para corrigir o K2 pela temperatura, informe θ para K2 e T em Dados adicionais.'));
+        }
+    }
+    return erros;
+}
+
+function errosTrechos(dados) {
+    const trechos = trechosDe(dados);
+    return [
+        ...(trechos.length > MAXIMO_TRECHOS ? [erro(`Use no máximo ${MAXIMO_TRECHOS} trechos seguintes.`)] : []),
+        ...trechos.flatMap((trecho, i) => errosDoTrecho(trecho, i + 2, dados)),
+    ];
+}
 
 const regrasAutodepura = {
     'Dados do rio': [
@@ -73,7 +123,16 @@ const regrasAutodepura = {
                 return [erro('Informe K1 (20 °C), θ para K1 e T, ou então K1T.',
                     ...faltando(d, [['k120c', 'K1 (20 °C)'], ['tetak1', 'θ para K1'], ['temperatura', 'T'], ['k1t', 'K1T']]))];
             }
-            return exigirFaixa(d, [['tetak1', 'θ para K1', 1, 1.2], faixaT]);
+            const erros = [
+                ...exigirFaixa(d, [['tetak1', 'θ para K1', 1, 1.2], faixaT]),
+                ...exigirPositivo(d, [['kd20c', 'Kd (20 °C)'], ['kdt', 'KdT']]),
+            ];
+            // o Kd a 20 °C usa a mesma correção do K1
+            if (positivo(d.kd20c) && !(positivo(d.tetak1) && preenchido(d.temperatura))) {
+                erros.push(erro('Para corrigir o Kd (20 °C) pela temperatura, informe θ para K1 e T.',
+                    ...faltando(d, [['tetak1', 'θ para K1'], ['temperatura', 'T']])));
+            }
+            return erros;
         },
         (d) => {
             const faixas = exigirFaixa(d, [['tetak2', 'θ para K2', 1, 1.2], faixaT, faixaV]);
@@ -98,12 +157,13 @@ const regrasAutodepura = {
             ...exigir(d, [['distancia', 'd'], ['velocidade', 'v'], ['particoes', 'Nº']]),
             ...exigirPositivo(d, [['distancia', 'd'], ['velocidade', 'v']]),
             ...exigirFaixa(d, [faixaD, faixaV]),
-            ...exigirTrechos(d, 'particoes', 'Nº'),
+            ...exigirDivisoes(d, 'particoes', 'Nº', 'Nº de divisões'),
         ],
         (d) => positivo(d.cslinha) || preenchido(d.temperatura)
             ? exigirFaixa(d, [['cslinha', "Cs'", 0, 20, 'mg/L'], ['altitude', 'Altitude', 0, 5000, 'm'], faixaT])
             : [erro("Informe Cs', ou a temperatura T (e a altitude, se houver) para calculá-lo.", 'T', "Cs'")],
     ],
+    'Trechos seguintes': [errosTrechos],
 };
 
 const regrasColicalc = {
@@ -133,7 +193,7 @@ const regrasColicalc = {
             ...exigir(d, [['temperatura', 'T'], ['distancia', 'd'], ['velocidade', 'v'], ['kb', 'Kb'], ['teta', 'θ para Kb'], ['particoes', 'Nº trechos']]),
             ...exigirPositivo(d, [['distancia', 'd'], ['velocidade', 'v'], ['kb', 'Kb'], ['teta', 'θ para Kb']]),
             ...exigirFaixa(d, [faixaT, ['teta', 'θ para Kb', 1, 1.2], faixaD, faixaV]),
-            ...exigirTrechos(d, 'particoes', 'Nº trechos'),
+            ...exigirDivisoes(d, 'particoes', 'Nº trechos', 'Nº de trechos'),
         ],
 };
 

@@ -44,7 +44,51 @@ test('os valores calculados e a conclusão do relatório são os mesmos da tela'
     expect(calculado('xc').valor).toBeCloseTo(resultado.critico.xcKm, 2);
     expect(calculado('K2 (20 °C)')).toBeUndefined();
     expect(relatorio.perfil.linhas).toHaveLength(rio.particoes + 1);
-    expect(relatorio.perfil.linhas[0]).toEqual([0, Number(resultado.ctVet[0])]);
+    expect(relatorio.perfil.linhas[0]).toEqual([0, Number(resultado.ctVet[0]), resultado.dboVet[0]]);
+    expect(relatorio.porTrecho).toBeNull();
+});
+
+// Exemplo 8.5 (Von Sperling), segundo exemplo da planilha: dois trechos
+const exemplo85 = {
+    qr: 0.76, odr: 7.1, dbor: 2, odmin: 5, qe: 0.114, ode: 0, dboe: 341, e: null, dboefl: null,
+    k120c: null, tetak1: null, temperatura: 20, k1t: 0.44, kd20c: null, kdt: 0.77,
+    tetak2: null, h: null, k220c: null, k2t: 5.23, cslinha: 7.9, altitude: null,
+    distancia: 50000, velocidade: 0.26, particoes: 20,
+    trechos: [{ qe: 0.45, ode: 7.7, dboe: 1, e: null, distancia: 25000, velocidade: 0.33, h: null, k220c: null, k2t: 4.6 }],
+};
+
+test('com vários trechos o relatório traz os dados e os resultados de cada um', () => {
+    const relatorio = montarAutodepura(exemplo85);
+    const linhaTrecho = (rotulo) => relatorio.porTrecho.linhas.find((linha) => linha.rotulo === rotulo).valores.map(({ valor }) => valor);
+
+    expect(relatorio.descricao).toBe('Autodepuração de rio em 2 trechos pelo modelo de Streeter-Phelps');
+    expect(relatorio.fornecidos.map((grupo) => grupo.titulo)).toEqual(['Dados do rio', 'Dados do esgoto', 'Dados adicionais', 'Trecho 2']);
+    expect(relatorio.fornecidos[3].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'd', 'v', 'K2T']);
+    expect(relatorio.calculados.map((linha) => linha.rotulo)).toEqual(['K1T', 'KdT', "Cs'"]);
+    expect(relatorio.porTrecho.colunas).toEqual(['Trecho 1', 'Trecho 2']);
+    expect(linhaTrecho('Qt')).toEqual([0.874, 1.324]);
+    expect(linhaTrecho('OD final')).toEqual([6.28, 7.23]);
+    expect(linhaTrecho('Menor OD')).toEqual([2.2, 6.76]);
+    expect(relatorio.perfil.colunas.map((coluna) => coluna.titulo)).toEqual(['Trecho', 'Distância (km)', 'OD (mg/L)', 'DBO5 (mg/L)']);
+    expect(relatorio.perfil.linhas[0][0]).toBe(1);
+    expect(relatorio.perfil.linhas.at(-1)).toEqual([2, 75, 7.23, 2.97]);
+});
+
+test('a conclusão com vários trechos aponta onde fica o menor OD do rio', () => {
+    const conclusao = montarAutodepura(exemplo85).conclusao;
+
+    expect(conclusao.atende).toBe(false);
+    expect(conclusao.linhas[0]).toBe('Menor OD do rio: 2,20 mg/L, no ponto crítico do trecho 1, a 8,6 km do primeiro lançamento (tc = 0,38 dia após a mistura). ODmín = 5,00 mg/L.');
+    expect(conclusao.linhas).toContain('Abaixo do ODmín: trecho 1.');
+    expect(montarAutodepura({ ...exemplo85, odmin: 2 }).conclusao.atende).toBe(true);
+});
+
+test('o CSV com vários trechos tem uma coluna por trecho', () => {
+    const csv = relatorioCsv(montarAutodepura(exemplo85), gerado);
+
+    expect(csv).toContain('Resultados por trecho\r\nParâmetro;Descrição;Unidade;Trecho 1;Trecho 2');
+    expect(csv).toContain('Qt;Vazão total após a mistura;m³/s;0,874;1,324');
+    expect(csv).toContain('Trecho 2;Qe;Vazão da contribuição no início do trecho (esgoto ou afluente);0,45;m³/s');
 });
 
 test('K2 calculado por H e v aparece nos valores calculados', () => {
@@ -100,8 +144,8 @@ test('o CSV abre no Excel em português e separa cada parte', () => {
     expect(csv.startsWith('﻿')).toBe(true);
     expect(csv).toContain('Dados do rio;Qr;Vazão do rio;0,651;m³/s');
     expect(csv).toContain('Valores calculados');
-    expect(csv).toContain('Distância (km);OD (mg/L)');
-    expect(linhas.at(-2).split(';')).toHaveLength(2);
+    expect(csv).toContain('Distância (km);OD (mg/L);DBO5 (mg/L)');
+    expect(linhas.at(-2).split(';')).toHaveLength(3);
 });
 
 test('o CSV escapa o separador dentro do texto', () => {

@@ -264,10 +264,56 @@ export function AjudaTetaK2() {
     );
 }
 
-export function AjudaTrechos() {
+export function AjudaKd() {
     return (
-        <Ajuda campo="Nº de trechos" titulo="Número de trechos no rio">
-            <p>Número de trechos ao longo da distância para o cálculo do oxigênio dissolvido.</p>
+        <Ajuda campo="Kd" titulo="Coeficiente de decomposição da DBO no rio (Kd)">
+            <p>
+                O K1 vem do ensaio de DBO e converte a DBO5 em DBO última. O Kd é a taxa com que a DBO se
+                decompõe no próprio rio: é ele que faz a DBO cair e consumir oxigênio ao longo do percurso.
+            </p>
+            <br />
+            <p>Deixe o Kd em branco para usar o mesmo valor do K1 (modelo clássico de Streeter-Phelps).</p>
+            <br />
+            <p>O Kd a 20 °C é corrigido pela temperatura com o mesmo θ do K1.</p>
+            <br />
+            <p>No Exemplo 8.5 do livro, K1 = 0,44 e Kd = 0,77 1/dia, os dois já na temperatura do rio.</p>
+            <br />
+            <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios (item 8.8)</Nota>
+        </Ajuda>
+    );
+}
+
+export function AjudaDivisoes() {
+    return (
+        <Ajuda campo="Nº de divisões" titulo="Número de divisões de cada trecho">
+            <p>
+                Em quantas partes cada trecho é dividido para calcular os pontos do gráfico e do perfil. Não muda
+                o ponto crítico, que é calculado de forma exata.
+            </p>
+        </Ajuda>
+    );
+}
+
+export function AjudaTrechosSeguintes() {
+    return (
+        <Ajuda campo="trechos seguintes" titulo="Rio com diversos trechos">
+            <p>
+                O trecho 1 é o descrito nos grupos anteriores: o rio, o primeiro lançamento e os dados adicionais.
+                Acrescente um trecho sempre que o rio receber outra contribuição ou mudar de velocidade, profundidade ou K2.
+            </p>
+            <br />
+            <p>Cada trecho começa onde o anterior termina:</p>
+            <ul style={lista}>
+                <li>a vazão do rio é a vazão total do trecho anterior (Qr + Qe);</li>
+                <li>o OD e a DBO5 do rio são os do fim do trecho anterior.</li>
+            </ul>
+            <br />
+            <p>
+                A contribuição pode ser um esgoto ou um afluente com vazão, OD e DBO5 conhecidos. Deixe-a em branco
+                quando o trecho só muda as características do rio. Temperatura, K1, Kd, Cs' e ODmín valem para o rio todo.
+            </p>
+            <br />
+            <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios (item 8.8)</Nota>
         </Ajuda>
     );
 }

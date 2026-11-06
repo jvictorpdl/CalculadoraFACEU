@@ -20,9 +20,9 @@ export function GrupoResumo({ titulo, onEditar, children }) {
 }
 
 // campo opcional em branco não ocupa linha; o restante aparece como "rótulo: valor unidade"
-export function LinhaResumo({ rotulo, dica, valor, unidade, opcional = false }) {
+export function LinhaResumo({ rotulo, campo = rotulo, dica, valor, unidade, opcional = false }) {
     const [dicaAberta, setDicaAberta] = useState(false);
-    const comErro = useContext(CamposComErro).has(rotulo);
+    const comErro = useContext(CamposComErro).has(campo);
     const vazio = valor === null || valor === undefined || valor === '';
 
     if (vazio && opcional && !comErro) return null;

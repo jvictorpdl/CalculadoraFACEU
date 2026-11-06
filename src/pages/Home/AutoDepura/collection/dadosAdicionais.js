@@ -5,7 +5,7 @@ import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
-import { AjudaK1, AjudaK2, AjudaTetaK1, AjudaTetaK2, AjudaTrechos, PainelAjuda } from "./ajudas";
+import { AjudaDivisoes, AjudaK1, AjudaK2, AjudaKd, AjudaTetaK1, AjudaTetaK2, PainelAjuda } from "./ajudas";
 
 const Orientacao = ({ children }) => (
     <p style={{ fontSize: 14, lineHeight: 1.5, color: '#4B5563', margin: '0 0 16px' }}>{children}</p>
@@ -39,25 +39,26 @@ export function DadosAdicionaisStep1() {
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Orientacao>
                         Informe K1 a 20 °C com θ e T, ou então K1T já na temperatura do rio. Se os dois forem preenchidos, vale o K1 (20 °C).
+                        O Kd é opcional: em branco, a DBO se decompõe no rio com o próprio K1.
                     </Orientacao>
-                    <Grid columns={3}>
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.k120c} onBlurValue={(val) => updateStateWithAutodepuraData({ k120c: val })} label="K1 (20 °C)" tooltip="Coeficiente de desoxigenação a 20 °C" placeholder="1/dia" />
+                        <TextFieldWithTooltip value={state.data.autodepura.kd20c} onBlurValue={(val) => updateStateWithAutodepuraData({ kd20c: val })} label="Kd (20 °C)" tooltip="Coeficiente de decomposição da DBO no rio a 20 °C (opcional)" placeholder="1/dia" />
                         <TextFieldWithTooltip value={state.data.autodepura.tetak1} onBlurValue={(val) => updateStateWithAutodepuraData({ tetak1: val })} label="θ para K1" tooltip="Coeficiente de temperatura" placeholder="ad." />
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do rio" placeholder="°C" />
-                        {/* Ou k1T */}
-                        <br />
                     </Grid>
                     <Ordivider />
 
-                    <Grid columns={3}>
-                        {/* <br/>Ou */}
+                    <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.k1t} onBlurValue={(val) => updateStateWithAutodepuraData({ k1t: val })} label="K1T" tooltip="Coeficiente de desoxigenação na temperatura do rio (T)" placeholder="1/dia" />
+                        <TextFieldWithTooltip value={state.data.autodepura.kdt} onBlurValue={(val) => updateStateWithAutodepuraData({ kdt: val })} label="KdT" tooltip="Coeficiente de decomposição da DBO no rio na temperatura do rio (T), opcional" placeholder="1/dia" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
                 <Column>
                     <PainelAjuda>
                         <AjudaK1 />
+                        <AjudaKd />
                         <AjudaTetaK1 />
                     </PainelAjuda>
                 </Column>
@@ -154,16 +155,19 @@ export function DadosAdicionaisStep3() {
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
+                    <Orientacao>
+                        Distância e velocidade do trecho 1. Se o rio tiver outros trechos, eles entram no grupo Trechos seguintes.
+                    </Orientacao>
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.distancia} onBlurValue={(val) => updateStateWithAutodepuraData({ distancia: val })} label="d" tooltip="Distância percorrida a partir do lançamento" placeholder="m" />
                         <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="Velocidade do rio" placeholder="m/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Número de trechos em que o percurso é dividido no cálculo" placeholder="Quantidade" />
+                        <TextFieldWithTooltip value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Número de divisões de cada trecho no cálculo do perfil" placeholder="Quantidade" />
                     </Grid>
                 </Column>
                 <VerticalSplitter />
                 <Column>
                     <PainelAjuda>
-                        <AjudaTrechos />
+                        <AjudaDivisoes />
                     </PainelAjuda>
                 </Column>
             </Row>

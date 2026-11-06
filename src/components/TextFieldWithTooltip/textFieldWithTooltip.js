@@ -8,6 +8,7 @@ export const CamposComErro = createContext(new Set());
 
 export default function TextFieldWithTooltip({
     label,
+    campo = label,
     tooltip,
     placeholder,
     disabled = false,
@@ -16,7 +17,8 @@ export default function TextFieldWithTooltip({
 }) {
     const [currentValue, setValue] = useState(value?.toString()?.replaceAll('.', ',') ?? '');
     const [dicaAberta, setDicaAberta] = useState(false);
-    const invalido = useContext(CamposComErro).has(label);
+    // campos repetidos (como os de cada trecho) informam um nome próprio para o destaque de erro
+    const invalido = useContext(CamposComErro).has(campo);
     const id = useId();
     // o placeholder recebido é a unidade do campo (m³/s, mg/L, ...)
     const unidade = placeholder?.trim();

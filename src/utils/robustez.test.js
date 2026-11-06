@@ -15,6 +15,7 @@ beforeAll(() => jest.spyOn(console, 'log').mockImplementation(() => { }));
 
 test('AutoDepura: entradas aceitas pela validação dão resultado finito', () => {
     let aceitas = 0;
+    let comTrechos = 0;
     for (let i = 0; i < 3000; i++) {
         const k1 = escolha(['20', 'T']);
         const k2 = escolha(['hv', '20', 'T']);
@@ -32,16 +33,37 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
             k2t: k2 === 'T' ? talvez(casas(entre(0.1, 5))) : null, distancia: talvez(casas(entre(100, 200000), 0)),
             particoes: talvez(Math.floor(entre(1, 60))), cslinha: escolha([talvez(casas(entre(5, 12))), null]),
             altitude: talvez(casas(entre(0, 3000), 0)),
+            kd20c: k1 === '20' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
+            kdt: k1 === 'T' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
+            trechos: Array.from({ length: escolha([0, 0, 1, 2, 3]) }, () => {
+                const contribuicao = aleatorio() < 0.7;
+                const k2 = escolha(['hv', '20', 'T']);
+                return {
+                    qe: contribuicao ? talvez(casas(entre(0.001, 10))) : null,
+                    ode: contribuicao ? talvez(casas(entre(0, 8))) : null,
+                    dboe: contribuicao ? talvez(casas(entre(1, 400))) : null,
+                    e: contribuicao && aleatorio() < 0.3 ? talvez(casas(entre(0, 99))) : null,
+                    distancia: talvez(casas(entre(100, 100000), 0)), velocidade: talvez(casas(entre(0.03, 1.6))),
+                    h: k2 === 'hv' ? talvez(casas(entre(0.1, 5))) : null,
+                    k220c: k2 === '20' ? talvez(casas(entre(0.1, 5))) : null,
+                    k2t: k2 === 'T' ? talvez(casas(entre(0.1, 5))) : null,
+                };
+            }),
         };
         if (errosAutodepura(d).length) continue;
         aceitas++;
+        if (d.trechos.length) comTrechos++;
         const r = CalculadoraAutodepura(d);
-        expect(r.ctVet).toHaveLength(d.particoes + 1);
+        expect(r.ctVet).toHaveLength((d.particoes + 1) * (d.trechos.length + 1));
+        expect(r.dboVet).toHaveLength(r.ctVet.length);
         r.ctVet.forEach((od) => expect(Number.isFinite(Number(od))).toBe(true));
+        r.dboVet.forEach((dbo) => expect(Number.isFinite(dbo)).toBe(true));
         [r.critico.tc, r.critico.xcKm, r.critico.odc].forEach((v) => expect(Number.isFinite(v)).toBe(true));
         expect(r.critico.tc).toBeGreaterThanOrEqual(0);
+        r.trechos.forEach((trecho) => expect(Number.isFinite(trecho.minimo.od)).toBe(true));
     }
     expect(aceitas).toBeGreaterThan(500);
+    expect(comTrechos).toBeGreaterThan(100);
 });
 
 test('ColiCalc: entradas aceitas pela validação dão resultado finito', () => {

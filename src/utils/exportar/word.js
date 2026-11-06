@@ -60,10 +60,32 @@ const titulo2 = (text) => new Paragraph({
     children: [new TextRun({ text, bold: true, color: TEXTO, size: 24 })],
 });
 
-export async function gerarWord(relatorio, imagem, gerado) {
-    const { titulo, descricao, conclusao, fornecidos, calculados, perfil } = relatorio;
+const TRECHOS_POR_TABELA = 5;
+
+// um parâmetro por linha e até cinco trechos por tabela, como no PDF
+function tabelasPorTrecho(porTrecho) {
+    const tabelas = [];
+    for (let inicio = 0; inicio < porTrecho.colunas.length; inicio += TRECHOS_POR_TABELA) {
+        const colunas = porTrecho.colunas.slice(inicio, inicio + TRECHOS_POR_TABELA);
+        const larguraTrecho = Math.floor((LARGURA_TABELA - 4300) / colunas.length);
+        const larguras = [3400, 900, ...colunas.map(() => larguraTrecho)];
+        if (inicio > 0) tabelas.push(new Paragraph({ spacing: { before: 200 }, children: [] }));
+        tabelas.push(tabela(larguras, ['Parâmetro', 'Unidade', ...colunas], porTrecho.linhas.map(({ rotulo, descricao, unidade, valores }) => new TableRow({
+            children: [
+                celula(`${descricao} (${rotulo})`, larguras[0]),
+                celula(unidade, larguras[1]),
+                ...valores.slice(inicio, inicio + TRECHOS_POR_TABELA).map(({ texto }, i) => celula(texto, larguras[i + 2], { direita: true })),
+            ],
+        }))));
+    }
+    return tabelas;
+}
+
+export async function gerarWord(relatorio, imagens, gerado) {
+    const { titulo, descricao, conclusao, fornecidos, calculados, porTrecho, perfil } = relatorio;
     const cabecalhoParametros = ['Parâmetro', 'Descrição', 'Valor', 'Unidade'];
-    const dadosImagem = imagem && Uint8Array.from(atob(imagem.split(',')[1]), (letra) => letra.charCodeAt(0));
+    const bytes = (imagem) => Uint8Array.from(atob(imagem.split(',')[1]), (letra) => letra.charCodeAt(0));
+    const larguraPerfil = perfil ? Math.floor(LARGURA_TABELA / perfil.colunas.length) : 0;
 
     const documento = new Document({
         creator: 'Calimpe-H20',
@@ -106,25 +128,27 @@ export async function gerarWord(relatorio, imagem, gerado) {
                     tabela(LARGURAS_PARAMETROS, cabecalhoParametros, calculados.map(linhaParametro)),
                 ] : []),
 
-                ...(imagem ? [
-                    titulo2('Gráfico'),
-                    new Paragraph({
+                ...(porTrecho ? [titulo2('Resultados por trecho'), ...tabelasPorTrecho(porTrecho)] : []),
+
+                ...(imagens.length ? [
+                    titulo2(imagens.length > 1 ? 'Gráficos' : 'Gráfico'),
+                    ...imagens.map((imagem, i) => new Paragraph({
                         children: [new ImageRun({
                             type: 'png',
-                            data: dadosImagem,
+                            data: bytes(imagem),
                             transformation: { width: LARGURA_IMAGEM, height: LARGURA_IMAGEM * ALTURA_GRAFICO / LARGURA_GRAFICO },
-                            altText: { name: 'Gráfico', title: 'Gráfico', description: `Perfil do ${titulo} ao longo do percurso` },
+                            altText: { name: `Gráfico ${i + 1}`, title: 'Gráfico', description: `Perfil do ${titulo} ao longo do percurso` },
                         })],
-                    }),
+                    })),
                 ] : []),
 
                 ...(perfil ? [
                     titulo2('Perfil ao longo do percurso'),
                     tabela(
-                        [LARGURA_TABELA / 2, LARGURA_TABELA / 2],
+                        perfil.colunas.map(() => larguraPerfil),
                         perfil.colunas.map((coluna) => coluna.titulo),
                         perfil.linhas.map((linha) => new TableRow({
-                            children: linha.map((valor, i) => celula(numero(valor, perfil.colunas[i].casas), LARGURA_TABELA / 2, { direita: true })),
+                            children: linha.map((valor, i) => celula(numero(valor, perfil.colunas[i].casas), larguraPerfil, { direita: true })),
                         })),
                     ),
                 ] : []),

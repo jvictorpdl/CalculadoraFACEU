@@ -29,6 +29,24 @@ test('os valores digitados sobrevivem a recarregar a página', () => {
     expect(contexto.state.data.autodepura).toMatchObject({ qr: 0.651, ode: 0, odr: null });
 });
 
+test('os trechos seguintes também ficam guardados', () => {
+    const { unmount } = abrir();
+    digitar({ trechos: [{ id: 'a', qe: 0.45, distancia: 25000 }] });
+    unmount();
+
+    abrir();
+
+    expect(contexto.state.data.autodepura.trechos).toEqual([{ id: 'a', qe: 0.45, distancia: 25000 }]);
+});
+
+test('dados salvos antes da versão com trechos abrem sem nenhum trecho', () => {
+    localStorage.setItem(CHAVE, JSON.stringify({ autodepura: { qr: 0.651 } }));
+
+    abrir();
+
+    expect(contexto.state.data.autodepura).toMatchObject({ qr: 0.651, trechos: [], kd20c: null });
+});
+
 test('dados salvos corrompidos não derrubam a calculadora', () => {
     localStorage.setItem(CHAVE, '{quebrado');
 

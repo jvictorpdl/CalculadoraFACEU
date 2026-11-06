@@ -15,7 +15,7 @@ const linhaParametro = ({ rotulo, descricao, valor, unidade }) => [
 ];
 
 export async function gerarExcel(relatorio, gerado) {
-    const { titulo: nome, descricao, conclusao, fornecidos, calculados, perfil } = relatorio;
+    const { titulo: nome, descricao, conclusao, fornecidos, calculados, porTrecho, perfil } = relatorio;
 
     const dados = [
         [titulo(`Relatório ${nome}`, { fontSize: 14 })],
@@ -46,6 +46,24 @@ export async function gerarExcel(relatorio, gerado) {
         columns: [{ width: 14 }, { width: 60 }, { width: 16 }, { width: 14 }],
     }];
 
+    // uma coluna por trecho, como as subplanilhas do Exemplo 8.5
+    if (porTrecho) {
+        planilhas.push({
+            data: [
+                ['Parâmetro', 'Descrição', 'Unidade', ...porTrecho.colunas].map(cabecalho),
+                ...porTrecho.linhas.map(({ rotulo, descricao: texto, unidade, valores }) => [
+                    titulo(rotulo),
+                    texto,
+                    unidade,
+                    ...valores.map(({ valor }) => ({ value: valor, type: Number })),
+                ]),
+            ],
+            sheet: 'Trechos',
+            columns: [{ width: 14 }, { width: 50 }, { width: 10 }, ...porTrecho.colunas.map(() => ({ width: 12 }))],
+            stickyRowsCount: 1,
+        });
+    }
+
     if (perfil) {
         planilhas.push({
             data: [
@@ -53,7 +71,7 @@ export async function gerarExcel(relatorio, gerado) {
                 ...perfil.linhas.map((linha) => linha.map((value) => ({ value, type: Number }))),
             ],
             sheet: 'Perfil',
-            columns: [{ width: 18 }, { width: 22 }],
+            columns: perfil.colunas.map(() => ({ width: 18 })),
             stickyRowsCount: 1,
         });
     }

@@ -8,7 +8,7 @@ Calculadoras on-line de engenharia sanitária para avaliar o lançamento de eflu
 
 | Ferramenta | O que calcula |
 | --- | --- |
-| **AutoDepura** | Autodepuração de rios pelo modelo de Streeter-Phelps: perfil de oxigênio dissolvido ao longo do trecho e ponto crítico (ODc, tc e xc), comparados com o OD mínimo informado. |
+| **AutoDepura** | Autodepuração de rios pelo modelo de Streeter-Phelps: perfis de oxigênio dissolvido e DBO5 e ponto crítico (ODc, tc e xc), comparados com o OD mínimo informado. Calcula um trecho ou vários trechos encadeados, cada um com uma contribuição opcional (esgoto ou afluente) no início, como no item 8.8 de Von Sperling. O coeficiente Kd, de decomposição da DBO no rio, é opcional; em branco, vale o K1. |
 | **ColiCalc** | Coliformes em um rio **ou** em uma represa, nunca os dois no mesmo cálculo. Mostra o decaimento ao longo do rio ou usa o tempo de detenção da represa, e indica a eficiência de tratamento necessária para atender ao padrão. |
 | **EutroFriza** | Em breve. |
 
@@ -61,7 +61,10 @@ src/
 
 ## Publicação
 
-Cada push na `main` publica os projetos da Netlify ligados a este repositório. Depois do envio, confira se o arquivo `main.*.js` do site mudou.
+- **Homologação:** https://autodepura.netlify.app publica a branch em teste. Use esse endereço para testar, nunca o de produção.
+- **Produção:** https://calimpe-h20.netlify.app publica a `main`. Uma mudança só entra na `main` depois de aprovada na homologação.
+
+Depois de cada envio, confira se o arquivo `main.*.js` do site mudou.
 
 ## Cuidados ao alterar
 

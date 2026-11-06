@@ -42,9 +42,47 @@ test('represa não exige distância, velocidade nem trechos', () => {
     expect(mensagens(errosColicalc({ ...represa, represa: false }))).toEqual(['Preencha: d, v, Nº trechos.']);
 });
 
-test('Nº de trechos enorme é barrado (travaria a página)', () => {
+test('Nº de divisões enorme é barrado (travaria a página)', () => {
     expect(mensagens(errosPassoAutodepura('Dados adicionais', 2, { ...autodepura, particoes: 1000000000 })))
+        .toEqual(['Nº de divisões deve ser um número inteiro entre 1 e 1000.']);
+    expect(mensagens(errosColicalc({ qr: 1, nr: 10, qe: 1, ne: 1e7, nop: 1000, temperatura: 20, kb: 1, teta: 1.07, distancia: 1000, velocidade: 0.3, particoes: 0.5, represa: false })))
         .toEqual(['Nº de trechos deve ser um número inteiro entre 1 e 1000.']);
+});
+
+test('Kd é opcional; a 20 °C ele precisa de θ e T para a correção', () => {
+    expect(errosAutodepura({ ...autodepura, kd20c: 0.5 })).toEqual([]);
+    expect(errosAutodepura({ ...autodepura, k120c: null, k1t: 0.44, kdt: 0.77 })).toEqual([]);
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, k120c: null, tetak1: null, k1t: 0.44, kd20c: 0.5 })))
+        .toEqual(['Para corrigir o Kd (20 °C) pela temperatura, informe θ para K1 e T.']);
+});
+
+const trecho = { qe: 0.45, ode: 7.7, dboe: 1, e: null, distancia: 25000, velocidade: 0.33, h: null, k220c: null, k2t: 4.6 };
+const errosDosTrechos = (trechos) => errosPassoAutodepura('Trechos seguintes', 0, { ...autodepura, trechos });
+
+test('trechos seguintes completos, ou sem nenhum, não geram erro', () => {
+    expect(errosDosTrechos([])).toEqual([]);
+    expect(errosAutodepura({ ...autodepura, trechos: [trecho, { ...trecho, qe: null, ode: null, dboe: null, k2t: null, h: 1 }] })).toEqual([]);
+    // dados salvos antes da versão com trechos
+    expect(errosAutodepura({ ...autodepura, trechos: undefined })).toEqual([]);
+});
+
+test('cada erro de trecho diz qual é o trecho e destaca só os campos dele', () => {
+    const erros = errosDosTrechos([trecho, { ...trecho, distancia: null, velocidade: null }]);
+
+    expect(mensagens(erros)).toEqual(['Trecho 3: preencha d, v.']);
+    expect(erros[0].campos).toEqual(['d (trecho 3)', 'v (trecho 3)']);
+});
+
+test('contribuição pela metade é barrada; sem Qe, ODe e DBOe ficam em branco', () => {
+    expect(mensagens(errosDosTrechos([{ ...trecho, dboe: null }]))).toEqual(['Trecho 2: preencha DBOe da contribuição.']);
+    expect(mensagens(errosDosTrechos([{ ...trecho, qe: null }]))).toEqual(['Trecho 2: informe a vazão Qe da contribuição ou apague ODe, DBOe e E.']);
+});
+
+test('trecho sem K2 pede uma das opções; K2 pela temperatura exige θ e T', () => {
+    expect(mensagens(errosDosTrechos([{ ...trecho, k2t: null }]))).toEqual(['Trecho 2: informe H, K2 (20 °C) ou K2T.']);
+    expect(mensagens(errosDosTrechos([{ ...trecho, k2t: null, h: 5 }]))[0]).toMatch(/^Trecho 2: H = 5 m e v = 0,33 m\/s estão fora das faixas/);
+    expect(mensagens(errosPassoAutodepura('Trechos seguintes', 0, { ...autodepura, tetak2: null, trechos: [{ ...trecho, k2t: null, k220c: 3 }] })))
+        .toEqual(['Trecho 2: para corrigir o K2 pela temperatura, informe θ para K2 e T em Dados adicionais.']);
 });
 
 test('valores fora das faixas plausíveis são barrados', () => {

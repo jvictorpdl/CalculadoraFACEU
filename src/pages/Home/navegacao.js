@@ -81,7 +81,7 @@ export function Grupos({ nomes, selecionado, bloqueados, onSelecionar }) {
 // o botão só aparece com algo digitado; os valores ficam guardados até a pessoa limpar
 export function TituloCalculadora({ titulo, dados, onLimpar }) {
     const [confirmando, setConfirmando] = useState(false);
-    const temDados = Object.values(dados).some((valor) => typeof valor === 'number');
+    const temDados = Object.values(dados).some((valor) => typeof valor === 'number' || (Array.isArray(valor) && valor.length > 0));
 
     return (
         <>

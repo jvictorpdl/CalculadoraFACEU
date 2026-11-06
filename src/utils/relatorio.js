@@ -1,3 +1,5 @@
+import { trechosDe } from './autoDepuraCalculation';
+
 // O Resumo e os relatórios leem os parâmetros daqui, e a tela de resultado e os
 // relatórios usam as mesmas conclusões; assim o arquivo baixado nunca diverge da tela
 
@@ -29,6 +31,8 @@ export const camposAutodepura = [
             { chave: 'k120c', rotulo: 'K1 (20 °C)', dica: 'Coeficiente de desoxigenação a 20 °C', unidade: '1/dia', opcional: true },
             { chave: 'tetak1', rotulo: 'θ para K1', dica: 'Coeficiente de temperatura', opcional: true },
             { chave: 'k1t', rotulo: 'K1T', dica: 'Coeficiente de desoxigenação na temperatura do rio (T)', unidade: '1/dia', opcional: true },
+            { chave: 'kd20c', rotulo: 'Kd (20 °C)', dica: 'Coeficiente de decomposição da DBO no rio a 20 °C', unidade: '1/dia', opcional: true },
+            { chave: 'kdt', rotulo: 'KdT', dica: 'Coeficiente de decomposição da DBO no rio na temperatura do rio (T)', unidade: '1/dia', opcional: true },
             { chave: 'temperatura', rotulo: 'T', dica: 'Temperatura do rio', unidade: '°C' },
             { chave: 'velocidade', rotulo: 'v', dica: 'Velocidade do rio', unidade: 'm/s' },
             { chave: 'tetak2', rotulo: 'θ para K2', dica: 'Coeficiente de temperatura', opcional: true },
@@ -36,11 +40,24 @@ export const camposAutodepura = [
             { chave: 'k220c', rotulo: 'K2 (20 °C)', dica: 'Coeficiente de reaeração a 20 °C', unidade: '1/dia', opcional: true },
             { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração na temperatura do rio (T)', unidade: '1/dia', opcional: true },
             { chave: 'distancia', rotulo: 'd', dica: 'Distância percorrida a partir do lançamento', unidade: 'm' },
-            { chave: 'particoes', rotulo: 'Nº', dica: 'Número de trechos em que o percurso é dividido no cálculo' },
+            { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões de cada trecho no cálculo do perfil' },
             { chave: 'altitude', rotulo: 'Altitude', dica: 'Altitude do local', unidade: 'm', opcional: true },
             { chave: 'cslinha', rotulo: "Cs'", dica: 'Concentração de saturação de oxigênio dissolvido no rio', unidade: 'mg/L', opcional: true },
         ],
     },
+];
+
+// cada trecho seguinte começa com uma contribuição opcional (esgoto ou afluente com dados conhecidos)
+export const camposTrecho = [
+    { chave: 'qe', rotulo: 'Qe', dica: 'Vazão da contribuição no início do trecho (esgoto ou afluente)', unidade: 'm³/s', opcional: true },
+    { chave: 'ode', rotulo: 'ODe', dica: 'Oxigênio dissolvido da contribuição', unidade: 'mg/L', opcional: true },
+    { chave: 'dboe', rotulo: 'DBOe', dica: 'DBO5 da contribuição', unidade: 'mg/L', opcional: true },
+    { chave: 'e', rotulo: 'E', dica: 'Eficiência do tratamento na remoção de DBO da contribuição', unidade: '%', opcional: true },
+    { chave: 'distancia', rotulo: 'd', dica: 'Extensão do trecho', unidade: 'm' },
+    { chave: 'velocidade', rotulo: 'v', dica: 'Velocidade do rio no trecho', unidade: 'm/s' },
+    { chave: 'h', rotulo: 'H', dica: 'Profundidade do rio no trecho, para calcular o K2', unidade: 'm', opcional: true },
+    { chave: 'k220c', rotulo: 'K2 (20 °C)', dica: 'Coeficiente de reaeração do trecho a 20 °C', unidade: '1/dia', opcional: true },
+    { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração do trecho na temperatura do rio (T)', unidade: '1/dia', opcional: true },
 ];
 
 export function camposColicalc(isRio) {
@@ -113,8 +130,41 @@ const calculado = (rotulo, descricao, valor, unidade, casas = 2) => ({
     unidade,
 });
 
-// OD negativo dentro do trecho simulado, mesmo entre os pontos amostrados
-export const odNegativo = ({ ctVet, critico }) => ctVet.some((od) => od < 0) || (critico.odc < 0 && critico.xcKm <= critico.distanciaKm);
+// OD negativo dentro de algum trecho simulado, mesmo entre os pontos amostrados
+export const odNegativo = ({ ctVet, trechos }) =>
+    ctVet.some((od) => od < 0) || trechos.some((trecho) => trecho.odc < 0 && trecho.xcKm <= trecho.distanciaKm);
+
+const avisosSaturacao = ({ odmin, cs, odr }) => [
+    ...(odmin >= cs ? [`Atenção: o ODmín (${numero(odmin, 2)} mg/L) é maior ou igual à saturação (Cs' = ${numero(cs, 2)} mg/L), então nenhum trecho do rio consegue atendê-lo. Confira os valores.`] : []),
+    ...(odr > cs ? [`Atenção: o ODr (${numero(odr, 2)} mg/L) está acima da saturação (Cs' = ${numero(cs, 2)} mg/L). Isso só ocorre em rios supersaturados; confira os valores.`] : []),
+];
+
+const listaTrechos = (numeros) => (numeros.length === 1
+    ? `trecho ${numeros[0]}`
+    : `trechos ${numeros.slice(0, -1).join(', ')} e ${numeros[numeros.length - 1]}`);
+
+function conclusaoTrechos({ critico, trechos }) {
+    const { tc, xcKm, odc, odmin, trecho, tipo } = critico;
+    const atende = odc >= odmin;
+    const onde = {
+        critico: `no ponto crítico do trecho ${trecho}, a ${numero(xcKm, 1)} km do primeiro lançamento (tc = ${numero(tc, 2)} dia após a mistura)`,
+        inicio: `logo após a mistura do trecho ${trecho}, a ${numero(xcKm, 1)} km do primeiro lançamento`,
+        fim: `no fim do trecho ${trecho}, a ${numero(xcKm, 1)} km do primeiro lançamento, antes da contribuição seguinte`,
+        alem: `no ponto crítico do trecho ${trecho}, a ${numero(xcKm, 1)} km do primeiro lançamento, além do fim do último trecho`,
+    }[tipo];
+
+    return {
+        atende,
+        titulo: atende ? 'Atende o OD mínimo' : 'Não atende o OD mínimo',
+        linhas: [
+            `Menor OD do rio: ${numero(odc, 2)} mg/L, ${onde}. ODmín = ${numero(odmin, 2)} mg/L.`,
+            ...(tipo === 'alem' ? [`Aumente d do trecho ${trecho} para ver esse ponto no gráfico.`] : []),
+            ...(atende ? [] : [`Abaixo do ODmín: ${listaTrechos(trechos.filter((t) => t.minimo.od < odmin).map((t) => t.numero))}.`]),
+            ...(odc < 0 ? ['Abaixo de zero o modelo de Streeter-Phelps deixa de valer nesse trecho.'] : []),
+            ...avisosSaturacao(critico),
+        ],
+    };
+}
 
 export function conclusaoAutodepura(resultado) {
     if (odNegativo(resultado)) {
@@ -124,8 +174,9 @@ export function conclusaoAutodepura(resultado) {
             linhas: ['O modelo de Streeter-Phelps não tem validade para este caso.'],
         };
     }
+    if (resultado.trechos.length > 1) return conclusaoTrechos(resultado);
 
-    const { tc, xcKm, odc, co, odmin, distanciaKm, cs, odr } = resultado.critico;
+    const { tc, xcKm, odc, co, odmin, distanciaKm } = resultado.critico;
     const atende = odc >= odmin;
 
     return {
@@ -137,8 +188,7 @@ export function conclusaoAutodepura(resultado) {
                 : `O OD não cai depois do lançamento: o menor valor é o da mistura, ${numero(co, 2)} mg/L. ODmín = ${numero(odmin, 2)} mg/L.`,
             ...(xcKm > distanciaKm ? [`O ponto crítico fica além da distância simulada (${numero(distanciaKm, 1)} km). Aumente d para ver o trecho mais crítico no gráfico.`] : []),
             ...(odc < 0 ? ['Abaixo de zero o modelo de Streeter-Phelps deixa de valer nesse trecho.'] : []),
-            ...(odmin >= cs ? [`Atenção: o ODmín (${numero(odmin, 2)} mg/L) é maior ou igual à saturação (Cs' = ${numero(cs, 2)} mg/L), então nenhum trecho do rio consegue atendê-lo. Confira os valores.`] : []),
-            ...(odr > cs ? [`Atenção: o ODr (${numero(odr, 2)} mg/L) está acima da saturação (Cs' = ${numero(cs, 2)} mg/L). Isso só ocorre em rios supersaturados; confira os valores.`] : []),
+            ...avisosSaturacao(resultado.critico),
         ],
     };
 }
@@ -170,23 +220,70 @@ export function conclusaoColicalc(dados, resultado) {
     };
 }
 
+// a mesma organização das subplanilhas do Exemplo 8.5: um parâmetro por linha, um trecho por coluna
+const LINHAS_POR_TRECHO = [
+    ['Início', 'Distância do início do trecho ao primeiro lançamento', 'km', 2, (t) => t.inicioKm],
+    ['Extensão', 'Comprimento do trecho', 'km', 2, (t) => t.distanciaKm],
+    ['Qr', 'Vazão do rio a montante da contribuição', 'm³/s', 3, (t) => t.qr],
+    ['ODr', 'OD do rio a montante da contribuição', 'mg/L', 2, (t) => t.odr],
+    ['DBOr', 'DBO5 do rio a montante da contribuição', 'mg/L', 2, (t) => t.dbor],
+    ['Qe', 'Vazão da contribuição', 'm³/s', 3, (t) => t.qe],
+    ['Qt', 'Vazão total após a mistura', 'm³/s', 3, (t) => t.qt],
+    ['C0', 'OD da mistura', 'mg/L', 2, (t) => t.co],
+    ['DBO5', 'DBO5 da mistura', 'mg/L', 2, (t) => t.dbo5],
+    ['L0', 'DBO última da mistura', 'mg/L', 2, (t) => t.lo],
+    ['K2T', 'Coeficiente de reaeração na temperatura do rio', '1/dia', 3, (t) => t.k2t],
+    ['t', 'Tempo de percurso no trecho', 'dia', 3, (t) => t.tempo],
+    ['DBO5 final', 'DBO5 no fim do trecho', 'mg/L', 2, (t) => t.dbo5Fim],
+    ['OD final', 'OD no fim do trecho', 'mg/L', 2, (t) => t.odFim],
+    ['Menor OD', 'Menor OD do trecho (no último, vale o ponto crítico mesmo além do fim)', 'mg/L', 2, (t) => t.minimo.od],
+    ['Local', 'Distância do menor OD ao primeiro lançamento', 'km', 2, (t) => t.minimo.km],
+];
+
+function tabelaPorTrecho(trechos) {
+    return {
+        colunas: trechos.map((trecho) => `Trecho ${trecho.numero}`),
+        linhas: LINHAS_POR_TRECHO.map(([rotulo, descricao, unidade, casas, valorDe]) => ({
+            rotulo,
+            descricao,
+            unidade,
+            valores: trechos.map((trecho) => ({ valor: Number(valorDe(trecho).toFixed(casas)), texto: numero(valorDe(trecho), casas) })),
+        })),
+    };
+}
+
 export function relatorioAutodepura(dados, resultado) {
-    const { critico, calculados, kmvet, ctVet } = resultado;
+    const { critico, calculados, kmvet, ctVet, dboVet, trechos } = resultado;
     const valido = !odNegativo(resultado);
+    const varios = trechos.length > 1;
     // sem K2 informado, ele vem das fórmulas hidráulicas (H e v)
     const k2PelaFormula = !preenchido(dados.k220c) && !preenchido(dados.k2t);
+    const linhaKd = preenchido(dados.kd20c) || preenchido(dados.kdt)
+        ? [calculado('KdT', 'Coeficiente de decomposição da DBO no rio, na temperatura do rio', calculados.kdt, '1/dia', 3)]
+        : [];
+    const pontosPorTrecho = kmvet.length / trechos.length;
 
     return {
         titulo: 'AutoDepura',
-        descricao: 'Autodepuração de rio pelo modelo de Streeter-Phelps',
+        descricao: varios
+            ? `Autodepuração de rio em ${trechos.length} trechos pelo modelo de Streeter-Phelps`
+            : 'Autodepuração de rio pelo modelo de Streeter-Phelps',
         arquivo: 'autodepura',
         conclusao: conclusaoAutodepura(resultado),
-        fornecidos: valoresFornecidos(camposAutodepura, dados),
-        calculados: valido ? [
+        fornecidos: [
+            ...valoresFornecidos(camposAutodepura, dados),
+            ...trechosDe(dados).flatMap((trecho, i) => valoresFornecidos([{ titulo: `Trecho ${i + 2}`, campos: camposTrecho }], trecho)),
+        ],
+        calculados: !valido ? [] : varios ? [
+            calculado('K1T', 'Coeficiente de desoxigenação na temperatura do rio', calculados.k1t, '1/dia', 3),
+            ...linhaKd,
+            calculado("Cs'", 'Concentração de saturação de OD', critico.cs, 'mg/L'),
+        ] : [
             calculado('C0', 'OD da mistura', critico.co, 'mg/L'),
             calculado('DBO5', 'DBO5 da mistura', calculados.dbo5, 'mg/L'),
             calculado('L0', 'DBO última da mistura', calculados.lo, 'mg/L'),
             calculado('K1T', 'Coeficiente de desoxigenação na temperatura do rio', calculados.k1t, '1/dia', 3),
+            ...linhaKd,
             ...(k2PelaFormula ? [calculado('K2 (20 °C)', 'Coeficiente de reaeração a 20 °C, pelas fórmulas de H e v', calculados.k220c, '1/dia', 3)] : []),
             calculado('K2T', 'Coeficiente de reaeração na temperatura do rio', calculados.k2t, '1/dia', 3),
             calculado("Cs'", 'Concentração de saturação de OD', critico.cs, 'mg/L'),
@@ -196,10 +293,21 @@ export function relatorioAutodepura(dados, resultado) {
                 calculado('xc', 'Distância do ponto crítico', critico.xcKm, 'km'),
             ] : []),
             calculado('ODc', 'OD no ponto crítico', critico.odc, 'mg/L'),
-        ] : [],
+        ],
+        porTrecho: valido && varios ? tabelaPorTrecho(trechos) : null,
         perfil: valido ? {
-            colunas: [{ titulo: 'Distância (km)', casas: 3 }, { titulo: 'OD (mg/L)', casas: 2 }],
-            linhas: kmvet.map((km, i) => [km, Number(ctVet[i])]),
+            colunas: [
+                ...(varios ? [{ titulo: 'Trecho', casas: 0 }] : []),
+                { titulo: 'Distância (km)', casas: 3 },
+                { titulo: 'OD (mg/L)', casas: 2 },
+                { titulo: 'DBO5 (mg/L)', casas: 2 },
+            ],
+            linhas: kmvet.map((km, i) => [
+                ...(varios ? [Math.floor(i / pontosPorTrecho) + 1] : []),
+                km,
+                Number(ctVet[i]),
+                dboVet[i],
+            ]),
         } : null,
     };
 }
@@ -247,7 +355,7 @@ export function relatorioCsv(relatorio, gerado) {
     const escapar = (celula) => (/[;"\r\n]/.test(celula) ? `"${celula.replaceAll('"', '""')}"` : celula);
     const parametro = ({ rotulo, descricao, valor, unidade }, grupo) => [grupo, rotulo, descricao, decimal(valor), unidade];
     const cabecalho = ['Grupo', 'Parâmetro', 'Descrição', 'Valor', 'Unidade'];
-    const { titulo, descricao, conclusao, fornecidos, calculados, perfil } = relatorio;
+    const { titulo, descricao, conclusao, fornecidos, calculados, porTrecho, perfil } = relatorio;
 
     const linhas = [
         [`Relatório ${titulo}`],
@@ -266,6 +374,12 @@ export function relatorioCsv(relatorio, gerado) {
             ['Valores calculados'],
             cabecalho,
             ...calculados.map((linha) => parametro(linha, 'Calculado')),
+        ] : []),
+        ...(porTrecho ? [
+            [],
+            ['Resultados por trecho'],
+            ['Parâmetro', 'Descrição', 'Unidade', ...porTrecho.colunas],
+            ...porTrecho.linhas.map(({ rotulo, descricao: texto, unidade, valores }) => [rotulo, texto, unidade, ...valores.map(({ valor }) => decimal(valor))]),
         ] : []),
         ...(perfil ? [
             [],
