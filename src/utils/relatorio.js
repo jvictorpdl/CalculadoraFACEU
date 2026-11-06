@@ -295,19 +295,26 @@ export function relatorioAutodepura(dados, resultado) {
             calculado('ODc', 'OD no ponto crítico', critico.odc, 'mg/L'),
         ],
         porTrecho: valido && varios ? tabelaPorTrecho(trechos) : null,
+        // com vários trechos, as mesmas colunas da aba Resumo do Exemplo 8.5
         perfil: valido ? {
             colunas: [
-                ...(varios ? [{ titulo: 'Trecho', casas: 0 }] : []),
-                { titulo: 'Distância (km)', casas: 3 },
-                { titulo: 'OD (mg/L)', casas: 2 },
+                ...(varios ? [
+                    { titulo: 'Trecho', casas: 0 },
+                    { titulo: 'Distância no trecho (km)', casas: 3 },
+                    { titulo: 'Distância acumulada (km)', casas: 3 },
+                ] : [{ titulo: 'Distância (km)', casas: 3 }]),
+                { titulo: 'OD (mg/L)', casas: 2, chave: 'od' },
                 { titulo: 'DBO5 (mg/L)', casas: 2 },
             ],
-            linhas: kmvet.map((km, i) => [
-                ...(varios ? [Math.floor(i / pontosPorTrecho) + 1] : []),
-                km,
-                Number(ctVet[i]),
-                dboVet[i],
-            ]),
+            linhas: kmvet.map((km, i) => {
+                const trecho = trechos[Math.floor(i / pontosPorTrecho)];
+                return [
+                    ...(varios ? [trecho.numero, Number((km - trecho.inicioKm).toFixed(6))] : []),
+                    km,
+                    Number(ctVet[i]),
+                    dboVet[i],
+                ];
+            }),
         } : null,
     };
 }

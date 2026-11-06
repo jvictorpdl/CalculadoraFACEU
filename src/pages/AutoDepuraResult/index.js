@@ -3,7 +3,7 @@ import alertIcon from "../../assets/alertIcon.svg";
 import BaixarRelatorio from "../../components/BaixarRelatorio";
 import Linechart, { graficoDBO, graficoOD } from "../../components/Linechart";
 import * as calc from "../../utils/autoDepuraCalculation";
-import { relatorioAutodepura } from "../../utils/relatorio";
+import { numero, relatorioAutodepura } from "../../utils/relatorio";
 import { CardInput } from "../AutoDepura/styleSteps";
 
 const Conclusao = styled.div`
@@ -130,6 +130,127 @@ function TabelaTrechos({ porTrecho }) {
   );
 }
 
+// longa demais para ficar aberta, sobretudo no celular; quem precisa dos números abre
+const Recolhivel = styled.details`
+  margin: 16px 0;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+
+  summary {
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+  }
+
+  summary span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6B7280;
+  }
+
+  @media (max-width: 768px) {
+    summary {
+      min-height: 44px;
+    }
+  }
+`;
+
+const Legenda = styled.p`
+  margin: 0;
+  padding: 0 16px 8px;
+  font-size: 13px;
+  color: #4B5563;
+`;
+
+const RolagemValores = styled.div`
+  max-height: 480px;
+  overflow: auto;
+  border-top: 1px solid #E5E7EB;
+`;
+
+const TabelaValores = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #374151;
+  font-variant-numeric: tabular-nums;
+
+  th, td {
+    padding: 6px 12px;
+    border-bottom: 1px solid #F3F4F6;
+    text-align: right;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background: #17737A;
+    color: #FFF;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: #F9FAFB;
+  }
+
+  /* primeira linha de cada trecho seguinte: a mistura com a contribuição */
+  tr.divisa td {
+    border-top: 2px solid #9CA3AF;
+  }
+
+  td.abaixo {
+    color: #B91C1C;
+    font-weight: 600;
+  }
+
+  /* cinco colunas cabem em 320 px com o título quebrado em linhas */
+  @media (max-width: 768px) {
+    font-size: 13px;
+
+    th, td {
+      padding: 6px 4px;
+    }
+
+    thead th {
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+  }
+`;
+
+// os mesmos pontos do perfil dos relatórios, como a aba Resumo do Exemplo 8.5
+function ValoresAoLongoDoRio({ perfil, odmin }) {
+  const colunaOd = perfil.colunas.findIndex((coluna) => coluna.chave === 'od');
+  const porTrecho = perfil.colunas[0].titulo === 'Trecho';
+
+  return (
+    <Recolhivel>
+      <summary>Valores ao longo do rio <span>({perfil.linhas.length} pontos)</span></summary>
+      <Legenda>Em vermelho e com *, o OD abaixo do ODmín ({numero(odmin, 2)} mg/L).</Legenda>
+      <RolagemValores>
+        <TabelaValores>
+          <thead>
+            <tr>{perfil.colunas.map((coluna) => <th key={coluna.titulo} scope="col">{coluna.titulo}</th>)}</tr>
+          </thead>
+          <tbody>
+            {perfil.linhas.map((linha, i) => (
+              <tr key={i} className={porTrecho && i > 0 && linha[0] !== perfil.linhas[i - 1][0] ? 'divisa' : undefined}>
+                {linha.map((valor, j) => (
+                  j === colunaOd && valor < odmin
+                    ? <td key={j} className="abaixo">{numero(valor, perfil.colunas[j].casas)} *</td>
+                    : <td key={j}>{numero(valor, perfil.colunas[j].casas)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </TabelaValores>
+      </RolagemValores>
+    </Recolhivel>
+  );
+}
+
 export default function AutodepuraChart(props) {
   const resultado = calc.CalculadoraAutodepura(props.data);
   const { ctVet, dboVet, odminVet, kmvet, critico, divisasKm } = resultado;
@@ -164,6 +285,7 @@ export default function AutodepuraChart(props) {
       <Linechart grafico={graficos[0]} />
       <Linechart grafico={graficos[1]} altura={400} />
       {porTrecho && <TabelaTrechos porTrecho={porTrecho} />}
+      <ValoresAoLongoDoRio perfil={perfil} odmin={critico.odmin} />
     </>
   )
 }

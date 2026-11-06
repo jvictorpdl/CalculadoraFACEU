@@ -69,9 +69,12 @@ test('com vários trechos o relatório traz os dados e os resultados de cada um'
     expect(linhaTrecho('Qt')).toEqual([0.874, 1.324]);
     expect(linhaTrecho('OD final')).toEqual([6.28, 7.23]);
     expect(linhaTrecho('Menor OD')).toEqual([2.2, 6.76]);
-    expect(relatorio.perfil.colunas.map((coluna) => coluna.titulo)).toEqual(['Trecho', 'Distância (km)', 'OD (mg/L)', 'DBO5 (mg/L)']);
-    expect(relatorio.perfil.linhas[0][0]).toBe(1);
-    expect(relatorio.perfil.linhas.at(-1)).toEqual([2, 75, 7.23, 2.97]);
+    expect(relatorio.perfil.colunas.map((coluna) => coluna.titulo))
+        .toEqual(['Trecho', 'Distância no trecho (km)', 'Distância acumulada (km)', 'OD (mg/L)', 'DBO5 (mg/L)']);
+    expect(relatorio.perfil.linhas[0]).toEqual([1, 0, 0, 6.17, 46.22]);
+    // na divisa, o fim do trecho 1 e a mistura do trecho 2 ficam no mesmo km acumulado
+    expect(relatorio.perfil.linhas.slice(20, 22)).toEqual([[1, 50, 50, 6.28, 8.33], [2, 0, 50, 6.76, 5.84]]);
+    expect(relatorio.perfil.linhas.at(-1)).toEqual([2, 25, 75, 7.23, 2.97]);
 });
 
 test('a conclusão com vários trechos aponta onde fica o menor OD do rio', () => {
