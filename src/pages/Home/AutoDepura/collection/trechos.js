@@ -1,6 +1,7 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useContext } from "react";
 import styled from "styled-components";
+import AvisoTrava from "../../../../components/AvisoTrava";
 import FormTitle from "../../../../components/FormTitle/formTitle";
 import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
@@ -8,7 +9,7 @@ import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/te
 import { ApplicationContext } from "../../../../core/providers";
 import { CalculadoraAutodepura, trechosDe } from "../../../../utils/autoDepuraCalculation";
 import { numero } from "../../../../utils/relatorio";
-import { campoDoTrecho, errosAutodepura, MAXIMO_TRECHOS } from "../../../../utils/validacao";
+import { bloqueadoPor, CAMINHOS, campoDoTrecho, errosAutodepura, MAXIMO_TRECHOS } from "../../../../utils/validacao";
 import { AjudaE, AjudaK2, AjudaTrechosSeguintes, PainelAjuda } from "./ajudas";
 
 const Orientacao = styled.p`
@@ -129,8 +130,14 @@ function rioAMontante(dados, indice) {
 }
 
 function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) {
+    // H, K2 (20 °C) e K2T são opções para o mesmo K2: uma preenchida bloqueia as outras
+    const opcoesK2 = [['H', 0], ['K2 (20 °C)', 1], ['K2T', 2]].map(([rotulo, opcao]) => [rotulo, bloqueadoPor(trecho, CAMINHOS.k2, opcao)]);
+    const bloqueado = Object.fromEntries(opcoesK2.map(([rotulo, por]) => [rotulo, por.length > 0]));
+    const motivo = [...new Set(opcoesK2.flatMap(([, por]) => por))];
+
     const campo = (chave, label, tooltip, placeholder) => (
         <TextFieldWithTooltip
+            disabled={bloqueado[label] ?? false}
             value={trecho[chave]}
             onBlurValue={(val) => onAlterar({ [chave]: val })}
             label={label}
@@ -169,12 +176,13 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) 
                 {campo('velocidade', 'v', 'Velocidade do rio no trecho', 'm/s')}
             </Grid>
 
-            <Subtitulo>Reaeração: informe H, K2 (20 °C) ou K2T</Subtitulo>
+            <Subtitulo>Reaeração: informe só uma das opções, H, K2 (20 °C) ou K2T</Subtitulo>
             <Grid columns={4}>
                 {campo('h', 'H', 'Profundidade do rio no trecho, para calcular o K2 com a velocidade', 'm')}
                 {campo('k220c', 'K2 (20 °C)', 'Coeficiente de reaeração do trecho a 20 °C', '1/dia')}
                 {campo('k2t', 'K2T', 'Coeficiente de reaeração do trecho na temperatura do rio (T)', '1/dia')}
             </Grid>
+            <AvisoTrava campos={opcoesK2.filter(([rotulo]) => bloqueado[rotulo]).map(([rotulo]) => rotulo)} por={motivo} />
         </Cartao>
     );
 }

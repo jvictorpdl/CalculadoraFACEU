@@ -1,4 +1,4 @@
-import { errosAutodepura, errosColicalc, errosPassoAutodepura } from './validacao';
+import { bloqueadoPor, CAMINHOS, errosAutodepura, errosColicalc, errosPassoAutodepura } from './validacao';
 
 const autodepura = {
     qr: 0.651, odr: 7, dbor: 2, odmin: 5, k120c: 0.38, tetak1: 1.047, temperatura: 23, k1t: null,
@@ -49,11 +49,41 @@ test('Nº de divisões enorme é barrado (travaria a página)', () => {
         .toEqual(['Nº de trechos deve ser um número inteiro entre 1 e 1000.']);
 });
 
-test('Kd é opcional; a 20 °C ele precisa de θ e T para a correção', () => {
+test('Kd é opcional e entra na mesma linha do K1', () => {
     expect(errosAutodepura({ ...autodepura, kd20c: 0.5 })).toEqual([]);
     expect(errosAutodepura({ ...autodepura, k120c: null, k1t: 0.44, kdt: 0.77 })).toEqual([]);
-    expect(mensagens(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, k120c: null, tetak1: null, k1t: 0.44, kd20c: 0.5 })))
-        .toEqual(['Para corrigir o Kd (20 °C) pela temperatura, informe θ para K1 e T.']);
+    // Kd a 20 °C sem o K1 a 20 °C: falta o K1 da linha escolhida
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, k120c: null, kd20c: 0.5 })))
+        .toEqual(['Informe K1 (20 °C), θ para K1 e T, ou então K1T.']);
+});
+
+test('caminho preenchido bloqueia os outros; T, θ e v ficam fora da trava', () => {
+    expect(bloqueadoPor(autodepura, CAMINHOS.k1, 1)).toEqual(['K1 (20 °C)']);
+    expect(bloqueadoPor(autodepura, CAMINHOS.k1, 0)).toEqual([]);
+    expect(bloqueadoPor(autodepura, CAMINHOS.k2, 0)).toEqual(['K2 (20 °C)']);
+    expect(bloqueadoPor(autodepura, CAMINHOS.k2, 2)).toEqual(['K2 (20 °C)']);
+    expect(bloqueadoPor(autodepura, CAMINHOS.cs, 0)).toEqual(["Cs'"]);
+    expect(bloqueadoPor({ ...autodepura, cslinha: null }, CAMINHOS.cs, 1)).toEqual([]);
+    // o zero digitado também conta como caminho escolhido
+    expect(bloqueadoPor({ ...autodepura, dboe: null, e: 0 }, CAMINHOS.dboEsgoto, 1)).toEqual(['E']);
+    // com os dois caminhos preenchidos (dados antigos), nenhum trava: a pessoa precisa conseguir apagar um
+    const ambos = { ...autodepura, k1t: 0.44 };
+    expect([bloqueadoPor(ambos, CAMINHOS.k1, 0), bloqueadoPor(ambos, CAMINHOS.k1, 1)]).toEqual([[], []]);
+});
+
+test('dois caminhos preenchidos viram erro em vez de o cálculo escolher um', () => {
+    const k1 = errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, kdt: 0.77 });
+    expect(mensagens(k1)).toEqual(['Use a linha a 20 °C (K1 e Kd) ou a linha na temperatura do rio (K1T e KdT), não as duas. Apague os valores de uma delas.']);
+    expect(k1[0].campos).toEqual(['K1 (20 °C)', 'KdT']);
+
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 1, { ...autodepura, k2t: 3.3 })))
+        .toEqual(['Use só uma opção para o K2 (H, K2 (20 °C) ou K2T) e apague as outras.']);
+    expect(mensagens(errosPassoAutodepura('Dados adicionais', 3, { ...autodepura, altitude: 500 })))
+        .toEqual(["Use a altitude (para calcular o Cs' com T) ou o Cs' já pronto, não os dois. Apague um deles."]);
+
+    const noTrecho = errosPassoAutodepura('Trechos seguintes', 0, { ...autodepura, trechos: [{ ...trecho, h: 1 }] });
+    expect(mensagens(noTrecho)).toEqual(['Trecho 2: use só uma opção para o K2 (H, K2 (20 °C) ou K2T) e apague as outras.']);
+    expect(noTrecho[0].campos).toEqual(['H (trecho 2)', 'K2T (trecho 2)']);
 });
 
 const trecho = { qe: 0.45, ode: 7.7, dboe: 1, e: null, distancia: 25000, velocidade: 0.33, h: null, k220c: null, k2t: 4.6 };

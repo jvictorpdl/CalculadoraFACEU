@@ -21,6 +21,29 @@ function exigirPositivo(dados, campos) {
         .map(([, rotulo]) => erro(`${rotulo} deve ser maior que zero.`, rotulo));
 }
 
+// Caminhos alternativos para chegar ao mesmo valor: com um deles preenchido, os outros ficam
+// bloqueados na tela. T, θ e v ficam de fora porque também servem a outros cálculos.
+export const CAMINHOS = {
+    dboEsgoto: [[['e', 'E'], ['dboe', 'DBOe']], [['dboefl', 'DBOefl']]],
+    k1: [[['k120c', 'K1 (20 °C)'], ['kd20c', 'Kd (20 °C)']], [['k1t', 'K1T'], ['kdt', 'KdT']]],
+    k2: [[['h', 'H']], [['k220c', 'K2 (20 °C)']], [['k2t', 'K2T']]],
+    cs: [[['altitude', 'Altitude']], [['cslinha', "Cs'"]]],
+};
+
+const preenchidosNo = (dados, caminho) => caminho.filter(([chave]) => preenchido(dados[chave])).map(([, rotulo]) => rotulo);
+
+// rótulos que bloqueiam o caminho; vazio quando ele está livre ou já foi escolhido
+export function bloqueadoPor(dados, caminhos, indice) {
+    if (preenchidosNo(dados, caminhos[indice]).length) return [];
+    return caminhos.flatMap((caminho, i) => (i === indice ? [] : preenchidosNo(dados, caminho)));
+}
+
+// dados salvos antes da trava podem ter dois caminhos preenchidos; o cálculo não escolhe por conta própria
+function conflito(dados, caminhos, mensagem, nomeDoCampo = (rotulo) => rotulo) {
+    const usados = caminhos.map((caminho) => preenchidosNo(dados, caminho)).filter((rotulos) => rotulos.length);
+    return usados.length > 1 ? [erro(mensagem, ...usados.flat().map(nomeDoCampo))] : [];
+}
+
 function exigirDivisoes(dados, chave, rotulo, nome) {
     const n = Number(dados[chave]);
     // acima de 1000 divisões o gráfico não ganha nada e valores enormes travam a página
@@ -65,6 +88,9 @@ function errosDoTrecho(trecho, numero, dados) {
     } else if (['ode', 'dboe', 'e'].some((chave) => preenchido(trecho[chave]))) {
         erros.push(erroTrecho('informe a vazão Qe da contribuição ou apague ODe, DBOe e E.', 'Qe'));
     }
+
+    erros.push(...conflito(trecho, CAMINHOS.k2, `Trecho ${numero}: use só uma opção para o K2 (H, K2 (20 °C) ou K2T) e apague as outras.`,
+        (rotulo) => campoDoTrecho(rotulo, numero)));
 
     if (!positivo(trecho.k2t)) {
         if (!positivo(trecho.k220c)) {
@@ -119,22 +145,21 @@ const regrasAutodepura = {
     ],
     'Dados adicionais': [
         (d) => {
+            // o Kd a 20 °C fica na mesma linha do K1 a 20 °C, então a correção por θ e T já é exigida por ele
+            const linhas = conflito(d, CAMINHOS.k1, 'Use a linha a 20 °C (K1 e Kd) ou a linha na temperatura do rio (K1T e KdT), não as duas. Apague os valores de uma delas.');
+            if (linhas.length) return linhas;
             if (!(positivo(d.k1t) || (positivo(d.k120c) && positivo(d.tetak1) && preenchido(d.temperatura)))) {
                 return [erro('Informe K1 (20 °C), θ para K1 e T, ou então K1T.',
                     ...faltando(d, [['k120c', 'K1 (20 °C)'], ['tetak1', 'θ para K1'], ['temperatura', 'T'], ['k1t', 'K1T']]))];
             }
-            const erros = [
+            return [
                 ...exigirFaixa(d, [['tetak1', 'θ para K1', 1, 1.2], faixaT]),
                 ...exigirPositivo(d, [['kd20c', 'Kd (20 °C)'], ['kdt', 'KdT']]),
             ];
-            // o Kd a 20 °C usa a mesma correção do K1
-            if (positivo(d.kd20c) && !(positivo(d.tetak1) && preenchido(d.temperatura))) {
-                erros.push(erro('Para corrigir o Kd (20 °C) pela temperatura, informe θ para K1 e T.',
-                    ...faltando(d, [['tetak1', 'θ para K1'], ['temperatura', 'T']])));
-            }
-            return erros;
         },
         (d) => {
+            const opcoes = conflito(d, CAMINHOS.k2, 'Use só uma opção para o K2 (H, K2 (20 °C) ou K2T) e apague as outras.');
+            if (opcoes.length) return opcoes;
             const faixas = exigirFaixa(d, [['tetak2', 'θ para K2', 1, 1.2], faixaT, faixaV]);
             if (positivo(d.k2t)) return faixas;
             const erros = [...faixas];
@@ -159,9 +184,13 @@ const regrasAutodepura = {
             ...exigirFaixa(d, [faixaD, faixaV]),
             ...exigirDivisoes(d, 'particoes', 'Nº', 'Nº de divisões'),
         ],
-        (d) => positivo(d.cslinha) || preenchido(d.temperatura)
-            ? exigirFaixa(d, [['cslinha', "Cs'", 0, 20, 'mg/L'], ['altitude', 'Altitude', 0, 5000, 'm'], faixaT])
-            : [erro("Informe Cs', ou a temperatura T (e a altitude, se houver) para calculá-lo.", 'T', "Cs'")],
+        (d) => {
+            const opcoes = conflito(d, CAMINHOS.cs, "Use a altitude (para calcular o Cs' com T) ou o Cs' já pronto, não os dois. Apague um deles.");
+            if (opcoes.length) return opcoes;
+            return positivo(d.cslinha) || preenchido(d.temperatura)
+                ? exigirFaixa(d, [['cslinha', "Cs'", 0, 20, 'mg/L'], ['altitude', 'Altitude', 0, 5000, 'm'], faixaT])
+                : [erro("Informe Cs', ou a temperatura T (e a altitude, se houver) para calculá-lo.", 'T', "Cs'")];
+        },
     ],
     'Trechos seguintes': [errosTrechos],
 };

@@ -1,10 +1,12 @@
 import { useContext } from "react";
+import AvisoTrava from "../../../../components/AvisoTrava";
 import FormTitle from "../../../../components/FormTitle/formTitle";
 import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
+import { bloqueadoPor, CAMINHOS } from "../../../../utils/validacao";
 import { AjudaDBOe, AjudaE, AjudaODe, PainelAjuda } from "./ajudas";
 
 export function DadoEsgotoStep1() {
@@ -63,8 +65,9 @@ export function DadoEsgotoStep2() {
     }
 
 
-    // os valores salvos são números (sem .length); DBOefl fica bloqueada quando DBOe ou E já foram informados
-    const disableDBOe = state.data.autodepura.dboe != null || state.data.autodepura.e != null;
+    // DBOe (com ou sem E) ou DBOefl: o caminho preenchido bloqueia o outro
+    const bloqueioDBOe = bloqueadoPor(state.data.autodepura, CAMINHOS.dboEsgoto, 0);
+    const bloqueioDBOefl = bloqueadoPor(state.data.autodepura, CAMINHOS.dboEsgoto, 1);
 
     return (
         <div>
@@ -72,13 +75,15 @@ export function DadoEsgotoStep2() {
                 <Column>
                     <FormTitle title="Carga orgânica do esgoto" />
                     <Grid columns={2}>
-                        <TextFieldWithTooltip value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="Eficiência do tratamento de esgoto na remoção de DBO" placeholder="%" />
-                        <TextFieldWithTooltip value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio do esgoto" placeholder="mg/L" />
+                        <TextFieldWithTooltip disabled={bloqueioDBOe.length > 0} value={state.data.autodepura.e} onBlurValue={(val) => updateStateWithAutodepuraData({ e: val })} label="E" tooltip="Eficiência do tratamento de esgoto na remoção de DBO" placeholder="%" />
+                        <TextFieldWithTooltip disabled={bloqueioDBOe.length > 0} value={state.data.autodepura.dboe} onBlurValue={(val) => updateStateWithAutodepuraData({ dboe: val })} label="DBOe" tooltip="Demanda bioquímica de oxigênio do esgoto" placeholder="mg/L" />
                     </Grid>
+                    <AvisoTrava campos={['E', 'DBOe']} por={bloqueioDBOe} />
                     <Ordivider />
                     <Grid columns={2}>
-                        <TextFieldWithTooltip disabled={disableDBOe} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="DBO do efluente tratado" placeholder="mg/L" />
+                        <TextFieldWithTooltip disabled={bloqueioDBOefl.length > 0} value={state.data.autodepura.dboefl} onBlurValue={(val) => updateStateWithAutodepuraData({ dboefl: val })} label="DBOefl" tooltip="DBO do efluente tratado" placeholder="mg/L" />
                     </Grid>
+                    <AvisoTrava campos={['DBOefl']} por={bloqueioDBOefl} />
                 </Column>
                 <VerticalSplitter />
                 <Column>

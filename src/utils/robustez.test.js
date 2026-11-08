@@ -31,8 +31,9 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
             tetak2: talvez(casas(entre(1, 1.04))), h: k2 === 'hv' ? talvez(casas(entre(0.1, 5))) : null,
             velocidade: talvez(casas(entre(0.03, 1.6))), k220c: k2 === '20' ? talvez(casas(entre(0.1, 5))) : null,
             k2t: k2 === 'T' ? talvez(casas(entre(0.1, 5))) : null, distancia: talvez(casas(entre(100, 200000), 0)),
-            particoes: talvez(Math.floor(entre(1, 60))), cslinha: escolha([talvez(casas(entre(5, 12))), null]),
-            altitude: talvez(casas(entre(0, 3000), 0)),
+            particoes: talvez(Math.floor(entre(1, 60))),
+            // Cs' informado ou calculado pela altitude, como a trava da tela permite
+            ...(aleatorio() < 0.5 ? { cslinha: talvez(casas(entre(5, 12))), altitude: null } : { cslinha: null, altitude: talvez(casas(entre(0, 3000), 0)) }),
             kd20c: k1 === '20' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
             kdt: k1 === 'T' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
             trechos: Array.from({ length: escolha([0, 0, 1, 2, 3]) }, () => {
