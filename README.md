@@ -8,7 +8,7 @@ Calculadoras on-line de engenharia sanitária para avaliar o lançamento de eflu
 
 | Ferramenta | O que calcula |
 | --- | --- |
-| **AutoDepura** | Autodepuração de rios pelo modelo de Streeter-Phelps: perfis de oxigênio dissolvido e DBO5 e ponto crítico (ODc, tc e xc), comparados com o OD mínimo informado. Calcula um trecho ou vários trechos encadeados, cada um com uma contribuição opcional (esgoto ou afluente) no início, como no item 8.8 de Von Sperling. O coeficiente Kd, de decomposição da DBO no rio, é opcional; em branco, vale o K1. |
+| **AutoDepura** | Autodepuração de rios pelo modelo de Streeter-Phelps: perfis de oxigênio dissolvido e DBO5 e ponto crítico (ODc, tc e xc), comparados com o OD mínimo informado. Calcula um trecho ou vários trechos encadeados, como no item 8.8 de Von Sperling. Cada trecho pode receber no início uma ou mais contribuições no mesmo ponto (esgoto tratado, esgoto bruto ou afluente) e pode ter o próprio K1; em branco, vale o do trecho anterior. O coeficiente Kd, de decomposição da DBO no rio, é opcional e vale para o rio todo; em branco, vale o K1 de cada trecho. A conversão da DBO5 em DBO última (KT) usa o K1T, na temperatura do rio, ou, por escolha, o K1 a 20 °C. |
 | **ColiCalc** | Coliformes em um rio **ou** em uma represa, nunca os dois no mesmo cálculo. Mostra o decaimento ao longo do rio ou usa o tempo de detenção da represa, e indica a eficiência de tratamento necessária para atender ao padrão. |
 | **EutroFriza** | Em breve. |
 

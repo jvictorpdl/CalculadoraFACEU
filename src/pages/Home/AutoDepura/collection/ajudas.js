@@ -268,8 +268,8 @@ export function AjudaKd() {
     return (
         <Ajuda campo="Kd" titulo="Coeficiente de decomposição da DBO no rio (Kd)">
             <p>
-                O K1 vem do ensaio de DBO e converte a DBO5 em DBO última. O Kd é a taxa com que a DBO se
-                decompõe no próprio rio: é ele que faz a DBO cair e consumir oxigênio ao longo do percurso.
+                O K1 converte a DBO5 em DBO última (KT). O Kd é a taxa com que a DBO se decompõe no próprio
+                rio: é ele que faz a DBO cair e consumir oxigênio ao longo do percurso.
             </p>
             <br />
             <p>Deixe o Kd em branco para usar o mesmo valor do K1 (modelo clássico de Streeter-Phelps).</p>
@@ -279,6 +279,23 @@ export function AjudaKd() {
             <p>No Exemplo 8.5 do livro, K1 = 0,44 e Kd = 0,77 1/dia, os dois já na temperatura do rio.</p>
             <br />
             <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios (item 8.8)</Nota>
+        </Ajuda>
+    );
+}
+
+export function AjudaKT() {
+    return (
+        <Ajuda campo="KT" titulo="Conversão da DBO5 em DBO última (KT)">
+            <p>A DBO última da mistura é L0 = DBO5 · KT, com KT = 1 / (1 − e^(−5·K1)). Há duas escolhas para o K1 dessa conversão:</p>
+            <br />
+            <ul style={lista}>
+                <li><strong>K1T</strong> (padrão): o K1 já corrigido para a temperatura do rio, o mesmo que faz a DBO cair ao longo do trecho;</li>
+                <li><strong>K1 a 20 °C</strong>: o K1 da temperatura do ensaio de DBO. Se só o K1T foi informado, ele volta a 20 °C por K1 = K1T / θ^(T − 20).</li>
+            </ul>
+            <br />
+            <p>Em rios mais quentes que 20 °C, o K1T é maior e dá um KT menor (DBO última menor). Use a escolha de Simular novamente para comparar as duas.</p>
+            <br />
+            <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios</Nota>
         </Ajuda>
     );
 }
@@ -309,8 +326,41 @@ export function AjudaTrechosSeguintes() {
             </ul>
             <br />
             <p>
-                A contribuição pode ser um esgoto ou um afluente com vazão, OD e DBO5 conhecidos. Deixe-a em branco
-                quando o trecho só muda as características do rio. Temperatura, K1, Kd, Cs' e ODmín valem para o rio todo.
+                A contribuição pode ser um esgoto ou um afluente com vazão, OD e DBO5 conhecidos, e pode ter mais de um
+                lançamento no mesmo ponto. Deixe-a em branco quando o trecho só muda as características do rio.
+            </p>
+            <br />
+            <p>
+                O K1 pode mudar de um trecho para outro (por exemplo, a média ponderada pela carga de DBO5 dos lançamentos).
+                Em branco, o trecho usa o K1 do anterior. A conversão da DBO5 em DBO última (L0) usa o K1 de cada trecho.
+            </p>
+            <br />
+            <p>
+                Temperatura, θ, Kd, Cs' e ODmín valem para o rio todo. Sem Kd informado, a DBO se decompõe com o K1 de cada trecho.
+            </p>
+            <br />
+            <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios (item 8.8)</Nota>
+        </Ajuda>
+    );
+}
+
+export function AjudaLancamentos() {
+    return (
+        <Ajuda campo="lançamentos no mesmo ponto" titulo="Mais de um lançamento no mesmo ponto">
+            <p>
+                Quando chegam ao rio, no mesmo ponto, efluentes diferentes (por exemplo, um tratado e um bruto), cada um
+                entra com a própria vazão, OD e DBO5, e a mistura soma todos:
+            </p>
+            <br />
+            <ul style={lista}>
+                <li>Qt = Qr + Qe1 + Qe2 + …</li>
+                <li>C0 = (Qr·ODr + Qe1·ODe1 + Qe2·ODe2 + …) / Qt</li>
+                <li>DBO5 = (Qr·DBOr + Qe1·DBOe1 + Qe2·DBOe2 + …) / Qt</li>
+            </ul>
+            <br />
+            <p>
+                Para um efluente tratado, informe a DBO bruta com a eficiência E, ou a DBO do efluente tratado sem E.
+                Lançamentos em pontos diferentes do rio entram como trechos seguintes.
             </p>
             <br />
             <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios (item 8.8)</Nota>

@@ -13,7 +13,7 @@ import { errosAutodepura, errosPassoAutodepura } from '../../../utils/validacao'
 import { Grupos, irParaErro, TituloCalculadora } from '../navegacao';
 import { ActionButton, BarraAcoes, CancelButton, MensagemErro } from '../styles';
 import AutodepuraValuesPreview from './autodepuraValuesPreview';
-import { DadoEsgotoStep1, DadoEsgotoStep2 } from './collection/dadoEsgoto';
+import { DadoEsgotoStep1, DadoEsgotoStep2, DadoEsgotoStep3 } from './collection/dadoEsgoto';
 import { DadosAdicionaisStep1, DadosAdicionaisStep2, DadosAdicionaisStep3, DadosAdicionaisStep4 } from './collection/dadosAdicionais';
 import { DadosRioStep1 } from './collection/dadosRio';
 import { AutodepuraRecalculate } from './collection/recalculate';
@@ -34,6 +34,7 @@ export function AutoDepura() {
         'Dados do esgoto': [
             false,
             false,
+            false,
         ],
         'Dados adicionais': [
             false,
@@ -49,7 +50,12 @@ export function AutoDepura() {
     const [erros, setErros] = useState([]);
     const [limpezas, setLimpezas] = useState(0);
 
-    useEffect(() => { setStep(0) }, [selectedCollection]);
+    // ao trocar de grupo abre o passo pedido (o primeiro, salvo no Voltar e no Editar de um passo específico)
+    const passoAoAbrir = useRef(0);
+    useEffect(() => {
+        setStep(passoAoAbrir.current);
+        passoAoAbrir.current = 0;
+    }, [selectedCollection]);
     useEffect(() => { setErros([]) }, [selectedCollection, step]);
 
     // ao trocar de passo, se o topo da calculadora saiu da tela, volta até ele
@@ -83,8 +89,9 @@ export function AutoDepura() {
         });
     };
 
-    function abrirGrupo(nome) {
-        setStep(0);
+    function abrirGrupo(nome, passo = 0) {
+        passoAoAbrir.current = passo;
+        setStep(passo);
         setSelectedCollection(nome);
     }
 
@@ -106,6 +113,7 @@ export function AutoDepura() {
         'Dados do esgoto': [
             <DadoEsgotoStep1 />,
             <DadoEsgotoStep2 />,
+            <DadoEsgotoStep3 />,
         ],
         'Dados adicionais': [
             <DadosAdicionaisStep1 />,
@@ -160,8 +168,9 @@ export function AutoDepura() {
     const handleBack = () => {
         if (isFirstStep) {
             if (!isFirstCollection) {
-                setSelectedCollection(collectionKeys[currentCollectionIndex - 1]);
-                setStep(collection[collectionKeys[currentCollectionIndex - 1]]?.length - 1); // Go to last step of previous collection
+                // volta para o último passo do grupo anterior
+                const anterior = collectionKeys[currentCollectionIndex - 1];
+                abrirGrupo(anterior, Math.max(0, (collection[anterior]?.length ?? 1) - 1));
             }
         } else {
             setStep(step - 1);

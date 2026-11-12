@@ -6,7 +6,8 @@ import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import { bloqueadoPor, CAMINHOS } from "../../../../utils/validacao";
-import { AjudaE, AjudaK1, AjudaTetaK1, PainelAjuda } from "./ajudas";
+import { AjudaE, AjudaK1, AjudaKT, AjudaTetaK1, PainelAjuda } from "./ajudas";
+import { EscolhaConversaoKt } from "./dadosAdicionais";
 
 
 export function AutodepuraRecalculate() {
@@ -43,12 +44,14 @@ export function AutodepuraRecalculate() {
                     </Grid>
                     <AvisoTrava campos={['E']} por={bloqueioE} />
                     <AvisoTrava campos={['K1 (20 °C)']} por={bloqueioK1} />
+                    <EscolhaConversaoKt />
                 </Column>
                 <VerticalSplitter />
                 <Column>
                     <PainelAjuda>
                         <AjudaE />
                         <AjudaK1 />
+                        <AjudaKT />
                         <AjudaTetaK1 />
                     </PainelAjuda>
                 </Column>

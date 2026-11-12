@@ -115,6 +115,46 @@ test('trecho sem K2 pede uma das opções; K2 pela temperatura exige θ e T', ()
         .toEqual(['Trecho 2: para corrigir o K2 pela temperatura, informe θ para K2 e T em Dados adicionais.']);
 });
 
+test('outros lançamentos no mesmo ponto precisam de Qe, ODe e DBOe', () => {
+    const passo3 = (lancamentos) => errosPassoAutodepura('Dados do esgoto', 2, { ...autodepura, lancamentos });
+    expect(passo3([])).toEqual([]);
+    expect(passo3([{ qe: 0.01, ode: 0, dboe: 300, e: null }])).toEqual([]);
+    // dados salvos antes desta versão
+    expect(errosAutodepura({ ...autodepura, lancamentos: null })).toEqual([]);
+
+    const incompleto = passo3([{ qe: 0.01, ode: null, dboe: null, e: null }]);
+    expect(mensagens(incompleto)).toEqual(['Lançamento 2: preencha ODe, DBOe ou remova o lançamento.']);
+    expect(incompleto[0].campos).toEqual(['ODe (lançamento 2)', 'DBOe (lançamento 2)']);
+
+    const noTrecho = errosDosTrechos([{ ...trecho, lancamentos: [{ qe: 0, ode: 0, dboe: 300, e: 120 }] }]);
+    expect(mensagens(noTrecho)).toEqual(['Trecho 2, lançamento 2: Qe deve ser maior que zero.', 'Trecho 2, lançamento 2: E deve estar entre 0 e 100 %.']);
+    expect(noTrecho[0].campos).toEqual(['Qe (trecho 2, lançamento 2)']);
+});
+
+test('converter com o K1 a 20 °C a partir do K1T exige θ e T', () => {
+    const pelaT = { ...autodepura, k120c: null, k1t: 0.44, tetak1: null };
+    expect(errosPassoAutodepura('Dados adicionais', 0, pelaT)).toEqual([]);
+
+    const erros = errosPassoAutodepura('Dados adicionais', 0, { ...pelaT, conversaoKt: 'k120c' });
+    expect(mensagens(erros)).toEqual(['Para converter a DBO5 com o K1 a 20 °C a partir do K1T, informe θ para K1 e T (ou converta com o K1T).']);
+    expect(erros[0].campos).toEqual(['θ para K1']);
+    expect(errosPassoAutodepura('Dados adicionais', 0, { ...pelaT, conversaoKt: 'k120c', tetak1: 1.047 })).toEqual([]);
+});
+
+test('K1 do trecho é opcional, com a mesma trava do K1 do rio', () => {
+    expect(errosDosTrechos([{ ...trecho, k1t: 0.3 }])).toEqual([]);
+    expect(errosDosTrechos([{ ...trecho, k120c: 0.18 }])).toEqual([]);
+    expect(bloqueadoPor({ ...trecho, k1t: 0.3 }, CAMINHOS.k1Trecho, 0)).toEqual(['K1T']);
+
+    const ambos = errosDosTrechos([{ ...trecho, k120c: 0.18, k1t: 0.3 }]);
+    expect(mensagens(ambos)).toEqual(['Trecho 2: use K1 (20 °C) ou K1T, não os dois. Apague um deles.']);
+    expect(ambos[0].campos).toEqual(['K1 (20 °C) (trecho 2)', 'K1T (trecho 2)']);
+
+    expect(mensagens(errosPassoAutodepura('Trechos seguintes', 0, { ...autodepura, k120c: null, tetak1: null, k1t: 0.4, trechos: [{ ...trecho, k120c: 0.18 }] })))
+        .toEqual(['Trecho 2: para corrigir o K1 pela temperatura, informe θ para K1 e T em Dados adicionais.']);
+    expect(mensagens(errosDosTrechos([{ ...trecho, k1t: -1 }]))).toEqual(['Trecho 2: K1T deve ser maior que zero.']);
+});
+
 test('valores fora das faixas plausíveis são barrados', () => {
     expect(mensagens(errosPassoAutodepura('Dados adicionais', 0, { ...autodepura, temperatura: 1000 })))
         .toEqual(['T deve estar entre 0 e 40 °C.']);

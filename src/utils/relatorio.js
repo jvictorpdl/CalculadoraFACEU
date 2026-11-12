@@ -1,4 +1,4 @@
-import { trechosDe } from './autoDepuraCalculation';
+import { CONVERSAO_KT, lancamentosDe, trechosDe } from './autoDepuraCalculation';
 
 // O Resumo e os relatórios leem os parâmetros daqui, e a tela de resultado e os
 // relatórios usam as mesmas conclusões; assim o arquivo baixado nunca diverge da tela
@@ -55,10 +55,38 @@ export const camposTrecho = [
     { chave: 'e', rotulo: 'E', dica: 'Eficiência do tratamento na remoção de DBO da contribuição', unidade: '%', opcional: true },
     { chave: 'distancia', rotulo: 'd', dica: 'Extensão do trecho', unidade: 'm' },
     { chave: 'velocidade', rotulo: 'v', dica: 'Velocidade do rio no trecho', unidade: 'm/s' },
+    { chave: 'k120c', rotulo: 'K1 (20 °C)', dica: 'Coeficiente de desoxigenação do trecho a 20 °C (em branco, o do trecho anterior)', unidade: '1/dia', opcional: true },
+    { chave: 'k1t', rotulo: 'K1T', dica: 'Coeficiente de desoxigenação do trecho na temperatura do rio (em branco, o do trecho anterior)', unidade: '1/dia', opcional: true },
     { chave: 'h', rotulo: 'H', dica: 'Profundidade do rio no trecho, para calcular o K2', unidade: 'm', opcional: true },
     { chave: 'k220c', rotulo: 'K2 (20 °C)', dica: 'Coeficiente de reaeração do trecho a 20 °C', unidade: '1/dia', opcional: true },
     { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração do trecho na temperatura do rio (T)', unidade: '1/dia', opcional: true },
 ];
+
+// lançamentos além do primeiro, no mesmo ponto do rio
+export const camposLancamento = [
+    { chave: 'qe', rotulo: 'Qe', dica: 'Vazão do lançamento', unidade: 'm³/s' },
+    { chave: 'ode', rotulo: 'ODe', dica: 'Oxigênio dissolvido do lançamento', unidade: 'mg/L' },
+    { chave: 'dboe', rotulo: 'DBOe', dica: 'DBO5 do lançamento', unidade: 'mg/L' },
+    { chave: 'e', rotulo: 'E', dica: 'Eficiência do tratamento na remoção de DBO do lançamento', unidade: '%', opcional: true },
+];
+
+// grupos de valores na ordem da tela: rio, esgoto (e outros lançamentos), dados adicionais e trechos seguintes
+export function gruposAutodepura(dados) {
+    const [rio, esgoto, adicionais] = camposAutodepura;
+    const lancamentos = (origem, titulo, trecho) => lancamentosDe(origem).map((lancamento, i) => ({
+        titulo: `${titulo}: lançamento ${i + 2}`, campos: camposLancamento, dados: lancamento, colecao: trecho ? 'Trechos seguintes' : 'Dados do esgoto', lancamento: i + 2, trecho,
+    }));
+    return [
+        { ...rio, dados, colecao: rio.titulo },
+        { ...esgoto, dados, colecao: esgoto.titulo },
+        ...lancamentos(dados, 'Dados do esgoto'),
+        { ...adicionais, dados, colecao: adicionais.titulo },
+        ...trechosDe(dados).flatMap((trecho, i) => [
+            { titulo: `Trecho ${i + 2}`, campos: camposTrecho, dados: trecho, colecao: 'Trechos seguintes', trecho: i + 2 },
+            ...lancamentos(trecho, `Trecho ${i + 2}`, i + 2),
+        ]),
+    ];
+}
 
 export function camposColicalc(isRio) {
     return [
@@ -105,9 +133,10 @@ export const numero = (valor, casas) => Number(valor).toLocaleString('pt-BR', ca
 
 const preenchido = (valor) => valor !== null && valor !== undefined && valor !== '';
 
-function valoresFornecidos(grupos, dados) {
+// cada grupo pode trazer os próprios dados (um trecho, um lançamento); sem eles, valem os gerais
+function valoresFornecidos(grupos, gerais) {
     return grupos
-        .map(({ titulo, campos }) => ({
+        .map(({ titulo, campos, dados = gerais }) => ({
             titulo,
             linhas: campos
                 .filter(({ chave }) => preenchido(dados[chave]))
@@ -227,11 +256,15 @@ const LINHAS_POR_TRECHO = [
     ['Qr', 'Vazão do rio a montante da contribuição', 'm³/s', 3, (t) => t.qr],
     ['ODr', 'OD do rio a montante da contribuição', 'mg/L', 2, (t) => t.odr],
     ['DBOr', 'DBO5 do rio a montante da contribuição', 'mg/L', 2, (t) => t.dbor],
-    ['Qe', 'Vazão da contribuição', 'm³/s', 3, (t) => t.qe],
+    // vazões de lançamento costumam ser pequenas; 5 casas, como nos campos
+    ['Qe', 'Vazão da contribuição (soma dos lançamentos)', 'm³/s', 5, (t) => t.qe],
     ['Qt', 'Vazão total após a mistura', 'm³/s', 3, (t) => t.qt],
     ['C0', 'OD da mistura', 'mg/L', 2, (t) => t.co],
     ['DBO5', 'DBO5 da mistura', 'mg/L', 2, (t) => t.dbo5],
     ['L0', 'DBO última da mistura', 'mg/L', 2, (t) => t.lo],
+    ['KT', 'Fator de conversão da DBO5 em DBO última (L0/DBO5)', '', 3, (t) => t.kt],
+    ['K1T', 'Coeficiente de desoxigenação na temperatura do rio', '1/dia', 3, (t) => t.k1t],
+    ['KdT', 'Coeficiente de decomposição da DBO no rio, na temperatura do rio', '1/dia', 3, (t) => t.kd],
     ['K2T', 'Coeficiente de reaeração na temperatura do rio', '1/dia', 3, (t) => t.k2t],
     ['t', 'Tempo de percurso no trecho', 'dia', 3, (t) => t.tempo],
     ['DBO5 final', 'DBO5 no fim do trecho', 'mg/L', 2, (t) => t.dbo5Fim],
@@ -240,12 +273,15 @@ const LINHAS_POR_TRECHO = [
     ['Local', 'Distância do menor OD ao primeiro lançamento', 'km', 2, (t) => t.minimo.km],
 ];
 
-function tabelaPorTrecho(trechos) {
+const descricaoKt = (conversao) => `Fator de conversão da DBO5 em DBO última (L0/DBO5), com o ${CONVERSAO_KT[conversao]}`;
+
+// sem Kd informado, o KdT é o próprio K1T e a linha só repetiria a de cima
+function tabelaPorTrecho(trechos, comKd, conversao) {
     return {
         colunas: trechos.map((trecho) => `Trecho ${trecho.numero}`),
-        linhas: LINHAS_POR_TRECHO.map(([rotulo, descricao, unidade, casas, valorDe]) => ({
+        linhas: LINHAS_POR_TRECHO.filter(([rotulo]) => comKd || rotulo !== 'KdT').map(([rotulo, descricao, unidade, casas, valorDe]) => ({
             rotulo,
-            descricao,
+            descricao: rotulo === 'KT' ? descricaoKt(conversao) : descricao,
             unidade,
             valores: trechos.map((trecho) => ({ valor: Number(valorDe(trecho).toFixed(casas)), texto: numero(valorDe(trecho), casas) })),
         })),
@@ -258,7 +294,8 @@ export function relatorioAutodepura(dados, resultado) {
     const varios = trechos.length > 1;
     // sem K2 informado, ele vem das fórmulas hidráulicas (H e v)
     const k2PelaFormula = !preenchido(dados.k220c) && !preenchido(dados.k2t);
-    const linhaKd = preenchido(dados.kd20c) || preenchido(dados.kdt)
+    const comKd = preenchido(dados.kd20c) || preenchido(dados.kdt);
+    const linhaKd = comKd
         ? [calculado('KdT', 'Coeficiente de decomposição da DBO no rio, na temperatura do rio', calculados.kdt, '1/dia', 3)]
         : [];
     const pontosPorTrecho = kmvet.length / trechos.length;
@@ -270,18 +307,15 @@ export function relatorioAutodepura(dados, resultado) {
             : 'Autodepuração de rio pelo modelo de Streeter-Phelps',
         arquivo: 'autodepura',
         conclusao: conclusaoAutodepura(resultado),
-        fornecidos: [
-            ...valoresFornecidos(camposAutodepura, dados),
-            ...trechosDe(dados).flatMap((trecho, i) => valoresFornecidos([{ titulo: `Trecho ${i + 2}`, campos: camposTrecho }], trecho)),
-        ],
+        fornecidos: valoresFornecidos(gruposAutodepura(dados)),
+        // com vários trechos, K1T e KdT de cada um ficam na tabela por trecho
         calculados: !valido ? [] : varios ? [
-            calculado('K1T', 'Coeficiente de desoxigenação na temperatura do rio', calculados.k1t, '1/dia', 3),
-            ...linhaKd,
             calculado("Cs'", 'Concentração de saturação de OD', critico.cs, 'mg/L'),
         ] : [
             calculado('C0', 'OD da mistura', critico.co, 'mg/L'),
             calculado('DBO5', 'DBO5 da mistura', calculados.dbo5, 'mg/L'),
             calculado('L0', 'DBO última da mistura', calculados.lo, 'mg/L'),
+            calculado('KT', descricaoKt(calculados.conversao), calculados.kt, '', 3),
             calculado('K1T', 'Coeficiente de desoxigenação na temperatura do rio', calculados.k1t, '1/dia', 3),
             ...linhaKd,
             ...(k2PelaFormula ? [calculado('K2 (20 °C)', 'Coeficiente de reaeração a 20 °C, pelas fórmulas de H e v', calculados.k220c, '1/dia', 3)] : []),
@@ -294,7 +328,7 @@ export function relatorioAutodepura(dados, resultado) {
             ] : []),
             calculado('ODc', 'OD no ponto crítico', critico.odc, 'mg/L'),
         ],
-        porTrecho: valido && varios ? tabelaPorTrecho(trechos) : null,
+        porTrecho: valido && varios ? tabelaPorTrecho(trechos, comKd, calculados.conversao) : null,
         // com vários trechos, as mesmas colunas da aba Resumo do Exemplo 8.5
         perfil: valido ? {
             colunas: [

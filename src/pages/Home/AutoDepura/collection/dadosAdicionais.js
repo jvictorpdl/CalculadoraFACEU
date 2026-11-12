@@ -6,8 +6,10 @@ import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
+import { RadioButton, RadioGroup } from "../../../../components/RadioButton/radioButton";
+import { conversaoKtDe } from "../../../../utils/autoDepuraCalculation";
 import { bloqueadoPor, CAMINHOS } from "../../../../utils/validacao";
-import { AjudaDivisoes, AjudaK1, AjudaK2, AjudaKd, AjudaTetaK1, AjudaTetaK2, PainelAjuda } from "./ajudas";
+import { AjudaDivisoes, AjudaK1, AjudaK2, AjudaKd, AjudaKT, AjudaTetaK1, AjudaTetaK2, PainelAjuda } from "./ajudas";
 
 const Orientacao = ({ children }) => (
     <p style={{ fontSize: 14, lineHeight: 1.5, color: '#4B5563', margin: '0 0 16px' }}>{children}</p>
@@ -16,6 +18,40 @@ const Orientacao = ({ children }) => (
 const Subtitulo = ({ children }) => (
     <p style={{ fontSize: 14, fontWeight: 600, color: '#374151', margin: '16px 0 8px' }}>{children}</p>
 );
+
+const OPCOES_KT = [['k1t', 'K1T, na temperatura do rio'], ['k120c', 'K1 a 20 °C, do ensaio']];
+
+// qual K1 converte a DBO5 em DBO última; vale para todos os trechos
+export function EscolhaConversaoKt() {
+    const { state, dispatch } = useContext(ApplicationContext);
+    const atual = conversaoKtDe(state.data.autodepura);
+
+    function escolher(conversaoKt) {
+        dispatch({
+            ...state,
+            data: {
+                ...state.data,
+                autodepura: { ...state.data.autodepura, conversaoKt },
+            },
+        });
+    }
+
+    return (
+        <>
+            <Subtitulo>Conversão da DBO5 em DBO última (KT)</Subtitulo>
+            <RadioGroup legenda="Calcular o KT com o">
+                {OPCOES_KT.map(([valor, rotulo]) => (
+                    <RadioButton key={valor} name="conversaoKt" value={valor} label={rotulo} checked={atual === valor} onChange={() => escolher(valor)} />
+                ))}
+            </RadioGroup>
+            <Orientacao>
+                {atual === 'k1t'
+                    ? 'O KT de cada trecho usa o K1 já corrigido para a temperatura do rio (K1T).'
+                    : 'O KT de cada trecho usa o K1 a 20 °C, a temperatura do ensaio de DBO; se só o K1T foi informado, ele volta a 20 °C pelo θ e pela T.'}
+            </Orientacao>
+        </>
+    );
+}
 
 export function DadosAdicionaisStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -60,12 +96,14 @@ export function DadosAdicionaisStep1() {
                         <TextFieldWithTooltip disabled={bloqueioT.length > 0} value={state.data.autodepura.kdt} onBlurValue={(val) => updateStateWithAutodepuraData({ kdt: val })} label="KdT" tooltip="Coeficiente de decomposição da DBO no rio na temperatura do rio (T), opcional" placeholder="1/dia" />
                     </Grid>
                     <AvisoTrava campos={['K1T', 'KdT']} por={bloqueioT} />
+                    <EscolhaConversaoKt />
                 </Column>
                 <VerticalSplitter />
                 <Column>
                     <PainelAjuda>
                         <AjudaK1 />
                         <AjudaKd />
+                        <AjudaKT />
                         <AjudaTetaK1 />
                     </PainelAjuda>
                 </Column>

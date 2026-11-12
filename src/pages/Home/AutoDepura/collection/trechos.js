@@ -1,143 +1,51 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useContext } from "react";
-import styled from "styled-components";
 import AvisoTrava from "../../../../components/AvisoTrava";
 import FormTitle from "../../../../components/FormTitle/formTitle";
 import { Column, Grid, Row } from "../../../../components/Layout/layout";
 import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
-import { CalculadoraAutodepura, trechosDe } from "../../../../utils/autoDepuraCalculation";
+import { CalculadoraAutodepura, lancamentosDe, trechosDe } from "../../../../utils/autoDepuraCalculation";
 import { numero } from "../../../../utils/relatorio";
 import { bloqueadoPor, CAMINHOS, campoDoTrecho, errosAutodepura, MAXIMO_TRECHOS } from "../../../../utils/validacao";
-import { AjudaE, AjudaK2, AjudaTrechosSeguintes, PainelAjuda } from "./ajudas";
+import { AjudaE, AjudaK1, AjudaK2, AjudaLancamentos, AjudaTrechosSeguintes, PainelAjuda } from "./ajudas";
+import { BotaoAdicionar, BotaoRemover, CabecalhoCartao, Cartao, Montante, novoId, Orientacao, Subtitulo, TituloCartao, TituloLancamento } from "./cartoes";
+import { ListaLancamentos } from "./lancamentos";
 
-const Orientacao = styled.p`
-    margin: 0 0 16px;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #4B5563;
-`;
-
-const Cartao = styled.section`
-    margin-bottom: 16px;
-    padding: 16px;
-    border: 1px solid #D1D5DB;
-    border-radius: 8px;
-    background: #FFF;
-
-    @media (max-width: 768px) {
-        padding: 12px;
-    }
-`;
-
-const CabecalhoCartao = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-`;
-
-const TituloCartao = styled.h3`
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-    color: #374151;
-`;
-
-const BotaoRemover = styled.button`
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 8px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: #B91C1C;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-
-    &:hover {
-        background: #FEF2F2;
-    }
-
-    @media (max-width: 768px) {
-        min-height: 44px;
-        margin-right: -8px;
-    }
-`;
-
-const Montante = styled.p`
-    margin: 4px 0 0;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #4B5563;
-`;
-
-const Subtitulo = styled.p`
-    margin: 16px 0 8px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
-`;
-
-const BotaoAdicionar = styled.button`
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border: 1px dashed #17737A;
-    border-radius: 8px;
-    background: #F0F9FA;
-    color: #17737A;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-
-    &:hover:not(:disabled) {
-        background: #E0F2F3;
-    }
-
-    &:disabled {
-        border-color: #D1D5DB;
-        background: #F3F4F6;
-        color: #9CA3AF;
-        cursor: auto;
-    }
-
-    @media (max-width: 768px) {
-        width: 100%;
-        min-height: 44px;
-    }
-`;
-
-// o id mantém cada campo ligado ao seu trecho quando um trecho do meio é removido
 const trechoVazio = () => ({
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    qe: null, ode: null, dboe: null, e: null, distancia: null, velocidade: null, h: null, k220c: null, k2t: null,
+    id: novoId(),
+    qe: null, ode: null, dboe: null, e: null, lancamentos: [], distancia: null, velocidade: null,
+    k120c: null, k1t: null, h: null, k220c: null, k2t: null,
 });
 
-// vazão, OD e DBO5 no fim do trecho anterior, quando os dados até ele estão completos
+// vazão, OD, DBO5 e K1 no fim do trecho anterior, quando os dados até ele estão completos
 function rioAMontante(dados, indice) {
     const anteriores = { ...dados, trechos: trechosDe(dados).slice(0, indice) };
     if (errosAutodepura(anteriores).length) return null;
     const { trechos } = CalculadoraAutodepura(anteriores);
     const anterior = trechos[trechos.length - 1];
-    return { km: anterior.inicioKm + anterior.distanciaKm, qr: anterior.qt, od: anterior.odFim, dbo: anterior.dbo5Fim };
+    return { km: anterior.inicioKm + anterior.distanciaKm, qr: anterior.qt, od: anterior.odFim, dbo: anterior.dbo5Fim, k1t: anterior.k1t };
+}
+
+// opções que chegam ao mesmo coeficiente: uma preenchida bloqueia as outras
+function travas(trecho, caminhos, rotulos) {
+    const opcoes = rotulos.map((rotulo, opcao) => [rotulo, bloqueadoPor(trecho, caminhos, opcao)]);
+    return {
+        bloqueados: opcoes.filter(([, por]) => por.length).map(([rotulo]) => rotulo),
+        motivo: [...new Set(opcoes.flatMap(([, por]) => por))],
+    };
 }
 
 function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) {
-    // H, K2 (20 °C) e K2T são opções para o mesmo K2: uma preenchida bloqueia as outras
-    const opcoesK2 = [['H', 0], ['K2 (20 °C)', 1], ['K2T', 2]].map(([rotulo, opcao]) => [rotulo, bloqueadoPor(trecho, CAMINHOS.k2, opcao)]);
-    const bloqueado = Object.fromEntries(opcoesK2.map(([rotulo, por]) => [rotulo, por.length > 0]));
-    const motivo = [...new Set(opcoesK2.flatMap(([, por]) => por))];
+    const k1 = travas(trecho, CAMINHOS.k1Trecho, ['K1 (20 °C)', 'K1T']);
+    const k2 = travas(trecho, CAMINHOS.k2, ['H', 'K2 (20 °C)', 'K2T']);
+    const bloqueados = new Set([...k1.bloqueados, ...k2.bloqueados]);
+    const extras = lancamentosDe(trecho);
 
     const campo = (chave, label, tooltip, placeholder) => (
         <TextFieldWithTooltip
-            disabled={bloqueado[label] ?? false}
+            disabled={bloqueados.has(label)}
             value={trecho[chave]}
             onBlurValue={(val) => onAlterar({ [chave]: val })}
             label={label}
@@ -162,13 +70,15 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) 
                     : `O rio a montante tem a vazão, o OD e a DBO5 do fim do trecho ${numeroTrecho - 1}; os valores aparecem quando os dados até ele estiverem completos.`}
             </Montante>
 
-            <Subtitulo>Contribuição no início do trecho (opcional)</Subtitulo>
+            <Subtitulo>Contribuições no início do trecho (opcional)</Subtitulo>
+            {extras.length > 0 && <TituloLancamento style={{ marginBottom: 8 }}>Lançamento 1</TituloLancamento>}
             <Grid columns={4}>
                 {campo('qe', 'Qe', 'Vazão da contribuição: esgoto ou afluente', 'm³/s')}
                 {campo('ode', 'ODe', 'Oxigênio dissolvido da contribuição', 'mg/L')}
-                {campo('dboe', 'DBOe', 'DBO5 da contribuição', 'mg/L')}
+                {campo('dboe', 'DBOe', 'DBO5 da contribuição: bruta (com E, se houver tratamento) ou já a do efluente tratado (sem E)', 'mg/L')}
                 {campo('e', 'E', 'Eficiência do tratamento na remoção de DBO (opcional)', '%')}
             </Grid>
+            <ListaLancamentos lancamentos={extras} trecho={numeroTrecho} onAlterar={(lista) => onAlterar({ lancamentos: lista })} />
 
             <Subtitulo>Percurso</Subtitulo>
             <Grid columns={4}>
@@ -176,13 +86,24 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) 
                 {campo('velocidade', 'v', 'Velocidade do rio no trecho', 'm/s')}
             </Grid>
 
+            <Subtitulo>Desoxigenação (opcional): K1 (20 °C) ou K1T</Subtitulo>
+            <Montante style={{ marginBottom: 8 }}>
+                Em branco, o trecho usa o K1 do trecho {numeroTrecho - 1}
+                {montante ? ` (K1T = ${numero(montante.k1t, 3)} 1/dia)` : ''}. O K1 (20 °C) é corrigido pelo θ e pela T de Dados adicionais.
+            </Montante>
+            <Grid columns={4}>
+                {campo('k120c', 'K1 (20 °C)', 'Coeficiente de desoxigenação do trecho a 20 °C', '1/dia')}
+                {campo('k1t', 'K1T', 'Coeficiente de desoxigenação do trecho na temperatura do rio (T)', '1/dia')}
+            </Grid>
+            <AvisoTrava campos={k1.bloqueados} por={k1.motivo} />
+
             <Subtitulo>Reaeração: informe só uma das opções, H, K2 (20 °C) ou K2T</Subtitulo>
             <Grid columns={4}>
                 {campo('h', 'H', 'Profundidade do rio no trecho, para calcular o K2 com a velocidade', 'm')}
                 {campo('k220c', 'K2 (20 °C)', 'Coeficiente de reaeração do trecho a 20 °C', '1/dia')}
                 {campo('k2t', 'K2T', 'Coeficiente de reaeração do trecho na temperatura do rio (T)', '1/dia')}
             </Grid>
-            <AvisoTrava campos={opcoesK2.filter(([rotulo]) => bloqueado[rotulo]).map(([rotulo]) => rotulo)} por={motivo} />
+            <AvisoTrava campos={k2.bloqueados} por={k2.motivo} />
         </Cartao>
     );
 }
@@ -209,7 +130,7 @@ export function TrechosSeguintes() {
                     <FormTitle title="Trechos seguintes" />
                     <Orientacao>
                         Opcional. Acrescente um trecho para cada nova contribuição (esgoto ou afluente) ou mudança de velocidade,
-                        profundidade ou K2. O trecho 1 é o descrito nos grupos anteriores; sem trechos seguintes, o cálculo considera só ele.
+                        profundidade, K1 ou K2. O trecho 1 é o descrito nos grupos anteriores; sem trechos seguintes, o cálculo considera só ele.
                     </Orientacao>
 
                     {trechos.map((trecho, i) => (
@@ -236,7 +157,9 @@ export function TrechosSeguintes() {
                 <Column>
                     <PainelAjuda>
                         <AjudaTrechosSeguintes />
+                        <AjudaLancamentos />
                         <AjudaE />
+                        <AjudaK1 />
                         <AjudaK2 />
                     </PainelAjuda>
                 </Column>

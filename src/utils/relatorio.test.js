@@ -64,8 +64,11 @@ test('com vários trechos o relatório traz os dados e os resultados de cada um'
     expect(relatorio.descricao).toBe('Autodepuração de rio em 2 trechos pelo modelo de Streeter-Phelps');
     expect(relatorio.fornecidos.map((grupo) => grupo.titulo)).toEqual(['Dados do rio', 'Dados do esgoto', 'Dados adicionais', 'Trecho 2']);
     expect(relatorio.fornecidos[3].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'd', 'v', 'K2T']);
-    expect(relatorio.calculados.map((linha) => linha.rotulo)).toEqual(['K1T', 'KdT', "Cs'"]);
+    // K1T e KdT de cada trecho ficam na tabela por trecho
+    expect(relatorio.calculados.map((linha) => linha.rotulo)).toEqual(["Cs'"]);
     expect(relatorio.porTrecho.colunas).toEqual(['Trecho 1', 'Trecho 2']);
+    expect(linhaTrecho('K1T')).toEqual([0.44, 0.44]);
+    expect(linhaTrecho('KdT')).toEqual([0.77, 0.77]);
     expect(linhaTrecho('Qt')).toEqual([0.874, 1.324]);
     expect(linhaTrecho('OD final')).toEqual([6.28, 7.23]);
     expect(linhaTrecho('Menor OD')).toEqual([2.2, 6.76]);
@@ -92,6 +95,32 @@ test('o CSV com vários trechos tem uma coluna por trecho', () => {
     expect(csv).toContain('Resultados por trecho\r\nParâmetro;Descrição;Unidade;Trecho 1;Trecho 2');
     expect(csv).toContain('Qt;Vazão total após a mistura;m³/s;0,874;1,324');
     expect(csv).toContain('Trecho 2;Qe;Vazão da contribuição no início do trecho (esgoto ou afluente);0,45;m³/s');
+});
+
+test('outros lançamentos e o K1 de cada trecho entram no relatório', () => {
+    const dados = {
+        ...exemplo85,
+        k1t: null, kdt: null, k120c: 0.4, tetak1: 1.047,
+        lancamentos: [{ qe: 0.01, ode: 0, dboe: 300, e: null }],
+        trechos: [{ ...exemplo85.trechos[0], k120c: 0.18, lancamentos: [{ qe: 0.05, ode: 2, dboe: 120, e: 50 }] }],
+    };
+    const relatorio = montarAutodepura(dados);
+    const linhaTrecho = (rotulo) => relatorio.porTrecho.linhas.find((linha) => linha.rotulo === rotulo)?.valores.map(({ valor }) => valor);
+
+    expect(relatorio.fornecidos.map((grupo) => grupo.titulo))
+        .toEqual(['Dados do rio', 'Dados do esgoto', 'Dados do esgoto: lançamento 2', 'Dados adicionais', 'Trecho 2', 'Trecho 2: lançamento 2']);
+    expect(relatorio.fornecidos[2].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe']);
+    expect(relatorio.fornecidos[4].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'd', 'v', 'K1 (20 °C)', 'K2T']);
+    expect(relatorio.fornecidos[5].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'E']);
+    // a vazão das contribuições soma os lançamentos do ponto; a temperatura é 20 °C, então K1T = K1
+    expect(linhaTrecho('Qe')).toEqual([0.124, 0.5]);
+    expect(linhaTrecho('K1T')).toEqual([0.4, 0.18]);
+    // sem Kd informado, a linha do KdT só repetiria a do K1T
+    expect(linhaTrecho('KdT')).toBeUndefined();
+    // a linha do KT diz qual K1 converteu a DBO5
+    expect(linhaTrecho('KT')).toEqual([1.157, 1.685]);
+    expect(relatorio.porTrecho.linhas.find((linha) => linha.rotulo === 'KT').descricao).toBe('Fator de conversão da DBO5 em DBO última (L0/DBO5), com o K1T');
+    expect(montarAutodepura({ ...dados, conversaoKt: 'k120c' }).porTrecho.linhas.find((linha) => linha.rotulo === 'KT').descricao).toMatch(/com o K1 a 20 °C$/);
 });
 
 test('K2 calculado por H e v aparece nos valores calculados', () => {

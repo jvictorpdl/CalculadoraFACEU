@@ -1,4 +1,4 @@
-import { coeficienteK2, trechosDe } from "./autoDepuraCalculation";
+import { coeficienteK2, conversaoKtDe, lancamentosDe, trechosDe } from "./autoDepuraCalculation";
 
 // Regras de preenchimento de cada passo; cada regra devolve a lista de erros,
 // cada um com a mensagem e os rótulos dos campos que devem ser destacados
@@ -26,6 +26,8 @@ function exigirPositivo(dados, campos) {
 export const CAMINHOS = {
     dboEsgoto: [[['e', 'E'], ['dboe', 'DBOe']], [['dboefl', 'DBOefl']]],
     k1: [[['k120c', 'K1 (20 °C)'], ['kd20c', 'Kd (20 °C)']], [['k1t', 'K1T'], ['kdt', 'KdT']]],
+    // nos trechos seguintes só o K1 muda; o Kd vale para o rio todo
+    k1Trecho: [[['k120c', 'K1 (20 °C)']], [['k1t', 'K1T']]],
     k2: [[['h', 'H']], [['k220c', 'K2 (20 °C)']], [['k2t', 'K2T']]],
     cs: [[['altitude', 'Altitude']], [['cslinha', "Cs'"]]],
 };
@@ -68,6 +70,34 @@ export const MAXIMO_TRECHOS = 20;
 // os campos dos trechos seguintes repetem os rótulos; o destaque de erro precisa saber de qual trecho é
 export const campoDoTrecho = (rotulo, numero) => `${rotulo} (trecho ${numero})`;
 
+export const MAXIMO_LANCAMENTOS = 10;
+
+// o primeiro lançamento é o dos campos do trecho; os da lista começam no 2
+export const campoDoLancamento = (rotulo, numero, trecho) =>
+    (trecho ? `${rotulo} (trecho ${trecho}, lançamento ${numero})` : `${rotulo} (lançamento ${numero})`);
+
+function errosDoLancamento(lancamento, numero, trecho) {
+    const prefixo = trecho ? `Trecho ${trecho}, lançamento ${numero}` : `Lançamento ${numero}`;
+    const erroLancamento = (mensagem, ...rotulos) => erro(`${prefixo}: ${mensagem}`, ...rotulos.map((rotulo) => campoDoLancamento(rotulo, numero, trecho)));
+
+    const vazios = [['qe', 'Qe'], ['ode', 'ODe'], ['dboe', 'DBOe']].filter(([chave]) => !preenchido(lancamento[chave])).map(([, rotulo]) => rotulo);
+    if (vazios.length) return [erroLancamento(`preencha ${vazios.join(', ')} ou remova o lançamento.`, ...vazios)];
+    return [
+        ...(positivo(lancamento.qe) ? [] : [erroLancamento('Qe deve ser maior que zero.', 'Qe')]),
+        ...[['ode', 'ODe', 0, 20, 'mg/L'], ['dboe', 'DBOe', 0, 100000, 'mg/L'], ['e', 'E', 0, 100, '%']]
+            .filter(([chave, , minimo, maximo]) => preenchido(lancamento[chave]) && (Number(lancamento[chave]) < minimo || Number(lancamento[chave]) > maximo))
+            .map(([, rotulo, minimo, maximo, unidade]) => erroLancamento(`${rotulo} deve estar entre ${decimal(minimo)} e ${decimal(maximo)} ${unidade}.`, rotulo)),
+    ];
+}
+
+function errosLancamentos(dados, trecho) {
+    const lancamentos = lancamentosDe(dados);
+    return [
+        ...(lancamentos.length > MAXIMO_LANCAMENTOS ? [erro(`Use no máximo ${MAXIMO_LANCAMENTOS} lançamentos além do primeiro.`)] : []),
+        ...lancamentos.flatMap((lancamento, i) => errosDoLancamento(lancamento, i + 2, trecho)),
+    ];
+}
+
 function errosDoTrecho(trecho, numero, dados) {
     const erroTrecho = (mensagem, ...rotulos) => erro(`Trecho ${numero}: ${mensagem}`, ...rotulos.map((rotulo) => campoDoTrecho(rotulo, numero)));
     const erros = [];
@@ -87,6 +117,20 @@ function errosDoTrecho(trecho, numero, dados) {
         if (semValor.length) erros.push(erroTrecho(`preencha ${semValor.join(', ')} da contribuição.`, ...semValor));
     } else if (['ode', 'dboe', 'e'].some((chave) => preenchido(trecho[chave]))) {
         erros.push(erroTrecho('informe a vazão Qe da contribuição ou apague ODe, DBOe e E.', 'Qe'));
+    }
+    erros.push(...errosLancamentos(trecho, numero));
+
+    // K1 do trecho é opcional: em branco, continua o do trecho anterior
+    const k1 = conflito(trecho, CAMINHOS.k1Trecho, `Trecho ${numero}: use K1 (20 °C) ou K1T, não os dois. Apague um deles.`,
+        (rotulo) => campoDoTrecho(rotulo, numero));
+    erros.push(...k1);
+    if (!k1.length) {
+        [['k120c', 'K1 (20 °C)'], ['k1t', 'K1T']]
+            .filter(([chave]) => preenchido(trecho[chave]) && !positivo(trecho[chave]))
+            .forEach(([, rotulo]) => erros.push(erroTrecho(`${rotulo} deve ser maior que zero.`, rotulo)));
+        if (positivo(trecho.k120c) && (!positivo(dados.tetak1) || !preenchido(dados.temperatura))) {
+            erros.push(erroTrecho('para corrigir o K1 pela temperatura, informe θ para K1 e T em Dados adicionais.'));
+        }
     }
 
     erros.push(...conflito(trecho, CAMINHOS.k2, `Trecho ${numero}: use só uma opção para o K2 (H, K2 (20 °C) ou K2T) e apague as outras.`,
@@ -142,6 +186,7 @@ const regrasAutodepura = {
             }
             return [];
         },
+        (d) => errosLancamentos(d),
     ],
     'Dados adicionais': [
         (d) => {
@@ -151,6 +196,11 @@ const regrasAutodepura = {
             if (!(positivo(d.k1t) || (positivo(d.k120c) && positivo(d.tetak1) && preenchido(d.temperatura)))) {
                 return [erro('Informe K1 (20 °C), θ para K1 e T, ou então K1T.',
                     ...faltando(d, [['k120c', 'K1 (20 °C)'], ['tetak1', 'θ para K1'], ['temperatura', 'T'], ['k1t', 'K1T']]))];
+            }
+            // converter com o K1 a 20 °C a partir do K1T exige voltar o K1 a 20 °C; nos trechos seguintes vale o mesmo θ e T
+            if (conversaoKtDe(d) === 'k120c' && !positivo(d.k120c) && (!positivo(d.tetak1) || !preenchido(d.temperatura))) {
+                return [erro('Para converter a DBO5 com o K1 a 20 °C a partir do K1T, informe θ para K1 e T (ou converta com o K1T).',
+                    ...faltando(d, [['tetak1', 'θ para K1'], ['temperatura', 'T']]))];
             }
             return [
                 ...exigirFaixa(d, [['tetak1', 'θ para K1', 1, 1.2], faixaT]),

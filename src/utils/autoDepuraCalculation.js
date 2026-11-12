@@ -20,6 +20,13 @@ export const coeficienteK2 = (h, v) => {
 // trechos depois do primeiro; dados salvos antes desta versão (ou corrompidos) não têm a lista
 export const trechosDe = (dados) => (Array.isArray(dados?.trechos) ? dados.trechos : []);
 
+// lançamentos além do primeiro, no mesmo ponto (por exemplo, um efluente tratado e um bruto)
+export const lancamentosDe = (dados) => (Array.isArray(dados?.lancamentos) ? dados.lancamentos : []);
+
+// K1 usado para converter a DBO5 em DBO última (KT): o K1T, na temperatura do rio (padrão), ou o K1 a 20 °C do ensaio
+export const CONVERSAO_KT = { k1t: 'K1T', k120c: 'K1 a 20 °C' };
+export const conversaoKtDe = (dados) => (dados?.conversaoKt === 'k120c' ? 'k120c' : 'k1t');
+
 // déficit de OD de Streeter-Phelps; a DBO se decompõe no rio com Kd (Von Sperling, item 8.8)
 function deficit({ kd, k2, lo, d0 }, t) {
   if (Math.abs(k2 - kd) < 1e-9) return (kd * lo * t + d0) * Math.exp(-k2 * t);
@@ -48,11 +55,19 @@ function dboLancada({ e, dboe, dboefl }) {
   return Number(e) ? (1 - Number(e) / 100) * bruta : bruta;
 }
 
-// mistura no início do trecho e perfil de OD e DBO5 ao longo dele
-function simularTrecho({ qr, odr, dbor, qe, ode, dboe, kt, kd, k2, cs, distancia, velocidade, particoes }) {
+const lancamento = (dados) => ({ qe: Number(dados.qe), ode: Number(dados.ode), dboe: dboLancada(dados) });
+
+// o primeiro lançamento fica nos campos do próprio trecho; os outros, na lista
+const lancamentosDoTrecho = (dados) => [lancamento(dados), ...lancamentosDe(dados).map(lancamento)];
+
+const soma = (lista, valor) => lista.reduce((total, item) => total + valor(item), 0);
+
+// mistura no início do trecho (rio e todos os lançamentos) e perfil de OD e DBO5 ao longo dele
+function simularTrecho({ qr, odr, dbor, lancamentos, kt, kd, k2, cs, distancia, velocidade, particoes }) {
+  const qe = soma(lancamentos, (l) => l.qe);
   const qt = qr + qe;
-  const co = (qr * odr + qe * ode) / qt;
-  const dbo5 = (qr * dbor + qe * dboe) / qt;
+  const co = (qr * odr + soma(lancamentos, (l) => l.qe * l.ode)) / qt;
+  const dbo5 = (qr * dbor + soma(lancamentos, (l) => l.qe * l.dboe)) / qt;
   const coeficientes = { kd, k2, lo: dbo5 * kt, d0: cs - co };
   const tempo = distancia / (velocidade * SEGUNDOS_POR_DIA);
   const tc = tempoCritico(coeficientes);
@@ -70,9 +85,11 @@ function simularTrecho({ qr, odr, dbor, qe, ode, dboe, kt, kd, k2, cs, distancia
   }
 
   return {
-    qr, odr, dbor, qe, ode, dboe, qt, co, dbo5,
+    qr, odr, dbor, qe, qt, co, dbo5,
     lo: coeficientes.lo,
     deficit: coeficientes.d0,
+    kd,
+    kt,
     k2t: k2,
     distanciaKm: distancia / 1000,
     tempo,
@@ -103,14 +120,27 @@ export const CalculadoraAutodepura = (props) => {
   const odmin = Number(props.odmin);
   const particoes = Number(props.particoes);
 
-  const k120c = Number(props.k120c);
-  const k1t = k120c ? k120c * Math.pow(tetak1, temperatura - 20) : Number(props.k1t);
-  // sem Kd, a DBO se decompõe no rio com o próprio K1 (modelo clássico)
-  const kd20c = Number(props.kd20c);
-  const kdt = kd20c ? kd20c * Math.pow(tetak1, temperatura - 20) : Number(props.kdt) || k1t;
-  // KT converte a DBO5 (ensaio a 20ºC) em DBO última, por isso usa K1 a 20ºC (Von Sperling)
-  const kt = 1 / (1 - Math.exp(-5 * (k120c || k1t)));
+  const corrigirK1 = (k20c) => k20c * Math.pow(tetak1, temperatura - 20);
   const corrigirK2 = (k220c) => k220c * Math.pow(tetak2, temperatura - 20);
+
+  // K1 informado a 20ºC (corrigido por θ e T) ou já na temperatura do rio; os trechos seguintes
+  // podem ter o próprio K1 e, em branco, continuam com o do trecho anterior
+  const desoxigenacao = (dados, anterior) => {
+    const k120c = Number(dados.k120c);
+    if (k120c) return { k120c, k1t: corrigirK1(k120c) };
+    const k1t = Number(dados.k1t);
+    return k1t || !anterior ? { k120c: 0, k1t } : anterior;
+  };
+  // o Kd informado vale para o rio todo; sem ele, a DBO se decompõe com o K1 de cada trecho (modelo clássico)
+  const kd20c = Number(props.kd20c);
+  const kdRio = kd20c ? corrigirK1(kd20c) : Number(props.kdt);
+  // com o K1 a 20 °C escolhido e só o K1T informado, ele volta a 20 °C pelo mesmo θ
+  const conversao = conversaoKtDe(props);
+  const k1DaConversao = ({ k120c, k1t }) => (conversao === 'k1t' ? k1t : k120c || k1t / Math.pow(tetak1, temperatura - 20));
+  const coeficientesK1 = (k1) => ({
+    kd: kdRio || k1.k1t,
+    kt: 1 / (1 - Math.exp(-5 * k1DaConversao(k1))),
+  });
 
   let cs = Number(props.cslinha);
   if (!cs) {
@@ -122,22 +152,24 @@ export const CalculadoraAutodepura = (props) => {
     cs = saturacao * (1 - Number(props.altitude) / 9450);
   }
 
-  const comum = { kt, kd: kdt, cs, particoes };
   const velocidade = Number(props.velocidade);
+  const k1Primeiro = desoxigenacao(props);
   const k2Primeiro = reaeracao(props, velocidade, corrigirK2);
   const trechos = [{
     ...simularTrecho({
-      ...comum,
+      ...coeficientesK1(k1Primeiro),
+      cs,
+      particoes,
       qr: Number(props.qr),
       odr: Number(props.odr),
       dbor: Number(props.dbor),
-      qe: Number(props.qe),
-      ode: Number(props.ode),
-      dboe: dboLancada(props),
+      lancamentos: lancamentosDoTrecho(props),
       k2: k2Primeiro.k2t,
       distancia: Number(props.distancia),
       velocidade,
     }),
+    k1: k1Primeiro,
+    k1t: k1Primeiro.k1t,
     k220c: k2Primeiro.k220c,
     inicioKm: 0,
   }];
@@ -146,26 +178,30 @@ export const CalculadoraAutodepura = (props) => {
   trechosDe(props).forEach((dados) => {
     const anterior = trechos[trechos.length - 1];
     const velocidadeTrecho = Number(dados.velocidade);
+    const k1 = desoxigenacao(dados, anterior.k1);
     const { k2t, k220c } = reaeracao(dados, velocidadeTrecho, corrigirK2);
     trechos.push({
       ...simularTrecho({
-        ...comum,
+        ...coeficientesK1(k1),
+        cs,
+        particoes,
         qr: anterior.qt,
         odr: anterior.odFim,
         dbor: anterior.dbo5Fim,
-        qe: Number(dados.qe),
-        ode: Number(dados.ode),
-        dboe: dboLancada({ e: dados.e, dboe: dados.dboe }),
+        // nos trechos seguintes a DBO da contribuição é a DBOe, com ou sem E
+        lancamentos: lancamentosDoTrecho({ ...dados, dboefl: null }),
         k2: k2t,
         distancia: Number(dados.distancia),
         velocidade: velocidadeTrecho,
       }),
+      k1,
+      k1t: k1.k1t,
       k220c,
       inicioKm: anterior.inicioKm + anterior.distanciaKm,
     });
   });
 
-  const resumos = trechos.map(({ kmvet, odVet, dboVet, ...resumo }, i) => ({
+  const resumos = trechos.map(({ kmvet, odVet, dboVet, k1, ...resumo }, i) => ({
     ...resumo,
     numero: i + 1,
     minimo: minimoDoTrecho(resumo, i === trechos.length - 1),
@@ -197,9 +233,10 @@ export const CalculadoraAutodepura = (props) => {
       tipo: pior.minimo.tipo,
     },
     calculados: {
-      k1t,
-      kdt,
-      kt,
+      conversao,
+      k1t: trechos[0].k1t,
+      kdt: trechos[0].kd,
+      kt: trechos[0].kt,
       k2t: trechos[0].k2t,
       k220c: trechos[0].k220c,
       dbo5: trechos[0].dbo5,

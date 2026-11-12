@@ -118,7 +118,7 @@ function TabelaTrechos({ porTrecho }) {
           {porTrecho.linhas.map(({ rotulo, descricao, unidade, valores }) => (
             <tr key={rotulo}>
               <th scope="row">
-                {rotulo} <Unidade>({unidade})</Unidade>
+                {rotulo}{unidade && <> <Unidade>({unidade})</Unidade></>}
                 <Descricao>{descricao}</Descricao>
               </th>
               {valores.map(({ texto }, i) => <td key={porTrecho.colunas[i]}>{texto}</td>)}

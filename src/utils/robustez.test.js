@@ -13,9 +13,16 @@ const casas = (v, n = 3) => Number(v.toFixed(n));
 
 beforeAll(() => jest.spyOn(console, 'log').mockImplementation(() => { }));
 
+// outros lançamentos no mesmo ponto, como a tela permite
+const lancamentos = () => Array.from({ length: escolha([0, 0, 0, 1, 2]) }, () => ({
+    qe: talvez(casas(entre(0.00001, 5), 5)), ode: talvez(casas(entre(0, 8))), dboe: talvez(casas(entre(0, 500))),
+    e: aleatorio() < 0.3 ? talvez(casas(entre(0, 99))) : null,
+}));
+
 test('AutoDepura: entradas aceitas pela validação dão resultado finito', () => {
     let aceitas = 0;
     let comTrechos = 0;
+    let comLancamentos = 0;
     for (let i = 0; i < 3000; i++) {
         const k1 = escolha(['20', 'T']);
         const k2 = escolha(['hv', '20', 'T']);
@@ -36,14 +43,20 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
             ...(aleatorio() < 0.5 ? { cslinha: talvez(casas(entre(5, 12))), altitude: null } : { cslinha: null, altitude: talvez(casas(entre(0, 3000), 0)) }),
             kd20c: k1 === '20' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
             kdt: k1 === 'T' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
+            lancamentos: lancamentos(),
+            conversaoKt: escolha([null, 'k1t', 'k120c']),
             trechos: Array.from({ length: escolha([0, 0, 1, 2, 3]) }, () => {
                 const contribuicao = aleatorio() < 0.7;
                 const k2 = escolha(['hv', '20', 'T']);
+                const k1Trecho = escolha(['', '', '20', 'T']);
                 return {
                     qe: contribuicao ? talvez(casas(entre(0.001, 10))) : null,
                     ode: contribuicao ? talvez(casas(entre(0, 8))) : null,
                     dboe: contribuicao ? talvez(casas(entre(1, 400))) : null,
                     e: contribuicao && aleatorio() < 0.3 ? talvez(casas(entre(0, 99))) : null,
+                    lancamentos: lancamentos(),
+                    k120c: k1Trecho === '20' ? talvez(casas(entre(0.05, 0.6))) : null,
+                    k1t: k1Trecho === 'T' ? talvez(casas(entre(0.05, 0.8))) : null,
                     distancia: talvez(casas(entre(100, 100000), 0)), velocidade: talvez(casas(entre(0.03, 1.6))),
                     h: k2 === 'hv' ? talvez(casas(entre(0.1, 5))) : null,
                     k220c: k2 === '20' ? talvez(casas(entre(0.1, 5))) : null,
@@ -54,6 +67,7 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
         if (errosAutodepura(d).length) continue;
         aceitas++;
         if (d.trechos.length) comTrechos++;
+        if (d.lancamentos.length || d.trechos.some((trecho) => trecho.lancamentos.length)) comLancamentos++;
         const r = CalculadoraAutodepura(d);
         expect(r.ctVet).toHaveLength((d.particoes + 1) * (d.trechos.length + 1));
         expect(r.dboVet).toHaveLength(r.ctVet.length);
@@ -65,6 +79,7 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
     }
     expect(aceitas).toBeGreaterThan(500);
     expect(comTrechos).toBeGreaterThan(100);
+    expect(comLancamentos).toBeGreaterThan(100);
 });
 
 test('ColiCalc: entradas aceitas pela validação dão resultado finito', () => {

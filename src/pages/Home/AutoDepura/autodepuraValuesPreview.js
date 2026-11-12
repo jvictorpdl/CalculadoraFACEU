@@ -1,26 +1,31 @@
 import { useContext } from 'react';
 import { GrupoResumo, LinhaResumo, Resumo } from '../../../components/Resumo';
 import { ApplicationContext } from '../../../core/providers';
-import { trechosDe } from '../../../utils/autoDepuraCalculation';
-import { camposAutodepura, camposTrecho } from '../../../utils/relatorio';
-import { campoDoTrecho } from '../../../utils/validacao';
+import { CONVERSAO_KT, conversaoKtDe } from '../../../utils/autoDepuraCalculation';
+import { gruposAutodepura } from '../../../utils/relatorio';
+import { campoDoLancamento, campoDoTrecho } from '../../../utils/validacao';
+
+// o destaque de erro casa pelo mesmo nome de campo usado na validação
+const nomeDoCampo = ({ trecho, lancamento }, rotulo) => {
+    if (lancamento) return campoDoLancamento(rotulo, lancamento, trecho);
+    return trecho ? campoDoTrecho(rotulo, trecho) : rotulo;
+};
+
+// os outros lançamentos do trecho 1 ficam no 3º passo de Dados do esgoto
+const passoDe = (grupo) => (grupo.lancamento && !grupo.trecho ? 2 : 0);
 
 export default function AutodepuraValuesPreview({ onEditar }) {
     const { state } = useContext(ApplicationContext);
-    const dados = state.data.autodepura;
 
     return (
         <Resumo>
-            {camposAutodepura.map(({ titulo, campos }) => (
-                <GrupoResumo key={titulo} titulo={titulo} onEditar={() => onEditar(titulo)}>
-                    {campos.map(({ chave, ...campo }) => <LinhaResumo key={chave} {...campo} valor={dados[chave]} />)}
-                </GrupoResumo>
-            ))}
-            {trechosDe(dados).map((trecho, i) => (
-                <GrupoResumo key={trecho.id ?? i} titulo={`Trecho ${i + 2}`} onEditar={() => onEditar('Trechos seguintes')}>
-                    {camposTrecho.map(({ chave, ...campo }) => (
-                        <LinhaResumo key={chave} {...campo} campo={campoDoTrecho(campo.rotulo, i + 2)} valor={trecho[chave]} />
+            {gruposAutodepura(state.data.autodepura).map((grupo) => (
+                <GrupoResumo key={grupo.titulo} titulo={grupo.titulo} onEditar={() => onEditar(grupo.colecao, passoDe(grupo))}>
+                    {grupo.campos.map(({ chave, ...campo }) => (
+                        <LinhaResumo key={chave} {...campo} campo={nomeDoCampo(grupo, campo.rotulo)} valor={grupo.dados[chave]} />
                     ))}
+                    {grupo.colecao === 'Dados adicionais' &&
+                        <LinhaResumo rotulo="KT com" dica="K1 usado para converter a DBO5 em DBO última" valor={CONVERSAO_KT[conversaoKtDe(grupo.dados)]} />}
                 </GrupoResumo>
             ))}
         </Resumo>

@@ -6,8 +6,11 @@ import { VerticalSplitter } from "../../../../components/Splitter/splitter";
 import TextFieldWithTooltip from "../../../../components/TextFieldWithTooltip/textFieldWithTooltip";
 import { ApplicationContext } from "../../../../core/providers";
 import Ordivider from "../../../../components/OrDivider";
+import { lancamentosDe } from "../../../../utils/autoDepuraCalculation";
 import { bloqueadoPor, CAMINHOS } from "../../../../utils/validacao";
-import { AjudaDBOe, AjudaE, AjudaODe, PainelAjuda } from "./ajudas";
+import { AjudaDBOe, AjudaE, AjudaLancamentos, AjudaODe, PainelAjuda } from "./ajudas";
+import { Orientacao } from "./cartoes";
+import { ListaLancamentos } from "./lancamentos";
 
 export function DadoEsgotoStep1() {
     const { state, dispatch } = useContext(ApplicationContext);
@@ -88,6 +91,46 @@ export function DadoEsgotoStep2() {
                 <VerticalSplitter />
                 <Column>
                     <PainelAjuda>
+                        <AjudaE />
+                        <AjudaDBOe />
+                    </PainelAjuda>
+                </Column>
+            </Row>
+        </div>
+    );
+}
+
+
+// outros efluentes que chegam no mesmo ponto do primeiro (por exemplo, um tratado e um bruto)
+export function DadoEsgotoStep3() {
+    const { state, dispatch } = useContext(ApplicationContext);
+
+    function salvar(lancamentos) {
+        dispatch({
+            ...state,
+            data: {
+                ...state.data,
+                autodepura: { ...state.data.autodepura, lancamentos },
+            },
+        });
+    }
+
+    return (
+        <div>
+            <Row>
+                <Column>
+                    <FormTitle title="Outros lançamentos no mesmo ponto" />
+                    <Orientacao>
+                        Opcional. Use quando chega ao rio, no mesmo ponto, mais de um efluente (por exemplo, um tratado e um bruto).
+                        O lançamento 1 é o dos passos anteriores; a mistura soma todos eles. Lançamentos em pontos diferentes do rio
+                        entram como trechos seguintes.
+                    </Orientacao>
+                    <ListaLancamentos lancamentos={lancamentosDe(state.data.autodepura)} onAlterar={salvar} />
+                </Column>
+                <VerticalSplitter />
+                <Column>
+                    <PainelAjuda>
+                        <AjudaLancamentos />
                         <AjudaE />
                         <AjudaDBOe />
                     </PainelAjuda>

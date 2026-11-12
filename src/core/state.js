@@ -112,7 +112,9 @@ export let defaultState = {
             dboefl: null,
             e: null,
             altitude: null,
-            lancamentos: null,
+            lancamentos: [],
+            // null = K1T, o padrão; 'k120c' converte a DBO5 com o K1 a 20 °C
+            conversaoKt: null,
             kd20c: null,
             kdt: null,
             trechos: [],
