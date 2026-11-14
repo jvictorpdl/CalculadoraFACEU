@@ -126,9 +126,21 @@ test('outros lançamentos no mesmo ponto precisam de Qe, ODe e DBOe', () => {
     expect(mensagens(incompleto)).toEqual(['Lançamento 2: preencha ODe, DBOe ou remova o lançamento.']);
     expect(incompleto[0].campos).toEqual(['ODe (lançamento 2)', 'DBOe (lançamento 2)']);
 
-    const noTrecho = errosDosTrechos([{ ...trecho, lancamentos: [{ qe: 0, ode: 0, dboe: 300, e: 120 }] }]);
-    expect(mensagens(noTrecho)).toEqual(['Trecho 2, lançamento 2: Qe deve ser maior que zero.', 'Trecho 2, lançamento 2: E deve estar entre 0 e 100 %.']);
-    expect(noTrecho[0].campos).toEqual(['Qe (trecho 2, lançamento 2)']);
+    const noTrecho = errosDosTrechos([{ ...trecho, lancamentos: [{ qe: 0.01, ode: 0, dboe: 300, e: 120 }] }]);
+    expect(mensagens(noTrecho)).toEqual(['Trecho 2, lançamento 2: E deve estar entre 0 e 100 %.']);
+    expect(noTrecho[0].campos).toEqual(['E (trecho 2, lançamento 2)']);
+    // vazão zero é aceita: o lançamento não entra na mistura
+    expect(passo3([{ qe: 0, ode: 0, dboe: 120, e: null }])).toEqual([]);
+});
+
+test('trecho sem lançamento aceita zeros em Qe, ODe e DBOe', () => {
+    const semContribuicao = { ...trecho, qe: null, ode: null, dboe: null, e: null };
+    expect(errosDosTrechos([{ ...semContribuicao, qe: 0, ode: 0, dboe: 0 }])).toEqual([]);
+    expect(errosDosTrechos([{ ...semContribuicao, ode: 0, dboe: 0 }])).toEqual([]);
+    // com Qe = 0 os outros valores não entram na mistura
+    expect(errosDosTrechos([{ ...semContribuicao, qe: 0, ode: 7, dboe: 300 }])).toEqual([]);
+    // Qe em branco com DBOe preenchida: provavelmente faltou a vazão
+    expect(mensagens(errosDosTrechos([{ ...semContribuicao, ode: 0, dboe: 300 }]))).toEqual(['Trecho 2: informe a vazão Qe da contribuição ou apague ODe, DBOe e E.']);
 });
 
 test('converter com o K1 a 20 °C a partir do K1T exige θ e T', () => {

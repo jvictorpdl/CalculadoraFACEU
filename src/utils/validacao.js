@@ -83,8 +83,8 @@ function errosDoLancamento(lancamento, numero, trecho) {
     const vazios = [['qe', 'Qe'], ['ode', 'ODe'], ['dboe', 'DBOe']].filter(([chave]) => !preenchido(lancamento[chave])).map(([, rotulo]) => rotulo);
     if (vazios.length) return [erroLancamento(`preencha ${vazios.join(', ')} ou remova o lançamento.`, ...vazios)];
     return [
-        ...(positivo(lancamento.qe) ? [] : [erroLancamento('Qe deve ser maior que zero.', 'Qe')]),
-        ...[['ode', 'ODe', 0, 20, 'mg/L'], ['dboe', 'DBOe', 0, 100000, 'mg/L'], ['e', 'E', 0, 100, '%']]
+        // Qe = 0 vale: o lançamento existe na planilha mas não entra na mistura (por exemplo, o efluente tratado de um trecho sem ETE)
+        ...[['qe', 'Qe', 0, 1000000, 'm³/s'], ['ode', 'ODe', 0, 20, 'mg/L'], ['dboe', 'DBOe', 0, 100000, 'mg/L'], ['e', 'E', 0, 100, '%']]
             .filter(([chave, , minimo, maximo]) => preenchido(lancamento[chave]) && (Number(lancamento[chave]) < minimo || Number(lancamento[chave]) > maximo))
             .map(([, rotulo, minimo, maximo, unidade]) => erroLancamento(`${rotulo} deve estar entre ${decimal(minimo)} e ${decimal(maximo)} ${unidade}.`, rotulo)),
     ];
@@ -111,11 +111,12 @@ function errosDoTrecho(trecho, numero, dados) {
         .filter(([chave, , minimo, maximo]) => preenchido(trecho[chave]) && (Number(trecho[chave]) < minimo || Number(trecho[chave]) > maximo))
         .forEach(([, rotulo, minimo, maximo, unidade]) => erros.push(erroTrecho(`${rotulo} deve estar entre ${decimal(minimo)} e ${decimal(maximo)} ${unidade}.`, rotulo)));
 
-    // a contribuição é opcional: sem Qe, o trecho só muda de velocidade, profundidade ou K2
+    // a contribuição é opcional: sem Qe (em branco ou zero), o trecho só muda de velocidade, profundidade, K1 ou K2.
+    // Com Qe = 0 os demais valores não entram na mistura; com Qe em branco, só um valor diferente de zero indica que faltou a vazão
     if (positivo(trecho.qe)) {
         const semValor = [['ode', 'ODe'], ['dboe', 'DBOe']].filter(([chave]) => !preenchido(trecho[chave])).map(([, rotulo]) => rotulo);
         if (semValor.length) erros.push(erroTrecho(`preencha ${semValor.join(', ')} da contribuição.`, ...semValor));
-    } else if (['ode', 'dboe', 'e'].some((chave) => preenchido(trecho[chave]))) {
+    } else if (!preenchido(trecho.qe) && ['ode', 'dboe', 'e'].some((chave) => preenchido(trecho[chave]) && Number(trecho[chave]) !== 0)) {
         erros.push(erroTrecho('informe a vazão Qe da contribuição ou apague ODe, DBOe e E.', 'Qe'));
     }
     erros.push(...errosLancamentos(trecho, numero));

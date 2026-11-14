@@ -71,6 +71,7 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) 
             </Montante>
 
             <Subtitulo>Contribuições no início do trecho (opcional)</Subtitulo>
+            <Montante style={{ margin: '0 0 8px' }}>Se o trecho não recebe nenhum lançamento, deixe em branco ou informe Qe = 0.</Montante>
             {extras.length > 0 && <TituloLancamento style={{ marginBottom: 8 }}>Lançamento 1</TituloLancamento>}
             <Grid columns={4}>
                 {campo('qe', 'Qe', 'Vazão da contribuição: esgoto ou afluente', 'm³/s')}

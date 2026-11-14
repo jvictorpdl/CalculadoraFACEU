@@ -127,6 +127,13 @@ test('trecho sem contribuição só continua o rio, com outra velocidade', () =>
 
     expect(dividido.trechos[1].odFim).toBeCloseTo(inteiro.trechos[0].odFim, 10);
     expect(dividido.trechos[1].dbo5Fim).toBeCloseTo(inteiro.trechos[0].dbo5Fim, 10);
+
+    // Qe, ODe e DBOe iguais a zero dão o mesmo que os campos em branco
+    const comZeros = CalculadoraAutodepura({
+        ...exemplo85, distancia: 25000,
+        trechos: [{ qe: 0, ode: 0, dboe: 0, e: null, distancia: 25000, velocidade: 0.26, h: null, k220c: null, k2t: 5.23 }],
+    });
+    expect(comZeros.ctVet).toEqual(dividido.ctVet);
 });
 
 test('o ponto crítico depois do fim de um trecho intermediário não conta', () => {
