@@ -5,8 +5,13 @@ align-items:center;
 display: flex;
 
 img {
-    width: 100px;
-    height: 20px;
+    display: block;
+    width: auto;
+    height: 40px;
+
+    @media (max-width: 768px) {
+        height: 32px;
+    }
 }
 
 
