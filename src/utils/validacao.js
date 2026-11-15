@@ -150,6 +150,26 @@ function errosDoTrecho(trecho, numero, dados) {
             erros.push(erroTrecho('para corrigir o K2 pela temperatura, informe θ para K2 e T em Dados adicionais.'));
         }
     }
+
+    // Cs' do trecho é opcional (pronto ou pela altitude): em branco, continua o do trecho anterior
+    const cs = conflito(trecho, CAMINHOS.cs, `Trecho ${numero}: use a altitude (para calcular o Cs' com T) ou o Cs' já pronto, não os dois. Apague um deles.`,
+        (rotulo) => campoDoTrecho(rotulo, numero));
+    erros.push(...cs);
+    if (!cs.length) {
+        if (preenchido(trecho.cslinha) && !positivo(trecho.cslinha)) erros.push(erroTrecho("Cs' deve ser maior que zero.", "Cs'"));
+        [["cslinha", "Cs'", 0, 20, 'mg/L'], ['altitude', 'Altitude', 0, 5000, 'm']]
+            .filter(([chave, , minimo, maximo]) => preenchido(trecho[chave]) && (Number(trecho[chave]) < minimo || Number(trecho[chave]) > maximo))
+            .forEach(([, rotulo, minimo, maximo, unidade]) => erros.push(erroTrecho(`${rotulo} deve estar entre ${decimal(minimo)} e ${decimal(maximo)} ${unidade}.`, rotulo)));
+        if (preenchido(trecho.altitude) && !preenchido(dados.temperatura)) {
+            erros.push(erroTrecho("para calcular o Cs' pela altitude, informe T em Dados adicionais."));
+        }
+    }
+
+    // Nº de divisões do trecho é opcional: em branco, vale o de Dados adicionais
+    const divisoes = Number(trecho.particoes);
+    if (preenchido(trecho.particoes) && (!Number.isInteger(divisoes) || divisoes < 1 || divisoes > 1000)) {
+        erros.push(erroTrecho('Nº de divisões deve ser um número inteiro entre 1 e 1000.', 'Nº'));
+    }
     return erros;
 }
 

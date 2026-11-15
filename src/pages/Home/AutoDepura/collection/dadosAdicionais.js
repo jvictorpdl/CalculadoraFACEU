@@ -206,7 +206,7 @@ export function DadosAdicionaisStep3() {
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Orientacao>
-                        Distância e velocidade do trecho 1. Se o rio tiver outros trechos, eles entram no grupo Trechos seguintes.
+                        Distância e velocidade do trecho 1. Se o rio tiver outros trechos, eles entram no grupo Trechos seguintes. O Nº de divisões vale para todos os trechos que não tiverem o próprio.
                     </Orientacao>
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.distancia} onBlurValue={(val) => updateStateWithAutodepuraData({ distancia: val })} label="d" tooltip="Distância percorrida a partir do lançamento" placeholder="m" />
@@ -252,7 +252,7 @@ export function DadosAdicionaisStep4() {
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Orientacao>
-                        Calcule o Cs' pela temperatura e altitude, ou informe o Cs' já pronto. Ao preencher a altitude ou o Cs', o outro fica bloqueado.
+                        Cs' do trecho 1: calcule pela temperatura e altitude, ou informe o Cs' já pronto. Ao preencher a altitude ou o Cs', o outro fica bloqueado. Os trechos seguintes podem ter o próprio Cs'.
                     </Orientacao>
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.temperatura} onBlurValue={(val) => updateStateWithAutodepuraData({ temperatura: val })} label="T" tooltip="Temperatura do rio" placeholder=" °C" />

@@ -16,16 +16,16 @@ import { ListaLancamentos } from "./lancamentos";
 const trechoVazio = () => ({
     id: novoId(),
     qe: null, ode: null, dboe: null, e: null, lancamentos: [], distancia: null, velocidade: null,
-    k120c: null, k1t: null, h: null, k220c: null, k2t: null,
+    k120c: null, k1t: null, h: null, k220c: null, k2t: null, altitude: null, cslinha: null, particoes: null,
 });
 
-// vazão, OD, DBO5 e K1 no fim do trecho anterior, quando os dados até ele estão completos
+// vazão, OD, DBO5, K1 e Cs' no fim do trecho anterior, quando os dados até ele estão completos
 function rioAMontante(dados, indice) {
     const anteriores = { ...dados, trechos: trechosDe(dados).slice(0, indice) };
     if (errosAutodepura(anteriores).length) return null;
     const { trechos } = CalculadoraAutodepura(anteriores);
     const anterior = trechos[trechos.length - 1];
-    return { km: anterior.inicioKm + anterior.distanciaKm, qr: anterior.qt, od: anterior.odFim, dbo: anterior.dbo5Fim, k1t: anterior.k1t };
+    return { km: anterior.inicioKm + anterior.distanciaKm, qr: anterior.qt, od: anterior.odFim, dbo: anterior.dbo5Fim, k1t: anterior.k1t, cs: anterior.cs };
 }
 
 // opções que chegam ao mesmo coeficiente: uma preenchida bloqueia as outras
@@ -40,7 +40,8 @@ function travas(trecho, caminhos, rotulos) {
 function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) {
     const k1 = travas(trecho, CAMINHOS.k1Trecho, ['K1 (20 °C)', 'K1T']);
     const k2 = travas(trecho, CAMINHOS.k2, ['H', 'K2 (20 °C)', 'K2T']);
-    const bloqueados = new Set([...k1.bloqueados, ...k2.bloqueados]);
+    const cs = travas(trecho, CAMINHOS.cs, ['Altitude', "Cs'"]);
+    const bloqueados = new Set([...k1.bloqueados, ...k2.bloqueados, ...cs.bloqueados]);
     const extras = lancamentosDe(trecho);
 
     const campo = (chave, label, tooltip, placeholder) => (
@@ -105,6 +106,22 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) 
                 {campo('k2t', 'K2T', 'Coeficiente de reaeração do trecho na temperatura do rio (T)', '1/dia')}
             </Grid>
             <AvisoTrava campos={k2.bloqueados} por={k2.motivo} />
+
+            <Subtitulo>Saturação (opcional): altitude ou Cs'</Subtitulo>
+            <Montante style={{ marginBottom: 8 }}>
+                Em branco, o trecho usa o Cs' do trecho {numeroTrecho - 1}
+                {montante ? ` (${numero(montante.cs, 2)} mg/L)` : ''}. Pela altitude, o Cs' é calculado com a T de Dados adicionais.
+            </Montante>
+            <Grid columns={4}>
+                {campo('altitude', 'Altitude', 'Altitude do trecho, para calcular o Cs\' com a temperatura do rio', 'm')}
+                {campo('cslinha', "Cs'", 'Concentração de saturação de oxigênio dissolvido no trecho', 'mg/L')}
+            </Grid>
+            <AvisoTrava campos={cs.bloqueados} por={cs.motivo} />
+
+            <Subtitulo>Perfil (opcional)</Subtitulo>
+            <Grid columns={4}>
+                {campo('particoes', 'Nº', 'Número de divisões deste trecho no gráfico e na tabela; em branco, o de Dados adicionais', 'Quantidade')}
+            </Grid>
         </Cartao>
     );
 }
@@ -131,7 +148,7 @@ export function TrechosSeguintes() {
                     <FormTitle title="Trechos seguintes" />
                     <Orientacao>
                         Opcional. Acrescente um trecho para cada nova contribuição (esgoto ou afluente) ou mudança de velocidade,
-                        profundidade, K1 ou K2. O trecho 1 é o descrito nos grupos anteriores; sem trechos seguintes, o cálculo considera só ele.
+                        profundidade, K1, K2 ou Cs'. O trecho 1 é o descrito nos grupos anteriores; sem trechos seguintes, o cálculo considera só ele.
                     </Orientacao>
 
                     {trechos.map((trecho, i) => (

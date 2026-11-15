@@ -223,6 +223,46 @@ test('planilha da Gizele com o K1 a 20 °C digitado: o padrão K1T dá o mesmo r
     expect(CalculadoraAutodepura({ ...pelo20, conversaoKt: 'k120c' }).trechos[0].kt).toBeCloseTo(1 / (1 - Math.exp(-2)), 10);
 });
 
+test("planilha da Gizele com o Cs' de cada trecho (7,36 no trecho 1 e 7,37 nos outros)", () => {
+    const [segundo, ...outros] = rioGizele.trechos;
+    // só o trecho 2 informa o Cs'; os seguintes continuam com o dele
+    const r = CalculadoraAutodepura({ ...rioGizele, cslinha: 7.36, trechos: [{ ...segundo, cslinha: 7.37 }, ...outros] });
+    const esperados = [
+        { co: 4.149502, odFim: 7.222125, dbo5Fim: 0.229643 },
+        { co: 6.87986, odFim: 6.867788, dbo5Fim: 1.9373 },
+        { co: 6.056977, odFim: 4.836707, dbo5Fim: 12.89616 },
+        { co: 4.227428, odc: 2.882338, odFim: 5.278544 },
+        { co: 5.278544, odFim: 6.816427 },
+    ];
+
+    expect(r.trechos.map((trecho) => trecho.cs)).toEqual([7.36, 7.37, 7.37, 7.37, 7.37]);
+    r.trechos.forEach((trecho, i) => conferirTrecho(trecho, esperados[i]));
+});
+
+test("Cs' de um trecho pela altitude, inclusive a zero (nível do mar)", () => {
+    const saturacao = (t) => 14.652 - 0.41022 * t + 0.007991 * t * t - 0.000077774 * t * t * t;
+    const r = CalculadoraAutodepura({
+        ...rioGizele,
+        trechos: [{ ...rioGizele.trechos[0], altitude: 1000 }, { ...rioGizele.trechos[1], altitude: 0 }],
+    });
+
+    expect(r.trechos[0].cs).toBe(7.37);
+    expect(r.trechos[1].cs).toBeCloseTo(saturacao(30.5) * (1 - 1000 / 9450), 10);
+    expect(r.trechos[2].cs).toBeCloseTo(saturacao(30.5), 10);
+});
+
+test('cada trecho pode ter o próprio Nº de divisões', () => {
+    const [segundo, ...outros] = rioGizele.trechos;
+    const r = CalculadoraAutodepura({ ...rioGizele, trechos: [{ ...segundo, particoes: 4 }, ...outros] });
+    const doTrecho2 = r.kmvet.filter((_, i) => r.trechoVet[i] === 2);
+
+    expect(r.ctVet).toHaveLength(11 + 5 + 11 * 3);
+    expect(r.trechoVet).toHaveLength(r.ctVet.length);
+    expect(doTrecho2.map((km) => km - 6.206)).toEqual([0, 1.03825, 2.0765, 3.11475, 4.153].map((km) => expect.closeTo(km, 9)));
+    // as divisões só mudam os pontos do perfil, não o resultado de cada trecho
+    expect(r.trechos[3].odFim).toBeCloseTo(CalculadoraAutodepura(rioGizele).trechos[3].odFim, 12);
+});
+
 test('dois lançamentos no mesmo ponto equivalem a um só com a mistura deles', () => {
     const separados = CalculadoraAutodepura({ ...exemplo, qe: 0.1, ode: 0, dboe: 300, e: null, lancamentos: [{ qe: 0.05, ode: 4, dboe: 400, e: 50 }] });
     // E = 50% reduz a DBO do segundo lançamento para 200 mg/L

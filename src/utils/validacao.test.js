@@ -133,6 +133,25 @@ test('outros lançamentos no mesmo ponto precisam de Qe, ODe e DBOe', () => {
     expect(passo3([{ qe: 0, ode: 0, dboe: 120, e: null }])).toEqual([]);
 });
 
+test("Cs' e Nº do trecho são opcionais, com a trava entre altitude e Cs'", () => {
+    expect(errosDosTrechos([{ ...trecho, cslinha: 7.4 }])).toEqual([]);
+    expect(errosDosTrechos([{ ...trecho, altitude: 0, particoes: 4 }])).toEqual([]);
+    expect(bloqueadoPor({ ...trecho, altitude: 300 }, CAMINHOS.cs, 1)).toEqual(['Altitude']);
+
+    const ambos = errosDosTrechos([{ ...trecho, altitude: 300, cslinha: 7.4 }]);
+    expect(mensagens(ambos)).toEqual(["Trecho 2: use a altitude (para calcular o Cs' com T) ou o Cs' já pronto, não os dois. Apague um deles."]);
+    expect(ambos[0].campos).toEqual(['Altitude (trecho 2)', "Cs' (trecho 2)"]);
+
+    expect(mensagens(errosDosTrechos([{ ...trecho, cslinha: 0 }]))).toEqual(["Trecho 2: Cs' deve ser maior que zero."]);
+    expect(mensagens(errosDosTrechos([{ ...trecho, cslinha: 25 }]))).toEqual(["Trecho 2: Cs' deve estar entre 0 e 20 mg/L."]);
+    expect(mensagens(errosPassoAutodepura('Trechos seguintes', 0, { ...autodepura, temperatura: null, trechos: [{ ...trecho, altitude: 300 }] })))
+        .toEqual(["Trecho 2: para calcular o Cs' pela altitude, informe T em Dados adicionais."]);
+
+    const divisoes = errosDosTrechos([{ ...trecho, particoes: 2.5 }]);
+    expect(mensagens(divisoes)).toEqual(['Trecho 2: Nº de divisões deve ser um número inteiro entre 1 e 1000.']);
+    expect(divisoes[0].campos).toEqual(['Nº (trecho 2)']);
+});
+
 test('trecho sem lançamento aceita zeros em Qe, ODe e DBOe', () => {
     const semContribuicao = { ...trecho, qe: null, ode: null, dboe: null, e: null };
     expect(errosDosTrechos([{ ...semContribuicao, qe: 0, ode: 0, dboe: 0 }])).toEqual([]);

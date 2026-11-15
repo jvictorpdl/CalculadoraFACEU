@@ -64,8 +64,9 @@ test('com vários trechos o relatório traz os dados e os resultados de cada um'
     expect(relatorio.descricao).toBe('Autodepuração de rio em 2 trechos pelo modelo de Streeter-Phelps');
     expect(relatorio.fornecidos.map((grupo) => grupo.titulo)).toEqual(['Dados do rio', 'Dados do esgoto', 'Dados adicionais', 'Trecho 2']);
     expect(relatorio.fornecidos[3].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'd', 'v', 'K2T']);
-    // K1T e KdT de cada trecho ficam na tabela por trecho
-    expect(relatorio.calculados.map((linha) => linha.rotulo)).toEqual(["Cs'"]);
+    // KT, K1T, KdT e Cs' de cada trecho ficam na tabela por trecho
+    expect(relatorio.calculados).toEqual([]);
+    expect(linhaTrecho("Cs'")).toEqual([7.9, 7.9]);
     expect(relatorio.porTrecho.colunas).toEqual(['Trecho 1', 'Trecho 2']);
     expect(linhaTrecho('K1T')).toEqual([0.44, 0.44]);
     expect(linhaTrecho('KdT')).toEqual([0.77, 0.77]);
@@ -121,6 +122,24 @@ test('outros lançamentos e o K1 de cada trecho entram no relatório', () => {
     expect(linhaTrecho('KT')).toEqual([1.157, 1.685]);
     expect(relatorio.porTrecho.linhas.find((linha) => linha.rotulo === 'KT').descricao).toBe('Fator de conversão da DBO5 em DBO última (L0/DBO5), com o K1T');
     expect(montarAutodepura({ ...dados, conversaoKt: 'k120c' }).porTrecho.linhas.find((linha) => linha.rotulo === 'KT').descricao).toMatch(/com o K1 a 20 °C$/);
+});
+
+test("Cs' e Nº de divisões do trecho aparecem na tabela, no perfil e nos avisos", () => {
+    const dados = { ...exemplo85, trechos: [{ ...exemplo85.trechos[0], cslinha: 7.5, particoes: 5 }] };
+    const relatorio = montarAutodepura(dados);
+    const linhaTrecho = (rotulo) => relatorio.porTrecho.linhas.find((linha) => linha.rotulo === rotulo).valores.map(({ valor }) => valor);
+
+    expect(linhaTrecho("Cs'")).toEqual([7.9, 7.5]);
+    expect(relatorio.calculados).toEqual([]);
+    expect(relatorio.fornecidos[3].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'd', 'v', 'K2T', "Cs'", 'Nº']);
+    // 21 pontos no trecho 1 (Nº = 20) e 6 no trecho 2 (Nº = 5)
+    expect(relatorio.perfil.linhas).toHaveLength(27);
+    expect(relatorio.perfil.linhas.slice(20, 23).map((linha) => linha.slice(0, 3))).toEqual([[1, 50, 50], [2, 0, 50], [2, 5, 55]]);
+    expect(relatorio.perfil.linhas.at(-1).slice(0, 3)).toEqual([2, 25, 75]);
+
+    // o ODmín acima da saturação só no trecho 2
+    expect(montarAutodepura({ ...dados, odmin: 7.6 }).conclusao.linhas)
+        .toContain("Atenção: o ODmín (7,60 mg/L) é maior ou igual à saturação no trecho 2 (Cs' = 7,50 mg/L). Ali ele não pode ser atendido. Confira os valores.");
 });
 
 test('K2 calculado por H e v aparece nos valores calculados', () => {

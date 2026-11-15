@@ -57,6 +57,9 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
                     lancamentos: lancamentos(),
                     k120c: k1Trecho === '20' ? talvez(casas(entre(0.05, 0.6))) : null,
                     k1t: k1Trecho === 'T' ? talvez(casas(entre(0.05, 0.8))) : null,
+                    // Cs' do trecho pronto, pela altitude ou herdado; Nº próprio ou o geral
+                    ...escolha([{}, { cslinha: talvez(casas(entre(5, 12))) }, { altitude: talvez(casas(entre(0, 3000), 0)) }]),
+                    particoes: aleatorio() < 0.3 ? talvez(Math.floor(entre(1, 60))) : null,
                     distancia: talvez(casas(entre(100, 100000), 0)), velocidade: talvez(casas(entre(0.03, 1.6))),
                     h: k2 === 'hv' ? talvez(casas(entre(0.1, 5))) : null,
                     k220c: k2 === '20' ? talvez(casas(entre(0.1, 5))) : null,
@@ -69,7 +72,8 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
         if (d.trechos.length) comTrechos++;
         if (d.lancamentos.length || d.trechos.some((trecho) => trecho.lancamentos.length)) comLancamentos++;
         const r = CalculadoraAutodepura(d);
-        expect(r.ctVet).toHaveLength((d.particoes + 1) * (d.trechos.length + 1));
+        expect(r.ctVet).toHaveLength([d, ...d.trechos].reduce((total, t) => total + (Number(t.particoes) || d.particoes) + 1, 0));
+        expect(r.trechoVet).toHaveLength(r.ctVet.length);
         expect(r.dboVet).toHaveLength(r.ctVet.length);
         r.ctVet.forEach((od) => expect(Number.isFinite(Number(od))).toBe(true));
         r.dboVet.forEach((dbo) => expect(Number.isFinite(dbo)).toBe(true));

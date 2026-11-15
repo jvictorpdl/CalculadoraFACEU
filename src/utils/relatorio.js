@@ -40,7 +40,7 @@ export const camposAutodepura = [
             { chave: 'k220c', rotulo: 'K2 (20 °C)', dica: 'Coeficiente de reaeração a 20 °C', unidade: '1/dia', opcional: true },
             { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração na temperatura do rio (T)', unidade: '1/dia', opcional: true },
             { chave: 'distancia', rotulo: 'd', dica: 'Distância percorrida a partir do lançamento', unidade: 'm' },
-            { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões de cada trecho no cálculo do perfil' },
+            { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões de cada trecho no cálculo do perfil (os trechos seguintes podem ter o próprio)' },
             { chave: 'altitude', rotulo: 'Altitude', dica: 'Altitude do local', unidade: 'm', opcional: true },
             { chave: 'cslinha', rotulo: "Cs'", dica: 'Concentração de saturação de oxigênio dissolvido no rio', unidade: 'mg/L', opcional: true },
         ],
@@ -60,6 +60,9 @@ export const camposTrecho = [
     { chave: 'h', rotulo: 'H', dica: 'Profundidade do rio no trecho, para calcular o K2', unidade: 'm', opcional: true },
     { chave: 'k220c', rotulo: 'K2 (20 °C)', dica: 'Coeficiente de reaeração do trecho a 20 °C', unidade: '1/dia', opcional: true },
     { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração do trecho na temperatura do rio (T)', unidade: '1/dia', opcional: true },
+    { chave: 'altitude', rotulo: 'Altitude', dica: "Altitude do trecho, para calcular o Cs' (em branco, o Cs' do trecho anterior)", unidade: 'm', opcional: true },
+    { chave: 'cslinha', rotulo: "Cs'", dica: "Concentração de saturação de OD no trecho (em branco, a do trecho anterior)", unidade: 'mg/L', opcional: true },
+    { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões do trecho no perfil (em branco, o de Dados adicionais)', opcional: true },
 ];
 
 // lançamentos além do primeiro, no mesmo ponto do rio
@@ -190,9 +193,21 @@ function conclusaoTrechos({ critico, trechos }) {
             ...(tipo === 'alem' ? [`Aumente d do trecho ${trecho} para ver esse ponto no gráfico.`] : []),
             ...(atende ? [] : [`Abaixo do ODmín: ${listaTrechos(trechos.filter((t) => t.minimo.od < odmin).map((t) => t.numero))}.`]),
             ...(odc < 0 ? ['Abaixo de zero o modelo de Streeter-Phelps deixa de valer nesse trecho.'] : []),
-            ...avisosSaturacao(critico),
+            ...avisosSaturacaoTrechos(critico, trechos),
         ],
     };
+}
+
+// cada trecho pode ter o próprio Cs'; o ODr só se compara com o do trecho 1, onde o rio entra
+function avisosSaturacaoTrechos({ odmin, odr }, trechos) {
+    const saturados = trechos.filter((t) => odmin >= t.cs);
+    const [primeiro] = trechos;
+    const valores = saturados.map((t) => numero(t.cs, 2));
+    const listaCs = valores.length === 1 ? valores[0] : `${valores.slice(0, -1).join(', ')} e ${valores[valores.length - 1]}`;
+    return [
+        ...(saturados.length ? [`Atenção: o ODmín (${numero(odmin, 2)} mg/L) é maior ou igual à saturação ${saturados.length === 1 ? 'no' : 'nos'} ${listaTrechos(saturados.map((t) => t.numero))} (Cs' = ${listaCs} mg/L). Ali ele não pode ser atendido. Confira os valores.`] : []),
+        ...(odr > primeiro.cs ? [`Atenção: o ODr (${numero(odr, 2)} mg/L) está acima da saturação do trecho 1 (Cs' = ${numero(primeiro.cs, 2)} mg/L). Isso só ocorre em rios supersaturados; confira os valores.`] : []),
+    ];
 }
 
 export function conclusaoAutodepura(resultado) {
@@ -266,6 +281,7 @@ const LINHAS_POR_TRECHO = [
     ['K1T', 'Coeficiente de desoxigenação na temperatura do rio', '1/dia', 3, (t) => t.k1t],
     ['KdT', 'Coeficiente de decomposição da DBO no rio, na temperatura do rio', '1/dia', 3, (t) => t.kd],
     ['K2T', 'Coeficiente de reaeração na temperatura do rio', '1/dia', 3, (t) => t.k2t],
+    ["Cs'", 'Concentração de saturação de OD no trecho', 'mg/L', 2, (t) => t.cs],
     ['t', 'Tempo de percurso no trecho', 'dia', 3, (t) => t.tempo],
     ['DBO5 final', 'DBO5 no fim do trecho', 'mg/L', 2, (t) => t.dbo5Fim],
     ['OD final', 'OD no fim do trecho', 'mg/L', 2, (t) => t.odFim],
@@ -289,7 +305,7 @@ function tabelaPorTrecho(trechos, comKd, conversao) {
 }
 
 export function relatorioAutodepura(dados, resultado) {
-    const { critico, calculados, kmvet, ctVet, dboVet, trechos } = resultado;
+    const { critico, calculados, kmvet, ctVet, dboVet, trechoVet, trechos } = resultado;
     const valido = !odNegativo(resultado);
     const varios = trechos.length > 1;
     // sem K2 informado, ele vem das fórmulas hidráulicas (H e v)
@@ -298,7 +314,8 @@ export function relatorioAutodepura(dados, resultado) {
     const linhaKd = comKd
         ? [calculado('KdT', 'Coeficiente de decomposição da DBO no rio, na temperatura do rio', calculados.kdt, '1/dia', 3)]
         : [];
-    const pontosPorTrecho = kmvet.length / trechos.length;
+    // cada trecho pode ter o próprio Nº de divisões; resultados antigos não trazem o trecho de cada ponto
+    const trechoDoPonto = (i) => (trechoVet ? trechos[trechoVet[i] - 1] : trechos[Math.floor(i / (kmvet.length / trechos.length))]);
 
     return {
         titulo: 'AutoDepura',
@@ -308,10 +325,8 @@ export function relatorioAutodepura(dados, resultado) {
         arquivo: 'autodepura',
         conclusao: conclusaoAutodepura(resultado),
         fornecidos: valoresFornecidos(gruposAutodepura(dados)),
-        // com vários trechos, K1T e KdT de cada um ficam na tabela por trecho
-        calculados: !valido ? [] : varios ? [
-            calculado("Cs'", 'Concentração de saturação de OD', critico.cs, 'mg/L'),
-        ] : [
+        // com vários trechos, KT, K1T, KdT e Cs' de cada um ficam na tabela por trecho
+        calculados: !valido || varios ? [] : [
             calculado('C0', 'OD da mistura', critico.co, 'mg/L'),
             calculado('DBO5', 'DBO5 da mistura', calculados.dbo5, 'mg/L'),
             calculado('L0', 'DBO última da mistura', calculados.lo, 'mg/L'),
@@ -341,7 +356,7 @@ export function relatorioAutodepura(dados, resultado) {
                 { titulo: 'DBO5 (mg/L)', casas: 2 },
             ],
             linhas: kmvet.map((km, i) => {
-                const trecho = trechos[Math.floor(i / pontosPorTrecho)];
+                const trecho = trechoDoPonto(i);
                 return [
                     ...(varios ? [trecho.numero, Number((km - trecho.inicioKm).toFixed(6))] : []),
                     km,

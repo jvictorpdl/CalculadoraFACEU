@@ -305,7 +305,7 @@ export function AjudaDivisoes() {
         <Ajuda campo="Nº de divisões" titulo="Número de divisões de cada trecho">
             <p>
                 Em quantas partes cada trecho é dividido para calcular os pontos do gráfico e do perfil. Não muda
-                o ponto crítico, que é calculado de forma exata.
+                o ponto crítico, que é calculado de forma exata. Cada trecho seguinte pode ter o próprio Nº; em branco, usa este.
             </p>
         </Ajuda>
     );
@@ -336,7 +336,7 @@ export function AjudaTrechosSeguintes() {
             </p>
             <br />
             <p>
-                Temperatura, θ, Kd, Cs' e ODmín valem para o rio todo. Sem Kd informado, a DBO se decompõe com o K1 de cada trecho.
+                Temperatura, θ, Kd e ODmín valem para o rio todo. Sem Kd informado, a DBO se decompõe com o K1 de cada trecho. O Cs' pode mudar de um trecho para outro, pela altitude ou já pronto. Em branco, vale o do trecho anterior.
             </p>
             <br />
             <Nota>Fonte: Von Sperling, Estudos e modelagem da qualidade da água de rios (item 8.8)</Nota>

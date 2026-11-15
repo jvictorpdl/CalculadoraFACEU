@@ -85,7 +85,7 @@ function simularTrecho({ qr, odr, dbor, lancamentos, kt, kd, k2, cs, distancia, 
   }
 
   return {
-    qr, odr, dbor, qe, qt, co, dbo5,
+    qr, odr, dbor, qe, qt, co, dbo5, cs, particoes,
     lo: coeficientes.lo,
     deficit: coeficientes.d0,
     kd,
@@ -142,15 +142,23 @@ export const CalculadoraAutodepura = (props) => {
     kt: 1 / (1 - Math.exp(-5 * k1DaConversao(k1))),
   });
 
-  let cs = Number(props.cslinha);
-  if (!cs) {
-    const saturacao =
-      14.652 -
-      4.1022 * Math.pow(10, -1) * temperatura +
-      7.991 * Math.pow(10, -3) * Math.pow(temperatura, 2) -
-      7.7774 * Math.pow(10, -5) * Math.pow(temperatura, 3);
-    cs = saturacao * (1 - Number(props.altitude) / 9450);
-  }
+  // Cs' informado, ou calculado pela temperatura e pela altitude; nos trechos seguintes é opcional e,
+  // em branco, continua o do trecho anterior (a altitude zero, ao nível do mar, também conta)
+  const saturacao =
+    14.652 -
+    4.1022 * Math.pow(10, -1) * temperatura +
+    7.991 * Math.pow(10, -3) * Math.pow(temperatura, 2) -
+    7.7774 * Math.pow(10, -5) * Math.pow(temperatura, 3);
+  const informada = (valor) => valor !== null && valor !== undefined && valor !== '';
+  const saturacaoDe = (dados, anterior) => {
+    const cslinha = Number(dados.cslinha);
+    if (cslinha) return cslinha;
+    if (informada(dados.altitude) || anterior === undefined) return saturacao * (1 - Number(dados.altitude) / 9450);
+    return anterior;
+  };
+  const cs = saturacaoDe(props);
+  // Nº de divisões de cada trecho; em branco, o geral
+  const divisoesDe = (dados) => Number(dados.particoes) || particoes;
 
   const velocidade = Number(props.velocidade);
   const k1Primeiro = desoxigenacao(props);
@@ -183,8 +191,8 @@ export const CalculadoraAutodepura = (props) => {
     trechos.push({
       ...simularTrecho({
         ...coeficientesK1(k1),
-        cs,
-        particoes,
+        cs: saturacaoDe(dados, anterior.cs),
+        particoes: divisoesDe(dados),
         qr: anterior.qt,
         odr: anterior.odFim,
         dbor: anterior.dbo5Fim,
@@ -215,6 +223,8 @@ export const CalculadoraAutodepura = (props) => {
 
   return {
     ctVet,
+    // número do trecho de cada ponto do perfil; cada trecho pode ter o próprio Nº de divisões
+    trechoVet: trechos.flatMap((trecho, i) => trecho.kmvet.map(() => i + 1)),
     dboVet: trechos.flatMap((trecho) => trecho.dboVet.map((dbo) => Number(dbo.toFixed(2)))),
     odminVet: kmvet.map(() => odmin),
     particoesVet: kmvet.map((_, i) => i),
