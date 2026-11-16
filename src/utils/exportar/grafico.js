@@ -14,7 +14,8 @@ export async function imagemDoGrafico({ series, options }) {
         series,
         chart: {
             ...options.chart,
-            type: 'line',
+            // o EutroFriza usa barras; os demais, linhas
+            type: options.chart?.type ?? 'line',
             width: LARGURA_GRAFICO,
             height: ALTURA_GRAFICO,
             background: '#FFF',

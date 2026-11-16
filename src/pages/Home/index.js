@@ -7,13 +7,14 @@ import PageTemplate from "../PageTemplate";
 import { Holder } from "../PageTemplate/styles";
 import { AutoDepura } from "./AutoDepura/autoDepura";
 import { ColiCalc } from "./ColiCalc/coliCalc";
+import { EutroFriza } from "./EutroFriza/eutroFriza";
 
 
 
 export default function Home() {
-    // /colicalc abre direto na aba do ColiCalc
+    // /colicalc e /eutrofriza abrem direto na aba da calculadora
     const { pathname } = useLocation();
-    const abaInicial = pathname.toLowerCase() === '/colicalc' ? 1 : 0;
+    const abaInicial = { '/colicalc': 1, '/eutrofriza': 2 }[pathname.toLowerCase()] ?? 0;
 
     return (
         <PageTemplate>
@@ -30,7 +31,7 @@ export default function Home() {
                             <ColiCalc />
                         </Tab>
                         <Tab id={Tools.EutroFriza} label="EutroFriza">
-                            <div>Em Breve</div>
+                            <EutroFriza />
                         </Tab>
                     </Tabs>
                 </Holder>

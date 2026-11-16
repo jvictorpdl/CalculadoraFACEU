@@ -11,6 +11,7 @@ function App() {
           {/* endereços antigos abrem a calculadora atual já na aba certa */}
           <Route path="/autodepura" element={<Home />} />
           <Route path="/colicalc" element={<Home />} />
+          <Route path="/eutrofriza" element={<Home />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router >

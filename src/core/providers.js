@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { DADOS_EUTROFRIZA } from "../utils/eutroFrizaCalculation";
 import { defaultState } from "./state";
 
 export const ApplicationContext = createContext('ApplicationState');
@@ -14,6 +15,7 @@ function estadoInicial() {
             data: {
                 autodepura: { ...defaultState.data.autodepura, ...salvos?.autodepura },
                 colicalc: { ...defaultState.data.colicalc, ...salvos?.colicalc },
+                eutrofriza: { ...DADOS_EUTROFRIZA, ...salvos?.eutrofriza },
             },
         };
     } catch {
