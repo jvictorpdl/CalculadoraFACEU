@@ -30,6 +30,10 @@ test('o relatório traz os valores fornecidos e deixa de fora o que ficou em bra
     expect(linhasDe(relatorio).find((linha) => linha.rotulo === 'Qr')).toMatchObject({ valor: 0.651, texto: '0,651', unidade: 'm³/s' });
 });
 
+test('a vazão aparece no relatório com as 8 casas aceitas no campo', () => {
+    expect(linhasDe(montarAutodepura({ ...rio, qe: 0.00004897 })).find((linha) => linha.rotulo === 'Qe')).toMatchObject({ texto: '0,00004897' });
+});
+
 test('o zero digitado é um valor fornecido, não um campo em branco', () => {
     expect(linhasDe(montarAutodepura()).find((linha) => linha.rotulo === 'ODe')).toMatchObject({ valor: 0, texto: '0' });
 });

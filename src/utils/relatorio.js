@@ -131,7 +131,7 @@ export function camposColicalc(isRio) {
 }
 
 export const numero = (valor, casas) => Number(valor).toLocaleString('pt-BR', casas === undefined
-    ? { maximumFractionDigits: 5 }
+    ? { maximumFractionDigits: 8 }
     : { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
 const preenchido = (valor) => valor !== null && valor !== undefined && valor !== '';
@@ -271,8 +271,8 @@ const LINHAS_POR_TRECHO = [
     ['Qr', 'Vazão do rio a montante da contribuição', 'm³/s', 3, (t) => t.qr],
     ['ODr', 'OD do rio a montante da contribuição', 'mg/L', 2, (t) => t.odr],
     ['DBOr', 'DBO5 do rio a montante da contribuição', 'mg/L', 2, (t) => t.dbor],
-    // vazões de lançamento costumam ser pequenas; 5 casas, como nos campos
-    ['Qe', 'Vazão da contribuição (soma dos lançamentos)', 'm³/s', 5, (t) => t.qe],
+    // vazões de lançamento costumam ser pequenas; 8 casas, como nos campos
+    ['Qe', 'Vazão da contribuição (soma dos lançamentos)', 'm³/s', 8, (t) => t.qe],
     ['Qt', 'Vazão total após a mistura', 'm³/s', 3, (t) => t.qt],
     ['C0', 'OD da mistura', 'mg/L', 2, (t) => t.co],
     ['DBO5', 'DBO5 da mistura', 'mg/L', 2, (t) => t.dbo5],

@@ -22,8 +22,9 @@ export default function TextFieldWithTooltip({
     const id = useId();
     // o placeholder recebido é a unidade do campo (m³/s, mg/L, ...)
     const unidade = placeholder?.trim();
+    // vazões de lançamento podem ser bem pequenas (0,00004897 m³/s); os demais campos ficam com 5 casas
+    const casas = unidade === 'm³/s' ? 8 : 5;
 
-    // Regex allows only numbers with up to 5 decimal places
     const handleChange = (e) => {
         // Ponto também vale como separador decimal; antes era descartado e "0.651" virava 651
         const input = e.target.value.replaceAll('.', ',');
@@ -34,7 +35,7 @@ export default function TextFieldWithTooltip({
             return;
         }
 
-        const valid = /^(\d+(,\d{0,5})?)?$/.test(input);
+        const valid = new RegExp(`^(\\d+(,\\d{0,${casas}})?)?$`).test(input);
         if (valid) {
             setValue(input);
         }
@@ -44,8 +45,7 @@ export default function TextFieldWithTooltip({
         if (onBlurValue && currentValue !== '' && currentValue !== null && currentValue !== undefined) {
             const parsed = parseFloat(currentValue.replaceAll(',', '.'));
             if (!isNaN(parsed)) {
-                // Optionally round to 5 decimals for consistency
-                const rounded = parseFloat(parsed.toFixed(5));
+                const rounded = parseFloat(parsed.toFixed(casas));
                 setValue(rounded.toString());
                 onBlurValue(rounded);
             }
