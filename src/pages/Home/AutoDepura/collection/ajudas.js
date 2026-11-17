@@ -302,10 +302,19 @@ export function AjudaKT() {
 
 export function AjudaDivisoes() {
     return (
-        <Ajuda campo="Nº de divisões" titulo="Número de divisões de cada trecho">
+        <Ajuda campo="Nº de divisões e intervalo" titulo="Pontos do gráfico e da tabela">
             <p>
-                Em quantas partes cada trecho é dividido para calcular os pontos do gráfico e do perfil. Não muda
-                o ponto crítico, que é calculado de forma exata. Cada trecho seguinte pode ter o próprio Nº; em branco, usa este.
+                Escolha uma das formas de marcar os pontos de cada trecho no gráfico e na tabela do perfil:
+            </p>
+            <ul style={lista}>
+                <li>Nº: o trecho é dividido em partes iguais (6,206 km com Nº = 7 dá um ponto a cada 0,887 km);</li>
+                <li>intervalo: um ponto a cada intervalo em km, contado do início do trecho, mais o fim dele
+                    (6,206 km com intervalo de 1 km dá 0, 1, 2, ... 6 e 6,206 km), como nas planilhas.</li>
+            </ul>
+            <br />
+            <p>
+                Os pontos não mudam o resultado: OD e DBO5 no fim de cada trecho e o ponto crítico são calculados de forma
+                exata. Cada trecho seguinte pode ter o próprio Nº; em branco, usa o Nº ou o intervalo daqui.
             </p>
         </Ajuda>
     );

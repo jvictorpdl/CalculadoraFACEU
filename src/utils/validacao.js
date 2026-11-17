@@ -30,6 +30,8 @@ export const CAMINHOS = {
     k1Trecho: [[['k120c', 'K1 (20 °C)']], [['k1t', 'K1T']]],
     k2: [[['h', 'H']], [['k220c', 'K2 (20 °C)']], [['k2t', 'K2T']]],
     cs: [[['altitude', 'Altitude']], [['cslinha', "Cs'"]]],
+    // pontos do perfil: N partes iguais ou um ponto a cada intervalo em km, como na planilha
+    divisoes: [[['particoes', 'Nº']], [['intervalo', 'Intervalo']]],
 };
 
 const preenchidosNo = (dados, caminho) => caminho.filter(([chave]) => preenchido(dados[chave])).map(([, rotulo]) => rotulo);
@@ -51,6 +53,17 @@ function exigirDivisoes(dados, chave, rotulo, nome) {
     // acima de 1000 divisões o gráfico não ganha nada e valores enormes travam a página
     return preenchido(dados[chave]) && (!Number.isInteger(n) || n < 1 || n > 1000)
         ? [erro(`${nome} deve ser um número inteiro entre 1 e 1000.`, rotulo)]
+        : [];
+}
+
+// o mesmo limite do Nº: um intervalo pequeno num trecho longo daria milhares de pontos
+const intervaloDemais = (intervalo, distancia) => positivo(distancia) && Number(distancia) / (Number(intervalo) * 1000) > 1000;
+
+function exigirIntervalo(dados) {
+    if (!preenchido(dados.intervalo)) return [];
+    if (!positivo(dados.intervalo)) return [erro('Intervalo deve ser maior que zero.', 'Intervalo')];
+    return intervaloDemais(dados.intervalo, dados.distancia)
+        ? [erro(`Com intervalo de ${decimal(dados.intervalo)} km, a distância d teria mais de 1000 divisões. Use um intervalo maior.`, 'Intervalo', 'd')]
         : [];
 }
 
@@ -165,10 +178,13 @@ function errosDoTrecho(trecho, numero, dados) {
         }
     }
 
-    // Nº de divisões do trecho é opcional: em branco, vale o de Dados adicionais
+    // Nº de divisões do trecho é opcional: em branco, vale o de Dados adicionais (Nº ou intervalo)
     const divisoes = Number(trecho.particoes);
     if (preenchido(trecho.particoes) && (!Number.isInteger(divisoes) || divisoes < 1 || divisoes > 1000)) {
         erros.push(erroTrecho('Nº de divisões deve ser um número inteiro entre 1 e 1000.', 'Nº'));
+    } else if (!preenchido(trecho.particoes) && positivo(dados.intervalo) && intervaloDemais(dados.intervalo, trecho.distancia)) {
+        erros.push(erro(`Trecho ${numero}: com o intervalo de ${decimal(dados.intervalo)} km, o trecho teria mais de 1000 divisões. Use um intervalo maior ou informe o Nº do trecho.`,
+            'Intervalo', campoDoTrecho('Nº', numero)));
     }
     return erros;
 }
@@ -249,12 +265,19 @@ const regrasAutodepura = {
             }
             return erros;
         },
-        (d) => [
-            ...exigir(d, [['distancia', 'd'], ['velocidade', 'v'], ['particoes', 'Nº']]),
-            ...exigirPositivo(d, [['distancia', 'd'], ['velocidade', 'v']]),
-            ...exigirFaixa(d, [faixaD, faixaV]),
-            ...exigirDivisoes(d, 'particoes', 'Nº', 'Nº de divisões'),
-        ],
+        (d) => {
+            const distancia = [
+                ...exigir(d, [['distancia', 'd'], ['velocidade', 'v']]),
+                ...exigirPositivo(d, [['distancia', 'd'], ['velocidade', 'v']]),
+                ...exigirFaixa(d, [faixaD, faixaV]),
+            ];
+            const opcoes = conflito(d, CAMINHOS.divisoes, 'Use o Nº de divisões ou o intervalo em km, não os dois. Apague um deles.');
+            if (opcoes.length) return [...distancia, ...opcoes];
+            if (!preenchido(d.particoes) && !preenchido(d.intervalo)) {
+                return [...distancia, erro('Informe o Nº de divisões ou o intervalo em km.', 'Nº', 'Intervalo')];
+            }
+            return [...distancia, ...exigirDivisoes(d, 'particoes', 'Nº', 'Nº de divisões'), ...exigirIntervalo(d)];
+        },
         (d) => {
             const opcoes = conflito(d, CAMINHOS.cs, "Use a altitude (para calcular o Cs' com T) ou o Cs' já pronto, não os dois. Apague um deles.");
             if (opcoes.length) return opcoes;

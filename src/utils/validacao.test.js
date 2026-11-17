@@ -152,6 +152,37 @@ test("Cs' e Nº do trecho são opcionais, com a trava entre altitude e Cs'", () 
     expect(divisoes[0].campos).toEqual(['Nº (trecho 2)']);
 });
 
+test('pontos do perfil: Nº ou intervalo em km, um dos dois', () => {
+    const passo = (dados) => errosPassoAutodepura('Dados adicionais', 2, { ...autodepura, ...dados });
+
+    expect(passo({ particoes: null, intervalo: 1 })).toEqual([]);
+    expect(bloqueadoPor({ ...autodepura, intervalo: null }, CAMINHOS.divisoes, 1)).toEqual(['Nº']);
+    expect(bloqueadoPor({ ...autodepura, particoes: null, intervalo: 1 }, CAMINHOS.divisoes, 0)).toEqual(['Intervalo']);
+
+    const ambos = passo({ intervalo: 1 });
+    expect(mensagens(ambos)).toEqual(['Use o Nº de divisões ou o intervalo em km, não os dois. Apague um deles.']);
+    expect(ambos[0].campos).toEqual(['Nº', 'Intervalo']);
+
+    const nenhum = passo({ particoes: null, intervalo: null });
+    expect(mensagens(nenhum)).toEqual(['Informe o Nº de divisões ou o intervalo em km.']);
+    expect(nenhum[0].campos).toEqual(['Nº', 'Intervalo']);
+
+    expect(mensagens(passo({ particoes: null, intervalo: 0 }))).toEqual(['Intervalo deve ser maior que zero.']);
+    // 50 km a cada 0,01 km dariam 5000 divisões, que travariam a página
+    expect(mensagens(passo({ particoes: null, intervalo: 0.01 })))
+        .toEqual(['Com intervalo de 0,01 km, a distância d teria mais de 1000 divisões. Use um intervalo maior.']);
+    expect(passo({ particoes: null, intervalo: 0.05 })).toEqual([]);
+});
+
+test('trecho seguinte sem Nº próprio também respeita o limite do intervalo', () => {
+    const geral = { ...autodepura, particoes: null, intervalo: 0.1 };
+    const longo = errosPassoAutodepura('Trechos seguintes', 0, { ...geral, trechos: [{ ...trecho, distancia: 200000 }] });
+    expect(mensagens(longo)).toEqual(['Trecho 2: com o intervalo de 0,1 km, o trecho teria mais de 1000 divisões. Use um intervalo maior ou informe o Nº do trecho.']);
+    expect(longo[0].campos).toEqual(['Intervalo', 'Nº (trecho 2)']);
+    // com o próprio Nº, o intervalo geral não vale para ele
+    expect(errosPassoAutodepura('Trechos seguintes', 0, { ...geral, trechos: [{ ...trecho, distancia: 200000, particoes: 10 }] })).toEqual([]);
+});
+
 test('trecho sem lançamento aceita zeros em Qe, ODe e DBOe', () => {
     const semContribuicao = { ...trecho, qe: null, ode: null, dboe: null, e: null };
     expect(errosDosTrechos([{ ...semContribuicao, qe: 0, ode: 0, dboe: 0 }])).toEqual([]);

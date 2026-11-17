@@ -1,4 +1,4 @@
-import { CalculadoraAutodepura, coeficienteK2 } from './autoDepuraCalculation';
+import { CalculadoraAutodepura, coeficienteK2, pontosDoTrecho } from './autoDepuraCalculation';
 
 // Valores esperados de uma implementação independente das equações de Streeter-Phelps
 // (Von Sperling, 2007), conferida por integração numérica
@@ -261,6 +261,43 @@ test('cada trecho pode ter o próprio Nº de divisões', () => {
     expect(doTrecho2.map((km) => km - 6.206)).toEqual([0, 1.03825, 2.0765, 3.11475, 4.153].map((km) => expect.closeTo(km, 9)));
     // as divisões só mudam os pontos do perfil, não o resultado de cada trecho
     expect(r.trechos[3].odFim).toBeCloseTo(CalculadoraAutodepura(rioGizele).trechos[3].odFim, 12);
+});
+
+test('com o intervalo de 1 km, os pontos de cada trecho são os da planilha da Gizele', () => {
+    const r = CalculadoraAutodepura({ ...rioGizele, particoes: null, intervalo: 1 });
+    const doTrecho = (n) => r.kmvet.filter((_, i) => r.trechoVet[i] === n).map((km) => Number((km - r.trechos[n - 1].inicioKm).toFixed(6)));
+
+    expect(doTrecho(1)).toEqual([0, 1, 2, 3, 4, 5, 6, 6.206]);
+    expect(doTrecho(2)).toEqual([0, 1, 2, 3, 4, 4.153]);
+    expect(doTrecho(3)).toEqual([0, 0.782]);
+    expect(doTrecho(4)).toEqual([0, 1, 2, 3, 4, 4.415]);
+    // 5 km com intervalo de 1 km: o fim não se repete
+    expect(doTrecho(5)).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(r.trechoVet).toHaveLength(r.ctVet.length);
+    expect(r.dboVet).toHaveLength(r.ctVet.length);
+
+    // os pontos não mudam o resultado de nenhum trecho
+    const comNumero = CalculadoraAutodepura(rioGizele);
+    r.trechos.forEach((trecho, i) => {
+        expect(trecho.odFim).toBeCloseTo(comNumero.trechos[i].odFim, 12);
+        expect(trecho.minimo).toEqual(comNumero.trechos[i].minimo);
+    });
+    // e o fim de cada trecho no perfil é o OD final dele
+    expect(Number(r.ctVet[7])).toBeCloseTo(r.trechos[0].odFim, 2);
+});
+
+test('trecho com o próprio Nº não segue o intervalo geral', () => {
+    const [segundo, ...outros] = rioGizele.trechos;
+    const r = CalculadoraAutodepura({ ...rioGizele, particoes: null, intervalo: 1, trechos: [{ ...segundo, particoes: 4 }, ...outros] });
+    const doTrecho2 = r.kmvet.filter((_, i) => r.trechoVet[i] === 2);
+
+    expect(doTrecho2.map((km) => km - 6.206)).toEqual([0, 1.03825, 2.0765, 3.11475, 4.153].map((km) => expect.closeTo(km, 9)));
+});
+
+test('intervalo maior que o trecho deixa só o início e o fim', () => {
+    expect(pontosDoTrecho(782, { intervalo: 2 })).toEqual([0, 782]);
+    expect(pontosDoTrecho(5000.0001, { intervalo: 1 })).toEqual([0, 1000, 2000, 3000, 4000, 5000.0001]);
+    expect(pontosDoTrecho(1000, { intervalo: 0.25 })).toEqual([0, 250, 500, 750, 1000]);
 });
 
 test('dois lançamentos no mesmo ponto equivalem a um só com a mistura deles', () => {

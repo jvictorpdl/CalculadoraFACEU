@@ -40,7 +40,9 @@ export const camposAutodepura = [
             { chave: 'k220c', rotulo: 'K2 (20 °C)', dica: 'Coeficiente de reaeração a 20 °C', unidade: '1/dia', opcional: true },
             { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração na temperatura do rio (T)', unidade: '1/dia', opcional: true },
             { chave: 'distancia', rotulo: 'd', dica: 'Distância percorrida a partir do lançamento', unidade: 'm' },
-            { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões de cada trecho no cálculo do perfil (os trechos seguintes podem ter o próprio)' },
+            // pontos do perfil: um dos dois, Nº ou intervalo
+            { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões de cada trecho no cálculo do perfil (os trechos seguintes podem ter o próprio)', opcional: true },
+            { chave: 'intervalo', rotulo: 'Intervalo', dica: 'Distância entre os pontos do perfil, contada do início de cada trecho (o fim do trecho também entra)', unidade: 'km', opcional: true },
             { chave: 'altitude', rotulo: 'Altitude', dica: 'Altitude do local', unidade: 'm', opcional: true },
             { chave: 'cslinha', rotulo: "Cs'", dica: 'Concentração de saturação de oxigênio dissolvido no rio', unidade: 'mg/L', opcional: true },
         ],
@@ -62,7 +64,7 @@ export const camposTrecho = [
     { chave: 'k2t', rotulo: 'K2T', dica: 'Coeficiente de reaeração do trecho na temperatura do rio (T)', unidade: '1/dia', opcional: true },
     { chave: 'altitude', rotulo: 'Altitude', dica: "Altitude do trecho, para calcular o Cs' (em branco, o Cs' do trecho anterior)", unidade: 'm', opcional: true },
     { chave: 'cslinha', rotulo: "Cs'", dica: "Concentração de saturação de OD no trecho (em branco, a do trecho anterior)", unidade: 'mg/L', opcional: true },
-    { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões do trecho no perfil (em branco, o de Dados adicionais)', opcional: true },
+    { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões do trecho no perfil (em branco, o Nº ou o intervalo de Dados adicionais)', opcional: true },
 ];
 
 // lançamentos além do primeiro, no mesmo ponto do rio

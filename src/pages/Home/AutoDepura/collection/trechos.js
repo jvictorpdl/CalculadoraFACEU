@@ -37,7 +37,7 @@ function travas(trecho, caminhos, rotulos) {
     };
 }
 
-function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) {
+function CartaoTrecho({ trecho, numeroTrecho, montante, divisaoGeral, onAlterar, onRemover }) {
     const k1 = travas(trecho, CAMINHOS.k1Trecho, ['K1 (20 °C)', 'K1T']);
     const k2 = travas(trecho, CAMINHOS.k2, ['H', 'K2 (20 °C)', 'K2T']);
     const cs = travas(trecho, CAMINHOS.cs, ['Altitude', "Cs'"]);
@@ -119,8 +119,11 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, onAlterar, onRemover }) 
             <AvisoTrava campos={cs.bloqueados} por={cs.motivo} />
 
             <Subtitulo>Perfil (opcional)</Subtitulo>
+            <Montante style={{ marginBottom: 8 }}>
+                Em branco, o trecho usa os pontos de Dados adicionais{divisaoGeral ? ` (${divisaoGeral})` : ''}.
+            </Montante>
             <Grid columns={4}>
-                {campo('particoes', 'Nº', 'Número de divisões deste trecho no gráfico e na tabela; em branco, o de Dados adicionais', 'Quantidade')}
+                {campo('particoes', 'Nº', 'Número de divisões deste trecho no gráfico e na tabela; em branco, o Nº ou o intervalo de Dados adicionais', 'Quantidade')}
             </Grid>
         </Cartao>
     );
@@ -130,6 +133,10 @@ export function TrechosSeguintes() {
     const { state, dispatch } = useContext(ApplicationContext);
     const dados = state.data.autodepura;
     const trechos = trechosDe(dados);
+    // um trecho com o próprio Nº deixa de seguir o intervalo; o cartão lembra qual é o geral
+    const divisaoGeral = Number(dados.intervalo) > 0
+        ? `um ponto a cada ${numero(dados.intervalo)} km`
+        : Number(dados.particoes) > 0 ? `Nº = ${dados.particoes}` : '';
 
     function salvar(novos) {
         dispatch({
@@ -157,6 +164,7 @@ export function TrechosSeguintes() {
                             trecho={trecho}
                             numeroTrecho={i + 2}
                             montante={rioAMontante(dados, i)}
+                            divisaoGeral={divisaoGeral}
                             onAlterar={(campos) => salvar(trechos.map((outro) => (outro === trecho ? { ...outro, ...campos } : outro)))}
                             onRemover={() => salvar(trechos.filter((outro) => outro !== trecho))}
                         />

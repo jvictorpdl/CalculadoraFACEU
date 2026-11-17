@@ -31,6 +31,16 @@ test('o relatório traz os valores fornecidos e deixa de fora o que ficou em bra
     expect(linhasDe(relatorio).find((linha) => linha.rotulo === 'Qr')).toMatchObject({ valor: 0.651, texto: '0,651', unidade: 'm³/s' });
 });
 
+test('com o intervalo em km, o relatório mostra o intervalo no lugar do Nº e o perfil a cada intervalo', () => {
+    const relatorio = montarAutodepura({ ...rio, particoes: null, intervalo: 7.5 });
+    const rotulos = linhasDe(relatorio).map((linha) => linha.rotulo);
+
+    expect(rotulos).not.toContain('Nº');
+    expect(linhasDe(relatorio).find((linha) => linha.rotulo === 'Intervalo')).toMatchObject({ texto: '7,5', unidade: 'km' });
+    // 50 km a cada 7,5 km: 0, 7,5 ... 45 e o fim, 50
+    expect(relatorio.perfil.linhas.map(([km]) => km)).toEqual([0, 7.5, 15, 22.5, 30, 37.5, 45, 50]);
+});
+
 test('a vazão aparece no relatório com as 8 casas aceitas no campo', () => {
     expect(linhasDe(montarAutodepura({ ...rio, qe: 0.00004897 })).find((linha) => linha.rotulo === 'Qe')).toMatchObject({ texto: '0,00004897' });
 });

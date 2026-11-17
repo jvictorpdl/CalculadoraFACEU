@@ -1,4 +1,4 @@
-import { CalculadoraAutodepura } from './autoDepuraCalculation';
+import { CalculadoraAutodepura, pontosDoTrecho } from './autoDepuraCalculation';
 import { CalculadoraColicalc } from './coliCalcCalculation';
 import { errosAutodepura, errosColicalc } from './validacao';
 
@@ -38,7 +38,10 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
             tetak2: talvez(casas(entre(1, 1.04))), h: k2 === 'hv' ? talvez(casas(entre(0.1, 5))) : null,
             velocidade: talvez(casas(entre(0.03, 1.6))), k220c: k2 === '20' ? talvez(casas(entre(0.1, 5))) : null,
             k2t: k2 === 'T' ? talvez(casas(entre(0.1, 5))) : null, distancia: talvez(casas(entre(100, 200000), 0)),
-            particoes: talvez(Math.floor(entre(1, 60))),
+            // pontos do perfil pelo Nº ou pelo intervalo em km, como a trava da tela permite
+            ...(aleatorio() < 0.3
+                ? { particoes: null, intervalo: talvez(casas(entre(0.05, 20), 2)) }
+                : { particoes: talvez(Math.floor(entre(1, 60))), intervalo: null }),
             // Cs' informado ou calculado pela altitude, como a trava da tela permite
             ...(aleatorio() < 0.5 ? { cslinha: talvez(casas(entre(5, 12))), altitude: null } : { cslinha: null, altitude: talvez(casas(entre(0, 3000), 0)) }),
             kd20c: k1 === '20' && aleatorio() < 0.3 ? talvez(casas(entre(0.05, 1.2))) : null,
@@ -72,7 +75,9 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
         if (d.trechos.length) comTrechos++;
         if (d.lancamentos.length || d.trechos.some((trecho) => trecho.lancamentos.length)) comLancamentos++;
         const r = CalculadoraAutodepura(d);
-        expect(r.ctVet).toHaveLength([d, ...d.trechos].reduce((total, t) => total + (Number(t.particoes) || d.particoes) + 1, 0));
+        // trecho com o próprio Nº usa ele; os outros, o Nº ou o intervalo geral
+        const divisao = (t) => (Number(t.particoes) ? { particoes: Number(t.particoes) } : { particoes: Number(d.particoes), intervalo: Number(d.intervalo) });
+        expect(r.ctVet).toHaveLength([d, ...d.trechos].reduce((total, t) => total + pontosDoTrecho(Number(t.distancia), divisao(t)).length, 0));
         expect(r.trechoVet).toHaveLength(r.ctVet.length);
         expect(r.dboVet).toHaveLength(r.ctVet.length);
         r.ctVet.forEach((od) => expect(Number.isFinite(Number(od))).toBe(true));

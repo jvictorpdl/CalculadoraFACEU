@@ -200,19 +200,31 @@ export function DadosAdicionaisStep3() {
     }
 
 
+    const bloqueioNumero = bloqueadoPor(state.data.autodepura, CAMINHOS.divisoes, 0);
+    const bloqueioIntervalo = bloqueadoPor(state.data.autodepura, CAMINHOS.divisoes, 1);
+
     return (
         <div>
             <Row>
                 <Column>
                     <FormTitle title="Dados morfométricos e ambientais" />
                     <Orientacao>
-                        Distância e velocidade do trecho 1. Se o rio tiver outros trechos, eles entram no grupo Trechos seguintes. O Nº de divisões vale para todos os trechos que não tiverem o próprio.
+                        Distância e velocidade do trecho 1. Se o rio tiver outros trechos, eles entram no grupo Trechos seguintes.
                     </Orientacao>
                     <Grid columns={4}>
                         <TextFieldWithTooltip value={state.data.autodepura.distancia} onBlurValue={(val) => updateStateWithAutodepuraData({ distancia: val })} label="d" tooltip="Distância percorrida a partir do lançamento" placeholder="m" />
                         <TextFieldWithTooltip value={state.data.autodepura.velocidade} onBlurValue={(val) => updateStateWithAutodepuraData({ velocidade: val })} label="v" tooltip="Velocidade do rio" placeholder="m/s" />
-                        <TextFieldWithTooltip value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Número de divisões de cada trecho no cálculo do perfil" placeholder="Quantidade" />
                     </Grid>
+                    <Subtitulo>Pontos do gráfico e da tabela: Nº de divisões ou intervalo</Subtitulo>
+                    <Orientacao>
+                        Divida cada trecho em partes iguais (Nº) ou ponha um ponto a cada intervalo em km, contado do início do trecho, mais o fim dele. Ao preencher um, o outro fica bloqueado. Vale para todos os trechos que não tiverem o próprio Nº.
+                    </Orientacao>
+                    <Grid columns={4}>
+                        <TextFieldWithTooltip disabled={bloqueioNumero.length > 0} value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Número de divisões de cada trecho no cálculo do perfil" placeholder="Quantidade" />
+                        <TextFieldWithTooltip disabled={bloqueioIntervalo.length > 0} value={state.data.autodepura.intervalo} onBlurValue={(val) => updateStateWithAutodepuraData({ intervalo: val })} label="Intervalo" tooltip="Distância entre os pontos do perfil, contada do início de cada trecho; o fim do trecho também entra" placeholder="km" />
+                    </Grid>
+                    <AvisoTrava campos={['Nº']} por={bloqueioNumero} />
+                    <AvisoTrava campos={['Intervalo']} por={bloqueioIntervalo} />
                 </Column>
                 <VerticalSplitter />
                 <Column>

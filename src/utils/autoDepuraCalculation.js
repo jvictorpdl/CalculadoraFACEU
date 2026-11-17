@@ -62,8 +62,18 @@ const lancamentosDoTrecho = (dados) => [lancamento(dados), ...lancamentosDe(dado
 
 const soma = (lista, valor) => lista.reduce((total, item) => total + valor(item), 0);
 
+// distâncias (m) dos pontos do perfil a partir do início do trecho: N partes iguais ou, com o intervalo
+// em km, um ponto a cada intervalo e o fim do trecho (6,206 km a cada 1 km: 0, 1, ... 6 e 6,206)
+export function pontosDoTrecho(distancia, { particoes, intervalo }) {
+  if (!intervalo) return Array.from({ length: particoes + 1 }, (_, i) => (distancia / particoes) * i);
+  const passo = intervalo * 1000;
+  // o fim que cai sobre um múltiplo do intervalo (5 km a cada 1 km) não vira um ponto repetido
+  const antesDoFim = Math.ceil(distancia / passo - 1e-6);
+  return [...Array.from({ length: antesDoFim }, (_, i) => passo * i), distancia];
+}
+
 // mistura no início do trecho (rio e todos os lançamentos) e perfil de OD e DBO5 ao longo dele
-function simularTrecho({ qr, odr, dbor, lancamentos, kt, kd, k2, cs, distancia, velocidade, particoes }) {
+function simularTrecho({ qr, odr, dbor, lancamentos, kt, kd, k2, cs, distancia, velocidade, divisao }) {
   const qe = soma(lancamentos, (l) => l.qe);
   const qt = qr + qe;
   const co = (qr * odr + soma(lancamentos, (l) => l.qe * l.ode)) / qt;
@@ -74,18 +84,13 @@ function simularTrecho({ qr, odr, dbor, lancamentos, kt, kd, k2, cs, distancia, 
   const od = (t) => (t === 0 ? co : cs - deficit(coeficientes, t));
   const dbo = (t) => dbo5 * Math.exp(-kd * t);
 
-  const kmvet = [];
-  const odVet = [];
-  const dboVet = [];
-  for (let i = 0; i <= particoes; i++) {
-    const t = ((distancia / particoes) * i) / (velocidade * SEGUNDOS_POR_DIA);
-    kmvet.push(((distancia / particoes) * i) / 1000);
-    odVet.push(od(t));
-    dboVet.push(dbo(t));
-  }
+  const pontos = pontosDoTrecho(distancia, divisao);
+  const kmvet = pontos.map((x) => x / 1000);
+  const odVet = pontos.map((x) => od(x / (velocidade * SEGUNDOS_POR_DIA)));
+  const dboVet = pontos.map((x) => dbo(x / (velocidade * SEGUNDOS_POR_DIA)));
 
   return {
-    qr, odr, dbor, qe, qt, co, dbo5, cs, particoes,
+    qr, odr, dbor, qe, qt, co, dbo5, cs, ...divisao,
     lo: coeficientes.lo,
     deficit: coeficientes.d0,
     kd,
@@ -118,7 +123,8 @@ export const CalculadoraAutodepura = (props) => {
   const tetak1 = Number(props.tetak1);
   const tetak2 = Number(props.tetak2);
   const odmin = Number(props.odmin);
-  const particoes = Number(props.particoes);
+  // com o intervalo em km preenchido, ele substitui o Nº de divisões geral
+  const geral = Number(props.intervalo) ? { intervalo: Number(props.intervalo) } : { particoes: Number(props.particoes) };
 
   const corrigirK1 = (k20c) => k20c * Math.pow(tetak1, temperatura - 20);
   const corrigirK2 = (k220c) => k220c * Math.pow(tetak2, temperatura - 20);
@@ -157,8 +163,8 @@ export const CalculadoraAutodepura = (props) => {
     return anterior;
   };
   const cs = saturacaoDe(props);
-  // Nº de divisões de cada trecho; em branco, o geral
-  const divisoesDe = (dados) => Number(dados.particoes) || particoes;
+  // Nº de divisões de cada trecho; em branco, o geral (Nº ou intervalo)
+  const divisaoDe = (dados) => (Number(dados.particoes) ? { particoes: Number(dados.particoes) } : geral);
 
   const velocidade = Number(props.velocidade);
   const k1Primeiro = desoxigenacao(props);
@@ -167,7 +173,7 @@ export const CalculadoraAutodepura = (props) => {
     ...simularTrecho({
       ...coeficientesK1(k1Primeiro),
       cs,
-      particoes,
+      divisao: geral,
       qr: Number(props.qr),
       odr: Number(props.odr),
       dbor: Number(props.dbor),
@@ -192,7 +198,7 @@ export const CalculadoraAutodepura = (props) => {
       ...simularTrecho({
         ...coeficientesK1(k1),
         cs: saturacaoDe(dados, anterior.cs),
-        particoes: divisoesDe(dados),
+        divisao: divisaoDe(dados),
         qr: anterior.qt,
         odr: anterior.odFim,
         dbor: anterior.dbo5Fim,
