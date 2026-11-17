@@ -314,7 +314,7 @@ export function AjudaDivisoes() {
             <br />
             <p>
                 Os pontos não mudam o resultado: OD e DBO5 no fim de cada trecho e o ponto crítico são calculados de forma
-                exata. Cada trecho seguinte pode ter o próprio Nº; em branco, usa o Nº ou o intervalo daqui.
+                exata. Cada trecho seguinte pode ter o próprio Nº ou intervalo; em branco, usa o Nº ou o intervalo daqui.
             </p>
         </Ajuda>
     );

@@ -62,7 +62,8 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
                     k1t: k1Trecho === 'T' ? talvez(casas(entre(0.05, 0.8))) : null,
                     // Cs' do trecho pronto, pela altitude ou herdado; Nº próprio ou o geral
                     ...escolha([{}, { cslinha: talvez(casas(entre(5, 12))) }, { altitude: talvez(casas(entre(0, 3000), 0)) }]),
-                    particoes: aleatorio() < 0.3 ? talvez(Math.floor(entre(1, 60))) : null,
+                    // Nº ou intervalo próprio, ou o geral
+                    ...escolha([{ particoes: null }, { particoes: talvez(Math.floor(entre(1, 60))) }, { intervalo: talvez(casas(entre(0.05, 20), 2)) }]),
                     distancia: talvez(casas(entre(100, 100000), 0)), velocidade: talvez(casas(entre(0.03, 1.6))),
                     h: k2 === 'hv' ? talvez(casas(entre(0.1, 5))) : null,
                     k220c: k2 === '20' ? talvez(casas(entre(0.1, 5))) : null,
@@ -76,7 +77,10 @@ test('AutoDepura: entradas aceitas pela validação dão resultado finito', () =
         if (d.lancamentos.length || d.trechos.some((trecho) => trecho.lancamentos.length)) comLancamentos++;
         const r = CalculadoraAutodepura(d);
         // trecho com o próprio Nº usa ele; os outros, o Nº ou o intervalo geral
-        const divisao = (t) => (Number(t.particoes) ? { particoes: Number(t.particoes) } : { particoes: Number(d.particoes), intervalo: Number(d.intervalo) });
+        const divisao = (t) => {
+            if (t !== d && Number(t.intervalo)) return { intervalo: Number(t.intervalo) };
+            return Number(t.particoes) ? { particoes: Number(t.particoes) } : { particoes: Number(d.particoes), intervalo: Number(d.intervalo) };
+        };
         expect(r.ctVet).toHaveLength([d, ...d.trechos].reduce((total, t) => total + pontosDoTrecho(Number(t.distancia), divisao(t)).length, 0));
         expect(r.trechoVet).toHaveLength(r.ctVet.length);
         expect(r.dboVet).toHaveLength(r.ctVet.length);

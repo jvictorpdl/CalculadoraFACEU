@@ -294,6 +294,17 @@ test('trecho com o próprio Nº não segue o intervalo geral', () => {
     expect(doTrecho2.map((km) => km - 6.206)).toEqual([0, 1.03825, 2.0765, 3.11475, 4.153].map((km) => expect.closeTo(km, 9)));
 });
 
+test('trecho com o próprio intervalo não segue o Nº geral', () => {
+    const [segundo, ...outros] = rioGizele.trechos;
+    const r = CalculadoraAutodepura({ ...rioGizele, trechos: [{ ...segundo, intervalo: 2 }, ...outros] });
+    const doTrecho = (n) => r.kmvet.filter((_, i) => r.trechoVet[i] === n).map((km) => Number((km - r.trechos[n - 1].inicioKm).toFixed(6)));
+
+    expect(doTrecho(2)).toEqual([0, 2, 4, 4.153]);
+    // os demais continuam com o Nº geral (10 divisões)
+    expect(doTrecho(3)).toHaveLength(11);
+    expect(r.trechos[1].odFim).toBeCloseTo(CalculadoraAutodepura(rioGizele).trechos[1].odFim, 12);
+});
+
 test('intervalo maior que o trecho deixa só o início e o fim', () => {
     expect(pontosDoTrecho(782, { intervalo: 2 })).toEqual([0, 782]);
     expect(pontosDoTrecho(5000.0001, { intervalo: 1 })).toEqual([0, 1000, 2000, 3000, 4000, 5000.0001]);

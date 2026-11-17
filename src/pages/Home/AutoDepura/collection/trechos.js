@@ -16,7 +16,7 @@ import { ListaLancamentos } from "./lancamentos";
 const trechoVazio = () => ({
     id: novoId(),
     qe: null, ode: null, dboe: null, e: null, lancamentos: [], distancia: null, velocidade: null,
-    k120c: null, k1t: null, h: null, k220c: null, k2t: null, altitude: null, cslinha: null, particoes: null,
+    k120c: null, k1t: null, h: null, k220c: null, k2t: null, altitude: null, cslinha: null, particoes: null, intervalo: null,
 });
 
 // vazão, OD, DBO5, K1 e Cs' no fim do trecho anterior, quando os dados até ele estão completos
@@ -47,7 +47,8 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, divisaoGeral, onAlterar,
     const k1 = travas(trecho, CAMINHOS.k1Trecho, ['K1 (20 °C)', 'K1T']);
     const k2 = travas(trecho, CAMINHOS.k2, ['H', 'K2 (20 °C)', 'K2T']);
     const cs = travas(trecho, CAMINHOS.cs, ['Altitude', "Cs'"]);
-    const bloqueados = new Set([...k1.bloqueados, ...k2.bloqueados, ...cs.bloqueados]);
+    const divisao = travas(trecho, CAMINHOS.divisoes, ['Nº', 'Intervalo']);
+    const bloqueados = new Set([...k1.bloqueados, ...k2.bloqueados, ...cs.bloqueados, ...divisao.bloqueados]);
     const extras = lancamentosDe(trecho);
 
     const campo = (chave, label, tooltip, placeholder) => (
@@ -127,13 +128,15 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, divisaoGeral, onAlterar,
             </Grid>
             <AvisoTrava campos={cs.bloqueados} por={cs.motivo} />
 
-            <Subtitulo>Perfil (opcional)</Subtitulo>
+            <Subtitulo>Pontos do gráfico e da tabela (opcional): Nº ou intervalo</Subtitulo>
             <Montante style={{ marginBottom: 8 }}>
-                Em branco, o trecho usa os pontos de Dados adicionais{divisaoGeral ? ` (${divisaoGeral})` : ''}.
+                Em branco, o trecho usa os pontos de Dados adicionais{divisaoGeral ? ` (${divisaoGeral})` : ''}. Preencha só se este trecho for diferente.
             </Montante>
             <Grid columns={4}>
                 {campo('particoes', 'Nº', 'Número de divisões deste trecho no gráfico e na tabela; em branco, o Nº ou o intervalo de Dados adicionais', 'Quantidade')}
+                {campo('intervalo', 'Intervalo', 'Distância entre os pontos deste trecho, contada do início dele; o fim do trecho também entra. Em branco, o Nº ou o intervalo de Dados adicionais', 'km')}
             </Grid>
+            <AvisoTrava campos={divisao.bloqueados} por={divisao.motivo} />
         </Cartao>
     );
 }

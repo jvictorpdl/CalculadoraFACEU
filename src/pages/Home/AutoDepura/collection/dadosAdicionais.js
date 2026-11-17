@@ -217,7 +217,7 @@ export function DadosAdicionaisStep3() {
                     </Grid>
                     <Subtitulo>Pontos do gráfico e da tabela: Nº de divisões ou intervalo</Subtitulo>
                     <Orientacao>
-                        Divida cada trecho em partes iguais (Nº) ou ponha um ponto a cada intervalo em km, contado do início do trecho, mais o fim dele. Ao preencher um, o outro fica bloqueado. Vale para todos os trechos que não tiverem o próprio Nº.
+                        Divida cada trecho em partes iguais (Nº) ou ponha um ponto a cada intervalo em km, contado do início do trecho, mais o fim dele. Ao preencher um, o outro fica bloqueado. Vale para todos os trechos que não tiverem o próprio Nº ou intervalo.
                     </Orientacao>
                     <Grid columns={4}>
                         <TextFieldWithTooltip disabled={bloqueioNumero.length > 0} value={state.data.autodepura.particoes} onBlurValue={(val) => updateStateWithAutodepuraData({ particoes: val })} label="Nº" tooltip="Número de divisões de cada trecho no cálculo do perfil" placeholder="Quantidade" />

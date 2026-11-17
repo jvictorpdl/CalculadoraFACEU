@@ -177,10 +177,26 @@ test('pontos do perfil: Nº ou intervalo em km, um dos dois', () => {
 test('trecho seguinte sem Nº próprio também respeita o limite do intervalo', () => {
     const geral = { ...autodepura, particoes: null, intervalo: 0.1 };
     const longo = errosPassoAutodepura('Trechos seguintes', 0, { ...geral, trechos: [{ ...trecho, distancia: 200000 }] });
-    expect(mensagens(longo)).toEqual(['Trecho 2: com o intervalo de 0,1 km, o trecho teria mais de 1000 divisões. Use um intervalo maior ou informe o Nº do trecho.']);
-    expect(longo[0].campos).toEqual(['Intervalo', 'Nº (trecho 2)']);
-    // com o próprio Nº, o intervalo geral não vale para ele
+    expect(mensagens(longo)).toEqual(['Trecho 2: com o intervalo de 0,1 km, o trecho teria mais de 1000 divisões. Use um intervalo maior ou informe o Nº ou o intervalo do trecho.']);
+    expect(longo[0].campos).toEqual(['Intervalo', 'Intervalo (trecho 2)']);
+    // com o próprio Nº ou intervalo, o intervalo geral não vale para ele
     expect(errosPassoAutodepura('Trechos seguintes', 0, { ...geral, trechos: [{ ...trecho, distancia: 200000, particoes: 10 }] })).toEqual([]);
+    expect(errosPassoAutodepura('Trechos seguintes', 0, { ...geral, trechos: [{ ...trecho, distancia: 200000, intervalo: 1 }] })).toEqual([]);
+});
+
+test('trecho seguinte pode ter o próprio intervalo, com a trava entre Nº e intervalo', () => {
+    expect(errosDosTrechos([{ ...trecho, intervalo: 1 }])).toEqual([]);
+    expect(bloqueadoPor({ ...trecho, particoes: 5 }, CAMINHOS.divisoes, 1)).toEqual(['Nº']);
+
+    const ambos = errosDosTrechos([{ ...trecho, particoes: 5, intervalo: 1 }]);
+    expect(mensagens(ambos)).toEqual(['Trecho 2: use o Nº de divisões ou o intervalo em km, não os dois. Apague um deles.']);
+    expect(ambos[0].campos).toEqual(['Nº (trecho 2)', 'Intervalo (trecho 2)']);
+
+    expect(mensagens(errosDosTrechos([{ ...trecho, intervalo: 0 }]))).toEqual(['Trecho 2: Intervalo deve ser maior que zero.']);
+    // 25 km a cada 0,01 km dariam 2500 divisões
+    const pequeno = errosDosTrechos([{ ...trecho, intervalo: 0.01 }]);
+    expect(mensagens(pequeno)).toEqual(['Trecho 2: com intervalo de 0,01 km, o trecho teria mais de 1000 divisões. Use um intervalo maior.']);
+    expect(pequeno[0].campos).toEqual(['Intervalo (trecho 2)']);
 });
 
 test('trecho sem lançamento aceita zeros em Qe, ODe e DBOe', () => {

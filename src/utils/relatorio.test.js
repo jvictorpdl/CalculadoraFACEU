@@ -41,6 +41,13 @@ test('com o intervalo em km, o relatório mostra o intervalo no lugar do Nº e o
     expect(relatorio.perfil.linhas.map(([km]) => km)).toEqual([0, 7.5, 15, 22.5, 30, 37.5, 45, 50]);
 });
 
+test('o intervalo próprio de um trecho aparece nos valores fornecidos dele', () => {
+    const dados = { ...exemplo85, trechos: [{ ...exemplo85.trechos[0], intervalo: 2.5 }] };
+    const trecho2 = montarAutodepura(dados).fornecidos.find((grupo) => grupo.titulo === 'Trecho 2');
+
+    expect(trecho2.linhas.find((linha) => linha.rotulo === 'Intervalo')).toMatchObject({ texto: '2,5', unidade: 'km' });
+});
+
 test('a vazão aparece no relatório com as 8 casas aceitas no campo', () => {
     expect(linhasDe(montarAutodepura({ ...rio, qe: 0.00004897 })).find((linha) => linha.rotulo === 'Qe')).toMatchObject({ texto: '0,00004897' });
 });

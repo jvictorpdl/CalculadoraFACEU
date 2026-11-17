@@ -178,13 +178,22 @@ function errosDoTrecho(trecho, numero, dados) {
         }
     }
 
-    // Nº de divisões do trecho é opcional: em branco, vale o de Dados adicionais (Nº ou intervalo)
+    // Nº ou intervalo do trecho são opcionais (um dos dois): em branco, vale o de Dados adicionais
+    const divisao = conflito(trecho, CAMINHOS.divisoes, `Trecho ${numero}: use o Nº de divisões ou o intervalo em km, não os dois. Apague um deles.`,
+        (rotulo) => campoDoTrecho(rotulo, numero));
+    erros.push(...divisao);
     const divisoes = Number(trecho.particoes);
+    // com os dois preenchidos, o conflito acima já aponta os campos
+    if (divisao.length) return erros;
     if (preenchido(trecho.particoes) && (!Number.isInteger(divisoes) || divisoes < 1 || divisoes > 1000)) {
         erros.push(erroTrecho('Nº de divisões deve ser um número inteiro entre 1 e 1000.', 'Nº'));
-    } else if (!preenchido(trecho.particoes) && positivo(dados.intervalo) && intervaloDemais(dados.intervalo, trecho.distancia)) {
-        erros.push(erro(`Trecho ${numero}: com o intervalo de ${decimal(dados.intervalo)} km, o trecho teria mais de 1000 divisões. Use um intervalo maior ou informe o Nº do trecho.`,
-            'Intervalo', campoDoTrecho('Nº', numero)));
+    } else if (preenchido(trecho.intervalo) && !positivo(trecho.intervalo)) {
+        erros.push(erroTrecho('Intervalo deve ser maior que zero.', 'Intervalo'));
+    } else if (positivo(trecho.intervalo) && intervaloDemais(trecho.intervalo, trecho.distancia)) {
+        erros.push(erroTrecho(`com intervalo de ${decimal(trecho.intervalo)} km, o trecho teria mais de 1000 divisões. Use um intervalo maior.`, 'Intervalo'));
+    } else if (!preenchido(trecho.particoes) && !preenchido(trecho.intervalo) && positivo(dados.intervalo) && intervaloDemais(dados.intervalo, trecho.distancia)) {
+        erros.push(erro(`Trecho ${numero}: com o intervalo de ${decimal(dados.intervalo)} km, o trecho teria mais de 1000 divisões. Use um intervalo maior ou informe o Nº ou o intervalo do trecho.`,
+            'Intervalo', campoDoTrecho('Intervalo', numero)));
     }
     return erros;
 }

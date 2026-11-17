@@ -163,8 +163,11 @@ export const CalculadoraAutodepura = (props) => {
     return anterior;
   };
   const cs = saturacaoDe(props);
-  // Nº de divisões de cada trecho; em branco, o geral (Nº ou intervalo)
-  const divisaoDe = (dados) => (Number(dados.particoes) ? { particoes: Number(dados.particoes) } : geral);
+  // Nº ou intervalo próprio de cada trecho; em branco, o geral (Nº ou intervalo)
+  const divisaoDe = (dados) => {
+    if (Number(dados.intervalo)) return { intervalo: Number(dados.intervalo) };
+    return Number(dados.particoes) ? { particoes: Number(dados.particoes) } : geral;
+  };
 
   const velocidade = Number(props.velocidade);
   const k1Primeiro = desoxigenacao(props);

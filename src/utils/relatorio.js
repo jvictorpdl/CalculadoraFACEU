@@ -65,6 +65,7 @@ export const camposTrecho = [
     { chave: 'altitude', rotulo: 'Altitude', dica: "Altitude do trecho, para calcular o Cs' (em branco, o Cs' do trecho anterior)", unidade: 'm', opcional: true },
     { chave: 'cslinha', rotulo: "Cs'", dica: "Concentração de saturação de OD no trecho (em branco, a do trecho anterior)", unidade: 'mg/L', opcional: true },
     { chave: 'particoes', rotulo: 'Nº', dica: 'Número de divisões do trecho no perfil (em branco, o Nº ou o intervalo de Dados adicionais)', opcional: true },
+    { chave: 'intervalo', rotulo: 'Intervalo', dica: 'Distância entre os pontos do perfil no trecho (em branco, o Nº ou o intervalo de Dados adicionais)', unidade: 'km', opcional: true },
 ];
 
 // lançamentos além do primeiro, no mesmo ponto do rio
