@@ -1,6 +1,7 @@
 import { CalculadoraAutodepura } from './autoDepuraCalculation';
 import { CalculadoraColicalc } from './coliCalcCalculation';
 import { conclusaoAutodepura, nomeArquivo, relatorioAutodepura, relatorioColicalc, relatorioCsv } from './relatorio';
+import { porExtenso } from '../components/TextFieldWithTooltip/textFieldWithTooltip';
 
 // exemplo do Von Sperling, o mesmo dos demais testes
 const rio = {
@@ -32,6 +33,11 @@ test('o relatório traz os valores fornecidos e deixa de fora o que ficou em bra
 
 test('a vazão aparece no relatório com as 8 casas aceitas no campo', () => {
     expect(linhasDe(montarAutodepura({ ...rio, qe: 0.00004897 })).find((linha) => linha.rotulo === 'Qe')).toMatchObject({ texto: '0,00004897' });
+});
+
+test('vazão abaixo de 0,000001 aparece por extenso no campo e no resumo, não como 5e-7', () => {
+    expect(porExtenso(0.0000005)).toBe('0.0000005');
+    expect(porExtenso(0.11)).toBe('0.11');
 });
 
 test('o zero digitado é um valor fornecido, não um campo em branco', () => {
@@ -111,6 +117,7 @@ test('outros lançamentos e o K1 de cada trecho entram no relatório', () => {
     };
     const relatorio = montarAutodepura(dados);
     const linhaTrecho = (rotulo) => relatorio.porTrecho.linhas.find((linha) => linha.rotulo === rotulo)?.valores.map(({ valor }) => valor);
+    const textosTrecho = (rotulo) => relatorio.porTrecho.linhas.find((linha) => linha.rotulo === rotulo)?.valores.map(({ texto }) => texto);
 
     expect(relatorio.fornecidos.map((grupo) => grupo.titulo))
         .toEqual(['Dados do rio', 'Dados do esgoto', 'Dados do esgoto: lançamento 2', 'Dados adicionais', 'Trecho 2', 'Trecho 2: lançamento 2']);
@@ -119,6 +126,7 @@ test('outros lançamentos e o K1 de cada trecho entram no relatório', () => {
     expect(relatorio.fornecidos[5].linhas.map((linha) => linha.rotulo)).toEqual(['Qe', 'ODe', 'DBOe', 'E']);
     // a vazão das contribuições soma os lançamentos do ponto; a temperatura é 20 °C, então K1T = K1
     expect(linhaTrecho('Qe')).toEqual([0.124, 0.5]);
+    expect(textosTrecho('Qe')).toEqual(['0,124', '0,5']);
     expect(linhaTrecho('K1T')).toEqual([0.4, 0.18]);
     // sem Kd informado, a linha do KdT só repetiria a do K1T
     expect(linhaTrecho('KdT')).toBeUndefined();

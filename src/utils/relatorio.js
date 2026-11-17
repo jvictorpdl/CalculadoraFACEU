@@ -299,7 +299,8 @@ function tabelaPorTrecho(trechos, comKd, conversao) {
             rotulo,
             descricao: rotulo === 'KT' ? descricaoKt(conversao) : descricao,
             unidade,
-            valores: trechos.map((trecho) => ({ valor: Number(valorDe(trecho).toFixed(casas)), texto: numero(valorDe(trecho), casas) })),
+            // a vazão da contribuição sai sem zeros à direita (0,11 e não 0,11000000)
+            valores: trechos.map((trecho) => ({ valor: Number(valorDe(trecho).toFixed(casas)), texto: numero(valorDe(trecho), rotulo === 'Qe' ? undefined : casas) })),
         })),
     };
 }

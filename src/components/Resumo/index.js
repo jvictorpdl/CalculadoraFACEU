@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import BotaoDica from '../Dica';
-import { CamposComErro } from '../TextFieldWithTooltip/textFieldWithTooltip';
+import { CamposComErro, porExtenso } from '../TextFieldWithTooltip/textFieldWithTooltip';
 import { BotaoEditar, Cabecalho, Grade, Linha, Lista, TituloGrupo } from './style';
 
 export const Resumo = Grade;
@@ -33,7 +33,7 @@ export function LinhaResumo({ rotulo, campo = rotulo, dica, valor, unidade, opci
                 {rotulo}
                 <BotaoDica rotulo={rotulo} texto={dica} onToque={() => setDicaAberta(!dicaAberta)} />
             </dt>
-            <dd>{vazio ? '—' : `${String(valor).replace('.', ',')}${unidade ? ` ${unidade}` : ''}`}</dd>
+            <dd>{vazio ? '—' : `${porExtenso(valor).replace('.', ',')}${unidade ? ` ${unidade}` : ''}`}</dd>
             {dicaAberta && <dd>{dica}</dd>}
         </Linha>
     );

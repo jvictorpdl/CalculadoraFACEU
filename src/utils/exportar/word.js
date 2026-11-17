@@ -67,8 +67,9 @@ function tabelasPorTrecho(porTrecho) {
     const tabelas = [];
     for (let inicio = 0; inicio < porTrecho.colunas.length; inicio += TRECHOS_POR_TABELA) {
         const colunas = porTrecho.colunas.slice(inicio, inicio + TRECHOS_POR_TABELA);
-        const larguraTrecho = Math.floor((LARGURA_TABELA - 4300) / colunas.length);
-        const larguras = [3400, 900, ...colunas.map(() => larguraTrecho)];
+        // com 5 trechos, cada coluna precisa caber uma vazão como 0,00002434 sem quebrar
+        const larguraTrecho = Math.floor((LARGURA_TABELA - 3500) / colunas.length);
+        const larguras = [2600, 900, ...colunas.map(() => larguraTrecho)];
         if (inicio > 0) tabelas.push(new Paragraph({ spacing: { before: 200 }, children: [] }));
         tabelas.push(tabela(larguras, ['Parâmetro', 'Unidade', ...colunas], porTrecho.linhas.map(({ rotulo, descricao, unidade, valores }) => new TableRow({
             children: [

@@ -6,6 +6,11 @@ import { FieldWrapper, Input, InputWrapper, LabelWrapper, Unidade } from './styl
 // rótulos dos campos apontados pela validação; a calculadora fornece ao redor do passo atual
 export const CamposComErro = createContext(new Set());
 
+// String(0.0000005) daria "5e-7", que o campo não aceita de volta; o número sai sempre por extenso
+export const porExtenso = (valor) => (typeof valor === 'number'
+    ? valor.toLocaleString('en-US', { maximumFractionDigits: 8, useGrouping: false })
+    : valor?.toString());
+
 export default function TextFieldWithTooltip({
     label,
     campo = label,
@@ -15,7 +20,7 @@ export default function TextFieldWithTooltip({
     onBlurValue,
     value,
 }) {
-    const [currentValue, setValue] = useState(value?.toString()?.replaceAll('.', ',') ?? '');
+    const [currentValue, setValue] = useState(porExtenso(value)?.replaceAll('.', ',') ?? '');
     const [dicaAberta, setDicaAberta] = useState(false);
     // campos repetidos (como os de cada trecho) informam um nome próprio para o destaque de erro
     const invalido = useContext(CamposComErro).has(campo);
@@ -46,7 +51,7 @@ export default function TextFieldWithTooltip({
             const parsed = parseFloat(currentValue.replaceAll(',', '.'));
             if (!isNaN(parsed)) {
                 const rounded = parseFloat(parsed.toFixed(casas));
-                setValue(rounded.toString());
+                setValue(porExtenso(rounded));
                 onBlurValue(rounded);
             }
         } else {

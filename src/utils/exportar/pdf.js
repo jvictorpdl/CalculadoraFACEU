@@ -132,7 +132,12 @@ export async function gerarPdf(relatorio, imagens, gerado) {
     if (porTrecho) {
         for (let inicio = 0; inicio < porTrecho.colunas.length; inicio += TRECHOS_POR_TABELA) {
             const fim = Math.min(inicio + TRECHOS_POR_TABELA, porTrecho.colunas.length);
-            const colunasTrechos = Object.fromEntries(Array.from({ length: fim - inicio }, (_, i) => [i + 2, { halign: 'right' }]));
+            // colunas dos trechos iguais e largas o bastante para o maior número, que não pode quebrar
+            // (vazões como 0,00002434); a descrição fica com o que sobrar da largura
+            doc.setFont('Inter', 'normal').setFontSize(9);
+            const maiorNumero = Math.max(...porTrecho.linhas.flatMap(({ valores }) => valores.slice(inicio, fim).map(({ texto }) => doc.getTextWidth(texto))));
+            const larguraTrecho = Math.max(maiorNumero + 4, (largura - 78) / (fim - inicio));
+            const colunasTrechos = Object.fromEntries(Array.from({ length: fim - inicio }, (_, i) => [i + 2, { halign: 'right', cellWidth: larguraTrecho }]));
             secao(inicio === 0 ? 'Resultados por trecho' : 'Resultados por trecho (continuação)', 8 + porTrecho.linhas.length * 7.2);
             tabela(
                 ['Parâmetro', 'Unidade', ...porTrecho.colunas.slice(inicio, fim)],
@@ -141,7 +146,7 @@ export async function gerarPdf(relatorio, imagens, gerado) {
                     unidade,
                     ...valores.slice(inicio, fim).map(({ texto: valor }) => valor),
                 ]),
-                { 0: { cellWidth: 60 }, 1: { cellWidth: 20 }, ...colunasTrechos },
+                { 0: { cellWidth: 'auto' }, 1: { cellWidth: 18 }, ...colunasTrechos },
             );
         }
     }
