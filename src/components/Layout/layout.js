@@ -31,14 +31,12 @@ export const Row = styled.div`
   }
 `;
 
+// cada campo precisa de uns 168 px para mostrar 0,00002434 com a unidade; com espaço, ficam as colunas
+// pedidas e, sem ele, as que não cabem descem para a linha de baixo (os 0,1 px evitam perder uma coluna no arredondamento)
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${(props) => (props.columns)}, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(max(168px, calc((100% - ${(props) => props.columns - 1}rem) / ${(props) => props.columns} - 0.1px)), 1fr));
   gap: 1rem;
-
-  @media (max-width: 900px) {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
 
   @media (max-width: 768px) {
     grid-template-columns: minmax(0, 1fr);

@@ -10,7 +10,7 @@ import { CalculadoraAutodepura, lancamentosDe, trechosDe } from "../../../../uti
 import { numero } from "../../../../utils/relatorio";
 import { bloqueadoPor, CAMINHOS, campoDoTrecho, errosAutodepura, MAXIMO_TRECHOS } from "../../../../utils/validacao";
 import { AjudaE, AjudaK1, AjudaK2, AjudaLancamentos, AjudaTrechosSeguintes, PainelAjuda } from "./ajudas";
-import { BotaoAdicionar, BotaoRemover, CabecalhoCartao, Cartao, Montante, novoId, Orientacao, Subtitulo, TituloCartao, TituloLancamento } from "./cartoes";
+import { BotaoAdicionar, BotaoRemover, CabecalhoTrecho, Cartao, FaixaKm, Montante, NomeTrecho, novoId, Orientacao, Subtitulo, TituloCartao, TituloLancamento } from "./cartoes";
 import { ListaLancamentos } from "./lancamentos";
 
 const trechoVazio = () => ({
@@ -27,6 +27,12 @@ function rioAMontante(dados, indice) {
     const anterior = trechos[trechos.length - 1];
     return { km: anterior.inicioKm + anterior.distanciaKm, qr: anterior.qt, od: anterior.odFim, dbo: anterior.dbo5Fim, k1t: anterior.k1t, cs: anterior.cs };
 }
+
+// km do início e do fim do trecho a partir do primeiro lançamento (6,206 a 10,359), como nas planilhas
+const km = (valor) => numero(Number(valor.toFixed(3)));
+const faixaKm = (inicio, distancia) => (Number(distancia) > 0
+    ? `km ${km(inicio)} a ${km(inicio + Number(distancia) / 1000)}`
+    : `a partir do km ${km(inicio)}`);
 
 // opções que chegam ao mesmo coeficiente: uma preenchida bloqueia as outras
 function travas(trecho, caminhos, rotulos) {
@@ -58,16 +64,19 @@ function CartaoTrecho({ trecho, numeroTrecho, montante, divisaoGeral, onAlterar,
 
     return (
         <Cartao aria-labelledby={`trecho-${trecho.id}`}>
-            <CabecalhoCartao>
-                <TituloCartao id={`trecho-${trecho.id}`}>Trecho {numeroTrecho}</TituloCartao>
+            <CabecalhoTrecho>
+                <NomeTrecho>
+                    <TituloCartao id={`trecho-${trecho.id}`}>Trecho {numeroTrecho}</TituloCartao>
+                    {montante && <FaixaKm>{faixaKm(montante.km, trecho.distancia)}</FaixaKm>}
+                </NomeTrecho>
                 <BotaoRemover type="button" aria-label={`Remover trecho ${numeroTrecho}`} onClick={onRemover}>
                     <Trash2 size={16} aria-hidden="true" />
                     Remover
                 </BotaoRemover>
-            </CabecalhoCartao>
+            </CabecalhoTrecho>
             <Montante>
                 {montante
-                    ? `Começa a ${numero(montante.km, 1)} km do primeiro lançamento. Rio a montante, no fim do trecho ${numeroTrecho - 1}: Qr = ${numero(montante.qr, 3)} m³/s, OD = ${numero(montante.od, 2)} mg/L e DBO5 = ${numero(montante.dbo, 2)} mg/L.`
+                    ? `Rio a montante, no fim do trecho ${numeroTrecho - 1}: Qr = ${numero(montante.qr, 3)} m³/s, OD = ${numero(montante.od, 2)} mg/L e DBO5 = ${numero(montante.dbo, 2)} mg/L.`
                     : `O rio a montante tem a vazão, o OD e a DBO5 do fim do trecho ${numeroTrecho - 1}; os valores aparecem quando os dados até ele estiverem completos.`}
             </Montante>
 
